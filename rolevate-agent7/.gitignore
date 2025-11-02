@@ -2,6 +2,9 @@
 .env
 .env.local
 .env.*.local
+.env.production
+.env.development
+.env.test
 
 # Python
 __pycache__/
@@ -35,25 +38,56 @@ ENV/
 env.bak/
 venv.bak/
 .venv/
+.virtualenv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
 
 # Google Cloud credentials and other sensitive files
 *.json
 !package.json
 !package-lock.json
 !tsconfig.json
+!ecosystem.config.json
 adlaan-34153797e991.json
 *-service-account*.json
 *-credentials*.json
+*-key.json
+*-keyfile.json
+service-account*.json
+gcp-*.json
+google-*.json
 
 # AWS credentials
 .aws/
 aws-credentials*
+*.pem
+credentials
 
 # API keys and tokens
 *.key
-*.pem
 *.p12
 *.pfx
+api_keys.txt
+secrets.txt
+token.txt
+access_token*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
 
 # Logs
 logs/
@@ -61,20 +95,52 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pip-log.txt
+pip-delete-this-directory.txt
 
-# PM2 logs
+# PM2 logs and config
 pm2.log
 .pm2/
+pm2-*
+ecosystem.config.js.bak
 
-# IDE
+# FastAPI/Uvicorn
+.uvicorn/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+.temporary
+
+# IDE and editors
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+.sublime-project
+.sublime-workspace
 
-# OS
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 # Docker
 .dockerignore
+docker-compose.override.yml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# LangChain/LangGraph cache
+.langchain/
+.cache/
+langchain.cache
