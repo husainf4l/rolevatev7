@@ -9,101 +9,119 @@ import { AboutCompanyPolishRequestDto, AboutCompanyPolishResponseDto } from './d
 import { JobAnalysisInput, JobAnalysisResponse } from './dto/job-analysis.dto';
 import { AIConfigInput, AIConfigResponse } from './dto/ai-config.dto';
 import OpenAI from 'openai';
+import axios from 'axios';
 
 @Injectable()
 export class AiautocompleteService {
   private openai: OpenAI;
+  private fastApiUrl: string;
 
   constructor() {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
+    const apiKey = process.env.OPENAI_API_KEY;
+    this.fastApiUrl = process.env.FASTAPI_URL || process.env.FASTABI_URL || 'http://localhost:8005';
+    
+    if (!apiKey) {
+      console.error('⚠️ OPENAI_API_KEY environment variable is not set');
+      console.error('AI features will be unavailable until this is configured');
+      this.openai = null as any; // This will cause clear errors when used
+    } else {
+      console.log('✅ OpenAI API key configured');
+      this.openai = new OpenAI({
+        apiKey: apiKey,
+      });
+    }
+    
+    console.log(`🔗 FastAPI URL configured: ${this.fastApiUrl}`);
   }
   
   async generateCompanyDescription(requestDto: CompanyDescriptionRequestDto): Promise<CompanyDescriptionResponseDto> {
     const { industry, location, country, numberOfEmployees, currentDescription, website } = requestDto;
     
-    const contextParts: string[] = [];
+    console.log('🚀 Calling FastAPI for company description generation...');
+    console.log('📊 Request data:', requestDto);
     
-    if (industry) contextParts.push(`Industry: ${industry}`);
-    if (location && country) contextParts.push(`Location: ${location}, ${country}`);
-    else if (country) contextParts.push(`Country: ${country}`);
-    else if (location) contextParts.push(`Location: ${location}`);
-    if (numberOfEmployees) contextParts.push(`Employees: ${numberOfEmployees}`);
-    if (currentDescription) contextParts.push(`Current: ${currentDescription}`);
-    if (website) contextParts.push(`Website: ${website}`);
-    
-    const context = contextParts.join('\n');
-    
-    const prompt = `You are an expert business analyst and copywriter specializing in creating compelling company descriptions. Your task is to generate a professional, engaging company description based on the provided information.
-
-Company Information:
-${context}
-
-RESEARCH INSTRUCTIONS:
-1. If a website is provided, analyze the company's online presence, services, products, mission, and values from their website
-2. Research the company's industry positioning, competitive advantages, and market presence
-3. Look for information about the company's culture, achievements, and unique selling propositions
-4. Consider the company's target market and customer base
-5. Identify key differentiators and competitive advantages
-
-DESCRIPTION REQUIREMENTS:
-- Maximum 400 characters including spaces
-- Professional and engaging tone that attracts top talent
-- Highlight the company's unique value proposition and strengths
-- Include compelling language that conveys leadership, innovation, and excellence
-- Focus on what makes this company special and why people would want to work there
-- Use industry-appropriate terminology and language
-- Ensure clarity, precision, and impact in every word
-- Make it sound attractive to potential employees and candidates
-
-CONTENT STRATEGY:
-- Lead with the company's core mission or primary value proposition
-- Highlight industry leadership, innovation, or unique market position
-- Include growth trajectory, market impact, or notable achievements if evident
-- Emphasize company culture, values, or employee-focused aspects
-- End with forward-looking vision or commitment statements
-
-OPTIMIZATION GUIDELINES:
-- Every word must add value due to the 400-character limit
-- Use powerful, action-oriented language
-- Avoid generic phrases or corporate jargon
-- Focus on concrete achievements and unique differentiators
-- Balance professional credibility with engaging personality
-- Ensure the description reflects the company's actual positioning and industry
-
-Based on your research and analysis of the provided information (especially the website if available), create a compelling company description that would attract top talent and accurately represent the organization's value proposition and culture.
-
-Return ONLY the optimized company description without any additional text, explanations, or formatting.`;
-
     try {
-      const completion = await this.openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 200,
-        temperature: 0.6,
-      });
-
-      const generatedDescription = completion.choices[0]?.message?.content?.trim() || '';
+      // Prepare the payload for FastAPI endpoint
+      const payload = {
+        industry: industry || '',
+        location: location || '',
+        country: country || '',
+        numberOfEmployees: numberOfEmployees || 0,
+        currentDescription: currentDescription || '',
+        website: website || ''
+      };
       
+      console.log(`🌐 Making request to: ${this.fastApiUrl}/company-description`);
+      console.log('📤 Payload:', payload);
+      
+      const response = await axios.post(`${this.fastApiUrl}/company-description`, payload, {
+        timeout: 30000, // 30 seconds timeout
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      console.log('✅ FastAPI response received');
+      console.log('📥 Response data:', response.data);
+      
+      // Check if the request was successful
+      if (!response.data?.success) {
+        console.error('❌ FastAPI request failed:', response.data?.error);
+        throw new Error(response.data?.error || 'FastAPI request failed');
+      }
+      
+      // Extract the generated description from the FastAPI response
+      const generatedDescription = response.data?.generated_description || '';
+      
+      if (!generatedDescription) {
+        console.error('❌ No generated_description in FastAPI response:', response.data);
+        throw new Error('FastAPI returned empty or invalid response');
+      }
+      
+      // Ensure the description is within the 400 character limit
       const truncatedDescription = generatedDescription.length > 400 
-        ? generatedDescription.substring(0, 400) // Ensure exactly 400 characters
+        ? generatedDescription.substring(0, 400)
         : generatedDescription;
-
+      
+      console.log(`📝 Generated description (${truncatedDescription.length} chars):`, truncatedDescription);
+      
       return {
         generatedDescription: truncatedDescription
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
-      console.error('OpenAI API error in generateCompanyDescription:', errorMessage);
-      console.error('Error stack:', errorStack);
-      console.error('Full error object:', error);
+      
+      console.error('❌ FastAPI request failed:', errorMessage);
+      console.error('Error details:', {
+        message: errorMessage,
+        stack: errorStack,
+        url: `${this.fastApiUrl}/company-description`,
+        status: (error as any)?.response?.status,
+        statusText: (error as any)?.response?.statusText,
+        responseData: (error as any)?.response?.data,
+      });
+      
+      // Provide more specific error messages
+      if ((error as any)?.code === 'ECONNREFUSED' || (error as any)?.code === 'ENOTFOUND') {
+        throw new InternalServerErrorException(`Cannot connect to AI service at ${this.fastApiUrl}. Please check if the FastAPI service is running.`);
+      } else if ((error as any)?.response?.status === 404) {
+        throw new InternalServerErrorException('Company description endpoint not found in AI service');
+      } else if ((error as any)?.response?.status >= 400 && (error as any)?.response?.status < 500) {
+        throw new InternalServerErrorException(`AI service returned client error: ${(error as any)?.response?.statusText}`);
+      } else if ((error as any)?.response?.status >= 500) {
+        throw new InternalServerErrorException(`AI service internal error: ${(error as any)?.response?.statusText}`);
+      }
+      
       throw new InternalServerErrorException(`Failed to generate company description: ${errorMessage}`);
     }
   }
 
   async generateSalaryRecommendation(requestDto: SalaryRecommendationRequestDto): Promise<SalaryRecommendationResponseDto> {
+    if (!this.openai) {
+      throw new InternalServerErrorException('OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.');
+    }
+    
     const { jobTitle, department, industry, employeeType, jobLevel, workType, location, country } = requestDto;
     
     // Build comprehensive context for AI
@@ -844,7 +862,10 @@ Return ONLY the culture and values-focused company description without any title
       return response;
     } catch (error) {
       // If salary generation fails, generate job details without salary using a simpler prompt
-      console.error('Salary recommendation failed, generating job details without salary:', error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : undefined;
+      console.error('❌ Salary recommendation failed, attempting fallback job analysis:', errorMessage);
+      console.error('Primary error details:', { message: errorMessage, stack: errorStack });
       
       const prompt = `Generate a professional job analysis for the following position:
 
@@ -868,6 +889,12 @@ Please provide a detailed job analysis in JSON format:
 }`;
 
       try {
+        console.log('🔄 Attempting fallback job analysis with OpenAI...');
+        
+        if (!this.openai) {
+          throw new Error('OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.');
+        }
+        
         const completion = await this.openai.chat.completions.create({
           model: 'gpt-4o',
           messages: [{ role: 'user', content: prompt }],
@@ -875,17 +902,76 @@ Please provide a detailed job analysis in JSON format:
           temperature: 0.7,
         });
 
+        console.log('✅ OpenAI API call successful');
+        
         const aiResponse = completion.choices[0]?.message?.content?.trim() || '';
+        console.log('📝 Full AI response:');
+        console.log('=====================================');
+        console.log(aiResponse);
+        console.log('=====================================');
+        
+        if (!aiResponse) {
+          throw new Error('Empty response from OpenAI');
+        }
+        
         let jsonStr = aiResponse;
         
         // Extract JSON from response
         if (jsonStr.includes('```json')) {
+          console.log('🔍 Found ```json``` markers, extracting...');
           jsonStr = jsonStr.split('```json')[1].split('```')[0].trim();
         } else if (jsonStr.includes('```')) {
+          console.log('🔍 Found ``` markers, extracting...');
           jsonStr = jsonStr.split('```')[1].split('```')[0].trim();
+        } else {
+          console.log('🔍 No code block markers found, using full response');
         }
         
-        const parsedResponse = JSON.parse(jsonStr);
+        console.log('🔍 Extracted JSON string for parsing:');
+        console.log('=====================================');
+        console.log(jsonStr);
+        console.log('=====================================');
+        
+        let parsedResponse;
+        try {
+          // Clean up common JSON issues
+          let cleanJsonStr = jsonStr.trim();
+          
+          // Remove any trailing commas before closing braces/brackets
+          cleanJsonStr = cleanJsonStr.replace(/,(\s*[}\]])/g, '$1');
+          
+          // Try to parse
+          parsedResponse = JSON.parse(cleanJsonStr);
+          console.log('✅ JSON parsing successful');
+          console.log('Parsed response keys:', Object.keys(parsedResponse));
+        } catch (jsonError) {
+          console.error('❌ JSON parsing failed:', jsonError);
+          console.error('Raw JSON string that failed to parse:');
+          console.error('=====================================');
+          console.error(jsonStr);
+          console.error('=====================================');
+          
+          // Try to provide a fallback response instead of failing completely
+          console.log('🔄 Attempting to create fallback response...');
+          
+          try {
+            // Create a basic fallback response structure
+            parsedResponse = {
+              description: `Job analysis for ${input.jobTitle}`,
+              shortDescription: `${input.jobTitle} position`,
+              responsibilities: 'Job responsibilities to be defined',
+              requirements: 'Job requirements to be defined',
+              benefits: 'Competitive benefits package',
+              skills: [input.jobTitle.toLowerCase().replace(/\s+/g, '-')],
+              experienceLevel: '2-5 years',
+              educationLevel: "Bachelor's degree or equivalent"
+            };
+            console.log('✅ Created fallback response');
+          } catch (fallbackError) {
+            const errorMessage = jsonError instanceof Error ? jsonError.message : String(jsonError);
+            throw new Error(`Failed to parse OpenAI response as JSON: ${errorMessage}`);
+          }
+        }
         
         const response: JobAnalysisResponse = {
           description: parsedResponse.description || '',
@@ -899,10 +985,31 @@ Please provide a detailed job analysis in JSON format:
           educationLevel: parsedResponse.educationLevel || '',
         };
 
+        console.log('✅ Job analysis fallback completed successfully');
         return response;
       } catch (fallbackError) {
-        console.error('Fallback job analysis also failed:', fallbackError);
-        throw new InternalServerErrorException('Failed to generate job analysis');
+        console.error('❌ Fallback job analysis failed:', fallbackError);
+        
+        const errorMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        const errorName = fallbackError instanceof Error ? fallbackError.name : 'UnknownError';
+        const errorStack = fallbackError instanceof Error ? fallbackError.stack : undefined;
+        
+        console.error('Fallback error details:', {
+          name: errorName,
+          message: errorMessage,
+          stack: errorStack,
+        });
+        
+        // Provide more specific error messages
+        if (errorMessage?.includes('API key')) {
+          throw new InternalServerErrorException('OpenAI API key not configured properly');
+        } else if (errorMessage?.includes('JSON')) {
+          throw new InternalServerErrorException('Failed to parse AI response - invalid format');
+        } else if (errorMessage?.includes('network') || (fallbackError as any)?.code === 'ENOTFOUND') {
+          throw new InternalServerErrorException('Cannot connect to AI service - network error');
+        }
+        
+        throw new InternalServerErrorException(`Failed to generate job analysis: ${errorMessage}`);
       }
     }
   }

@@ -727,6 +727,15 @@ export class ApplicationService {
 
   async findOne(id: string): Promise<Application | null> {
     try {
+      this.logger.log(`Attempting to find application with id: ${id}`);
+      
+      // Validate UUID format
+      const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      if (!uuidRegex.test(id)) {
+        this.logger.error(`Invalid UUID format for application ID: ${id}`);
+        throw new BadRequestException(`Invalid application ID format: ${id}. Expected UUID format.`);
+      }
+      
       const application = await this.applicationRepository.findOne({
         where: { id },
         relations: ['job', 'job.company', 'candidate', 'applicationNotes'],
@@ -737,11 +746,18 @@ export class ApplicationService {
         return null;
       }
       
+      this.logger.log(`Successfully found application: ${id}`);
       return application;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
       this.logger.error(`Failed to find application ${id}: ${errorMessage}`, errorStack);
+      
+      // Don't expose database errors to client, but provide helpful message for UUID format errors
+      if (errorMessage.includes('invalid input syntax for type uuid')) {
+        throw new BadRequestException(`Invalid application ID format: ${id}. Expected UUID format.`);
+      }
+      
       throw new InternalServerErrorException('Failed to retrieve application');
     }
   }

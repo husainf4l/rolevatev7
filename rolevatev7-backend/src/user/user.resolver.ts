@@ -8,6 +8,7 @@ import { ChangePasswordInput } from './change-password.input';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Roles } from '../auth/roles.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import { Public } from '../auth/public.decorator';
 import { UserType } from './user.entity';
 
 @Resolver(() => UserDto)
@@ -119,8 +120,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserDto)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserType.ADMIN, UserType.SYSTEM)
+  @Public()
   async createUser(@Args('input') input: CreateUserInput): Promise<UserDto> {
     const user = await this.userService.create(input.userType, input.email, input.password, input.name, input.phone);
     return {
