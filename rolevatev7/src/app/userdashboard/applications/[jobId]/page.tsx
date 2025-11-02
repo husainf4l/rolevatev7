@@ -22,16 +22,16 @@ export default function ApplicationDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const jobId = params?.jobId as string;
+  const applicationId = params?.jobId as string; // Note: URL param is named jobId but it's actually applicationId
 
   useEffect(() => {
     const fetchApplicationDetails = async () => {
-      if (!jobId) return;
+      if (!applicationId) return;
 
       try {
         setLoading(true);
         setError(null);
-        const applicationDetails = await getCandidateApplicationDetails(jobId);
+        const applicationDetails = await getCandidateApplicationDetails(applicationId);
         setApplication(applicationDetails);
       } catch (err) {
         console.error("Error fetching application details:", err);
@@ -46,7 +46,7 @@ export default function ApplicationDetailsPage() {
     };
 
     fetchApplicationDetails();
-  }, [jobId]);
+  }, [applicationId]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {

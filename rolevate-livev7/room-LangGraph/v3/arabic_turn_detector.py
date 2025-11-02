@@ -7,6 +7,9 @@ class ArabicTurnDetector:
     
     def __init__(self, *, unlikely_threshold: float | None = None):
         self._unlikely_threshold = unlikely_threshold or 0.3
+        # Required attributes for LiveKit compatibility
+        self.model = "arabic-heuristic"
+        self.provider = "custom"
 
     async def supports_language(self, language: str | None) -> bool:
         """Check if the turn detector supports the given language."""

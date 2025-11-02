@@ -349,7 +349,7 @@ export const getApplicationsByJob = async (jobId: string): Promise<Application[]
   }
 };
 
-export const getCandidateApplicationDetails = async (jobId: string): Promise<Application> => {
+export const getCandidateApplicationDetails = async (applicationId: string): Promise<Application> => {
   const GET_APPLICATION_DETAILS_QUERY = gql`
     query GetApplicationDetails {
       applications {
@@ -360,7 +360,9 @@ export const getCandidateApplicationDetails = async (jobId: string): Promise<App
           title
           company {
             name
+            __typename
           }
+          __typename
         }
         status
         cvAnalysisScore
@@ -371,6 +373,7 @@ export const getCandidateApplicationDetails = async (jobId: string): Promise<App
         aiCvRecommendations
         aiInterviewRecommendations
         aiSecondInterviewRecommendations
+        __typename
       }
     }
   `;
@@ -381,11 +384,11 @@ export const getCandidateApplicationDetails = async (jobId: string): Promise<App
       fetchPolicy: 'network-only'
     });
     
-    // Find the application with matching jobId
-    const application = (data?.applications || []).find(app => app.job.id === jobId);
+    // Find the application with matching application ID
+    const application = (data?.applications || []).find(app => app.id === applicationId);
     
     if (!application) {
-      throw new Error('Application not found for this job');
+      throw new Error('Application not found');
     }
     
     // Add jobId for backward compatibility
