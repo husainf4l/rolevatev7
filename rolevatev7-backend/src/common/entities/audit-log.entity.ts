@@ -120,7 +120,6 @@ export class AuditLog {
 
   @CreateDateColumn({ type: 'timestamp' })
   @Field()
-  @Index()
   createdAt: Date;
 
   @BeforeInsert()

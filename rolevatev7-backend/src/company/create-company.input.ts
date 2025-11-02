@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsString, IsOptional, IsEmail, IsUrl, IsDateString } from 'class-validator';
+import { IsString, IsOptional, IsEmail, IsUrl, IsDateString, ValidateIf } from 'class-validator';
 
 @InputType()
 export class CreateCompanyInput {
@@ -13,6 +13,7 @@ export class CreateCompanyInput {
   description?: string;
 
   @Field({ nullable: true })
+  @ValidateIf((o) => o.website && o.website.trim().length > 0)
   @IsUrl()
   @IsOptional()
   website?: string;
@@ -28,6 +29,7 @@ export class CreateCompanyInput {
   phone?: string;
 
   @Field({ nullable: true })
+  @ValidateIf((o) => o.logo && o.logo.trim().length > 0)
   @IsUrl()
   @IsOptional()
   logo?: string;
