@@ -19,7 +19,7 @@ from utils.session_utils import create_initial_session_state
 from session_manager import session_manager
 from recording_manager import RecordingManager
 
-load_dotenv(".env.local")
+load_dotenv(".env")
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
