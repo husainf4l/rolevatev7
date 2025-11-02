@@ -1,0 +1,29 @@
+[project]
+name = "livekit-voice-agent"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    # LangChain & LangGraph for AI workflow management
+    "langchain-chroma>=0.2.5",
+    "langchain-community>=0.3.29",
+    "langchain-core>=0.3.76",
+    "langchain-openai>=0.3.33",
+    "langgraph>=0.2.0",
+    "langgraph-checkpoint-postgres>=2.0.0",
+    
+    # LiveKit voice agent with all required plugins
+    "livekit-agents[bey,elevenlabs,deepgram,openai,silero,turn-detector,sonix]~=1.2",
+    "livekit-plugins-langchain~=1.1",
+    "livekit-plugins-noise-cancellation~=0.2",
+    "livekit-plugins-soniox>=1.2.8",
+    
+    # Database connectivity for PostgreSQL session persistence
+    "psycopg[binary,pool]>=3.1.0",
+    "asyncpg>=0.29.0",
+    
+    # Utilities
+    "pypdf>=6.0.0",
+    "python-dotenv>=1.1.1",
+    "uuid>=1.30",
+    "typing-extensions>=4.5.0",
+]
