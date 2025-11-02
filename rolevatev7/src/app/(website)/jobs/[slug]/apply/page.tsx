@@ -750,6 +750,7 @@ export default function JobApplicationPage() {
                     onChange={handleInputChange}
                     placeholder="John Doe"
                     className={formErrors.fullName ? "border-red-500" : ""}
+                    spellCheck={true}
                   />
                   {formErrors.fullName && (
                     <p className="text-red-500 text-sm mt-1">
@@ -771,6 +772,7 @@ export default function JobApplicationPage() {
                       onChange={handleInputChange}
                       placeholder="john.doe@example.com"
                       className={formErrors.email ? "border-red-500" : ""}
+                      spellCheck={true}
                     />
                     {formErrors.email && (
                       <p className="text-red-500 text-sm mt-1">
@@ -791,6 +793,7 @@ export default function JobApplicationPage() {
                       onChange={handleInputChange}
                       placeholder="+1 (555) 123-4567"
                       className={formErrors.phone ? "border-red-500" : ""}
+                      spellCheck={true}
                     />
                     {formErrors.phone && (
                       <p className="text-red-500 text-sm mt-1">
@@ -810,6 +813,7 @@ export default function JobApplicationPage() {
                       value={formData.linkedIn}
                       onChange={handleInputChange}
                       placeholder="https://linkedin.com/in/johndoe"
+                      spellCheck={true}
                     />
                   </div>
 
@@ -822,6 +826,7 @@ export default function JobApplicationPage() {
                       value={formData.portfolio}
                       onChange={handleInputChange}
                       placeholder="https://johndoe.com"
+                      spellCheck={true}
                     />
                   </div>
                 </div>
@@ -918,6 +923,7 @@ export default function JobApplicationPage() {
                     placeholder="Tell us why you're a great fit for this position..."
                     rows={6}
                     className={formErrors.coverLetter ? "border-red-500" : ""}
+                    spellCheck={true}
                   />
                   <p className="text-sm text-gray-500 mt-1">
                     Optional: Share your motivation and why you'd be a great fit
@@ -945,6 +951,7 @@ export default function JobApplicationPage() {
                     value={formData.noticePeriod}
                     onChange={handleInputChange}
                     placeholder="e.g., 2 weeks, Immediate"
+                    spellCheck={true}
                   />
                   <p className="text-sm text-gray-500 mt-1">
                     Optional: Let us know your availability

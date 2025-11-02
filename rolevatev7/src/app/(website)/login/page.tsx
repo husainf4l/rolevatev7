@@ -11,6 +11,7 @@ import { authService } from "@/services";
 import { apolloClient } from "@/lib/apollo";
 import { gql } from "@apollo/client";
 import toast from "react-hot-toast";
+import { validatePassword } from "@/lib/utils";
 
 function LoginContent() {
   const router = useRouter();
@@ -32,6 +33,13 @@ function LoginContent() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
+  
+  // Password validation state
+  const [passwordValidation, setPasswordValidation] = useState<{
+    isValid: boolean;
+    errors: string[];
+  } | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
   useEffect(() => {
     setIsMounted(true);
@@ -94,13 +102,15 @@ function LoginContent() {
       return;
     }
 
-    if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
+    // Validate password
+    const validation = validatePassword(newPassword);
+    if (!validation.isValid) {
+      toast.error("Please fix password validation errors");
       return;
     }
 
-    if (newPassword.length < 8) {
-      toast.error("Password must be at least 8 characters long");
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -128,11 +138,43 @@ function LoginContent() {
         setNewPassword("");
         setConfirmPassword("");
         setForgotEmail("");
+        setPasswordValidation(null);
+        setConfirmPasswordError("");
       }
     } catch (err: any) {
       toast.error(err?.message || "Failed to reset password");
     } finally {
       setForgotLoading(false);
+    }
+  };
+
+  // Handle password input change with validation
+  const handleNewPasswordChange = (value: string) => {
+    setNewPassword(value);
+    
+    if (value.length > 0) {
+      const validation = validatePassword(value);
+      setPasswordValidation({
+        isValid: validation.isValid,
+        errors: validation.errors
+      });
+    } else {
+      setPasswordValidation(null);
+    }
+  };
+
+  // Handle confirm password input change
+  const handleConfirmPasswordChange = (value: string) => {
+    setConfirmPassword(value);
+    
+    if (value.length > 0 && newPassword.length > 0) {
+      if (value !== newPassword) {
+        setConfirmPasswordError("Passwords do not match");
+      } else {
+        setConfirmPasswordError("");
+      }
+    } else {
+      setConfirmPasswordError("");
     }
   };
 
@@ -344,11 +386,25 @@ function LoginContent() {
                   id="new-password"
                   required
                   value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="mt-1.5 h-10 text-sm rounded-lg"
+                  onChange={(e) => handleNewPasswordChange(e.target.value)}
+                  className={`mt-1.5 h-10 text-sm rounded-lg ${
+                    passwordValidation && !passwordValidation.isValid 
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500" 
+                      : ""
+                  }`}
                   disabled={forgotLoading}
-                  placeholder="Minimum 8 characters"
+                  placeholder="Enter your new password"
                 />
+                {passwordValidation && !passwordValidation.isValid && (
+                  <div className="mt-2 space-y-1">
+                    {passwordValidation.errors.map((error, index) => (
+                      <p key={index} className="text-xs text-red-600 flex items-center">
+                        <span className="w-1 h-1 bg-red-600 rounded-full mr-2"></span>
+                        {error}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div>
@@ -360,15 +416,21 @@ function LoginContent() {
                   id="confirm-password"
                   required
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="mt-1.5 h-10 text-sm rounded-lg"
+                  onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                  className={`mt-1.5 h-10 text-sm rounded-lg ${
+                    confirmPasswordError 
+                      ? "border-red-500 focus:border-red-500 focus:ring-red-500" 
+                      : ""
+                  }`}
                   disabled={forgotLoading}
                   placeholder="Re-enter your password"
                 />
-              </div>
-
-              <div className="text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
-                Password must be at least 8 characters and include uppercase, lowercase, number, and special character.
+                {confirmPasswordError && (
+                  <p className="mt-2 text-xs text-red-600 flex items-center">
+                    <span className="w-1 h-1 bg-red-600 rounded-full mr-2"></span>
+                    {confirmPasswordError}
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -380,6 +442,8 @@ function LoginContent() {
                     setResetToken("");
                     setNewPassword("");
                     setConfirmPassword("");
+                    setPasswordValidation(null);
+                    setConfirmPasswordError("");
                   }}
                   className="flex-1 h-10 text-sm rounded-lg"
                   disabled={forgotLoading}

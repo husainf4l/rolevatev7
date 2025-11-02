@@ -19,7 +19,7 @@ export function validatePassword(password: string): PasswordValidationResult {
   // Length check
   if (password.length < 8) {
     errors.push('Password must be at least 8 characters long');
-  } else if (password.length >= 8) {
+  } else {
     score += 1;
   }
 
@@ -44,11 +44,18 @@ export function validatePassword(password: string): PasswordValidationResult {
     score += 1;
   }
 
+  // Special character check
+  if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+    errors.push('Password must contain at least one special character');
+  } else {
+    score += 1;
+  }
+
   // Determine strength
   let strength: 'weak' | 'medium' | 'strong';
   if (score <= 2) {
     strength = 'weak';
-  } else if (score === 3) {
+  } else if (score <= 3) {
     strength = 'medium';
   } else {
     strength = 'strong';

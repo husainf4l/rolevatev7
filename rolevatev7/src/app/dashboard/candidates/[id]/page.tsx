@@ -29,6 +29,7 @@ import {
   createApplicationNote,
   CreateNoteData,
 } from "@/services/application";
+import { isValidStatusTransition } from "@/lib/statusTransitions";
 import { getInterviewsByApplication, Interview } from "@/services/interview.service";
 
 // Transform API application data to display format for detail view
@@ -325,19 +326,60 @@ export default function CandidateProfile() {
     }
   };
 
+
+
   const handleStatusUpdate = async (newStatus: Application["status"]) => {
     if (!candidate) return;
 
     try {
       setUpdating(true);
+      
+      // Fetch fresh data before attempting status update to avoid stale state issues
+      console.log('Fetching fresh application data before status update...');
+      const freshApplication = await getApplicationById(applicationId);
+      const currentStatus = freshApplication.status;
+      
+      console.log(`Current status from backend: ${currentStatus}, Frontend shows: ${candidate.status}`);
+      
+      // Check if the transition is valid with the actual current status
+      if (!isValidStatusTransition(currentStatus, newStatus)) {
+        const message = `Cannot change status from ${currentStatus} to ${newStatus}. This transition is not allowed.`;
+        console.warn(message);
+        alert(message);
+        
+        // Update frontend with the correct current status
+        const candidateDetail = transformApplicationToDetail(freshApplication);
+        setCandidate(candidateDetail);
+        return;
+      }
+
+      // Proceed with the status update
       await updateApplicationStatus(candidate.id, newStatus);
-      // Refresh the data after update
-      const application = await getApplicationById(applicationId);
-      const candidateDetail = transformApplicationToDetail(application);
+      
+      // Refresh the data after successful update
+      const updatedApplication = await getApplicationById(applicationId);
+      const candidateDetail = transformApplicationToDetail(updatedApplication);
       setCandidate(candidateDetail);
-    } catch (err) {
+      
+      console.log(`Status successfully updated to: ${updatedApplication.status}`);
+    } catch (err: any) {
       console.error("Error updating application status:", err);
-      // You might want to show a toast notification here
+      
+      // Show user-friendly error message
+      if (err.message?.includes("Invalid status transition")) {
+        alert(`Status update failed: ${err.message}`);
+        
+        // Refresh data to show correct current status
+        try {
+          const application = await getApplicationById(applicationId);
+          const candidateDetail = transformApplicationToDetail(application);
+          setCandidate(candidateDetail);
+        } catch (refreshErr) {
+          console.error("Failed to refresh data after error:", refreshErr);
+        }
+      } else {
+        alert("Failed to update application status. Please try again.");
+      }
     } finally {
       setUpdating(false);
     }
@@ -1022,7 +1064,7 @@ export default function CandidateProfile() {
                 <div className="space-y-3">
                   <button
                     onClick={() => handleStatusUpdate("REVIEWED")}
-                    disabled={updating || candidate.status === "REVIEWED"}
+                    disabled={updating || candidate.status === "REVIEWED" || !isValidStatusTransition(candidate.status, "REVIEWED")}
                     className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {updating ? "Updating..." : "Move to Review"}
@@ -1030,7 +1072,7 @@ export default function CandidateProfile() {
                   <button
                     onClick={() => handleStatusUpdate("SHORTLISTED")}
                     disabled={
-                      updating || candidate.status === "SHORTLISTED"
+                      updating || candidate.status === "SHORTLISTED" || !isValidStatusTransition(candidate.status, "SHORTLISTED")
                     }
                     className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -1038,21 +1080,28 @@ export default function CandidateProfile() {
                   </button>
                   <button
                     onClick={() => handleStatusUpdate("INTERVIEWED")}
-                    disabled={updating || candidate.status === "INTERVIEWED"}
+                    disabled={updating || candidate.status === "INTERVIEWED" || !isValidStatusTransition(candidate.status, "INTERVIEWED")}
                     className="w-full px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Mark Interviewed
                   </button>
                   <button
                     onClick={() => handleStatusUpdate("OFFERED")}
-                    disabled={updating || candidate.status === "OFFERED"}
+                    disabled={updating || candidate.status === "OFFERED" || !isValidStatusTransition(candidate.status, "OFFERED")}
                     className="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Send Offer
                   </button>
                   <button
+                    onClick={() => handleStatusUpdate("HIRED")}
+                    disabled={updating || candidate.status === "HIRED" || !isValidStatusTransition(candidate.status, "HIRED")}
+                    className="w-full px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Hire
+                  </button>
+                  <button
                     onClick={() => handleStatusUpdate("REJECTED")}
-                    disabled={updating || candidate.status === "REJECTED"}
+                    disabled={updating || candidate.status === "REJECTED" || !isValidStatusTransition(candidate.status, "REJECTED")}
                     className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Reject

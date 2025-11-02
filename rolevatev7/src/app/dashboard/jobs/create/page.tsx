@@ -633,6 +633,7 @@ export default function CreateJobPage() {
             onChange={(e) => handleInputChange("title", e.target.value)}
             placeholder="e.g., Senior Frontend Developer"
             className={errors.title ? "border-red-500" : ""}
+            spellCheck={true}
           />
           {formData.title && (
             <Button
@@ -872,6 +873,7 @@ export default function CreateJobPage() {
           rows={6}
           className={errors.description ? "border-red-500" : ""}
           disabled={aiLoading === "analysis"}
+          spellCheck={true}
         />
         {errors.description && <p className="text-xs text-red-500 mt-1">{errors.description}</p>}
       </div>
@@ -885,6 +887,7 @@ export default function CreateJobPage() {
           rows={2}
           className={`mt-1.5 ${errors.shortDescription ? "border-red-500" : ""}`}
           disabled={aiLoading === "analysis"}
+          spellCheck={true}
         />
         {errors.shortDescription && <p className="text-xs text-red-500 mt-1">{errors.shortDescription}</p>}
       </div>
@@ -921,6 +924,7 @@ export default function CreateJobPage() {
           rows={5}
           className={errors.responsibilities ? "border-red-500" : ""}
           disabled={aiLoading === "analysis"}
+          spellCheck={true}
         />
         {errors.responsibilities && <p className="text-xs text-red-500 mt-1">{errors.responsibilities}</p>}
       </div>
@@ -957,6 +961,7 @@ export default function CreateJobPage() {
           rows={5}
           className={errors.requirements ? "border-red-500" : ""}
           disabled={aiLoading === "analysis"}
+          spellCheck={true}
         />
         {errors.requirements && <p className="text-xs text-red-500 mt-1">{errors.requirements}</p>}
       </div>
@@ -992,6 +997,7 @@ export default function CreateJobPage() {
           placeholder="List benefits and perks..."
           rows={4}
           disabled={aiLoading === "analysis"}
+          spellCheck={true}
         />
       </div>
 
@@ -1023,6 +1029,7 @@ export default function CreateJobPage() {
                 e.currentTarget.value = "";
               }
             }}
+            spellCheck={true}
           />
           <Button
             type="button"
@@ -1050,6 +1057,7 @@ export default function CreateJobPage() {
             onChange={(e) => handleInputChange("experience", e.target.value)}
             placeholder="e.g., 3-5"
             className={`mt-1.5 ${errors.experience ? "border-red-500" : ""}`}
+            spellCheck={true}
           />
           {errors.experience && <p className="text-xs text-red-500 mt-1">{errors.experience}</p>}
         </div>
@@ -1061,6 +1069,7 @@ export default function CreateJobPage() {
             onChange={(e) => handleInputChange("education", e.target.value)}
             placeholder="e.g., Bachelor's"
             className="mt-1.5"
+            spellCheck={true}
           />
         </div>
 
@@ -1071,6 +1080,7 @@ export default function CreateJobPage() {
             onChange={(e) => handleInputChange("salary", e.target.value)}
             placeholder="e.g., 80000-120000"
             className={`mt-1.5 ${errors.salary ? "border-red-500" : ""}`}
+            spellCheck={true}
           />
           {errors.salary && <p className="text-xs text-red-500 mt-1">{errors.salary}</p>}
         </div>
@@ -1090,6 +1100,7 @@ export default function CreateJobPage() {
           onChange={(e) => handleInputChange("interviewQuestions", e.target.value)}
           placeholder="What interests you about this role?&#10;Describe your experience with..."
           rows={8}
+          spellCheck={true}
         />
       </div>
       <div className="bg-gray-50 rounded-lg p-4">
@@ -1149,6 +1160,7 @@ export default function CreateJobPage() {
           rows={4}
           className="mt-1.5"
           disabled={aiLoading === "ai-config"}
+          spellCheck={true}
         />
       </div>
 
@@ -1161,20 +1173,11 @@ export default function CreateJobPage() {
           rows={4}
           className="mt-1.5"
           disabled={aiLoading === "ai-config"}
+          spellCheck={true}
         />
       </div>
 
-      <div>
-        <Label className="text-sm font-medium">Second Interview Prompt</Label>
-        <Textarea
-          value={formData.aiSecondInterviewPrompt}
-          onChange={(e) => handleInputChange("aiSecondInterviewPrompt", e.target.value)}
-          placeholder="Will be auto-generated..."
-          rows={4}
-          className="mt-1.5"
-          disabled={aiLoading === "ai-config"}
-        />
-      </div>
+      {/* Second Interview Prompt intentionally hidden per product request */}
     </div>
   ), [formData, handleInputChange, aiLoading]);
 
@@ -1245,7 +1248,7 @@ export default function CreateJobPage() {
       </div>
       
       {/* AI Configuration Section */}
-      {(formData.aiCvAnalysisPrompt || formData.aiFirstInterviewPrompt || formData.aiSecondInterviewPrompt) && (
+      {(formData.aiCvAnalysisPrompt || formData.aiFirstInterviewPrompt) && (
         <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Settings className="w-5 h-5 text-purple-600" />
@@ -1266,12 +1269,7 @@ export default function CreateJobPage() {
               </div>
             )}
             
-            {formData.aiSecondInterviewPrompt && (
-              <div>
-                <h4 className="font-semibold mb-2 text-purple-900">Second Interview Prompt</h4>
-                <p className="text-gray-700 whitespace-pre-wrap bg-white rounded p-3 border border-purple-100">{formData.aiSecondInterviewPrompt}</p>
-              </div>
-            )}
+            {/* Second interview prompt intentionally hidden from UI/preview per product request */}
           </div>
         </div>
       )}

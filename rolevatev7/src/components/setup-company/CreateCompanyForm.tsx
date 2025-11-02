@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { formatUrlOnBlur, isValidUrl } from "@/lib/url-utils";
 
 export interface CompanyData {
   name: string;
@@ -83,6 +84,7 @@ export default function CreateCompanyForm({
             value={companyData.name}
             onChange={e => setCompanyData((d: CompanyData) => ({ ...d, name: e.target.value }))}
             placeholder="Enter your company name"
+            spellCheck={true}
           />
         </div>
 
@@ -159,6 +161,7 @@ export default function CreateCompanyForm({
             value={companyData.city}
             onChange={e => setCompanyData((d: CompanyData) => ({ ...d, city: e.target.value }))}
             placeholder="City"
+            spellCheck={true}
           />
         </div>
         
@@ -172,6 +175,7 @@ export default function CreateCompanyForm({
             value={companyData.street}
             onChange={e => setCompanyData((d: CompanyData) => ({ ...d, street: e.target.value }))}
             placeholder="Street address"
+            spellCheck={true}
           />
         </div>
 
@@ -202,6 +206,7 @@ export default function CreateCompanyForm({
               onChange={e => setCompanyData((d: CompanyData) => ({ ...d, phone: e.target.value }))}
               placeholder="Phone number"
               className="rounded-l-none"
+              spellCheck={true}
             />
           </div>
         </div>
@@ -217,20 +222,32 @@ export default function CreateCompanyForm({
             value={companyData.email}
             onChange={e => setCompanyData((d: CompanyData) => ({ ...d, email: e.target.value }))}
             placeholder="contact@yourcompany.com"
+            spellCheck={true}
           />
         </div>
 
         <div>
           <Label htmlFor="website" className="text-sm font-medium text-gray-700 mb-1.5">
-            Website
+            Website (Optional)
           </Label>
           <Input
             id="website"
-            type="url"
+            type="text"
             value={companyData.website}
             onChange={e => setCompanyData((d: CompanyData) => ({ ...d, website: e.target.value }))}
-            placeholder="https://www.yourcompany.com"
+            onBlur={e => {
+              const formatted = formatUrlOnBlur(e.target.value);
+              if (formatted !== e.target.value) {
+                setCompanyData((d: CompanyData) => ({ ...d, website: formatted }));
+              }
+            }}
+            placeholder="www.yourcompany.com or yourcompany.com"
+            className={!isValidUrl(companyData.website) && companyData.website.trim() !== '' ? 'border-red-500' : ''}
+            spellCheck={true}
           />
+          {!isValidUrl(companyData.website) && companyData.website.trim() !== '' && (
+            <p className="text-xs text-red-500 mt-1">Please enter a valid website URL</p>
+          )}
         </div>
         
         {/* Description w/ AI */}
@@ -262,6 +279,7 @@ export default function CreateCompanyForm({
             placeholder="Brief description of your company and what you do..."
             maxLength={400}
             className="resize-none"
+            spellCheck={true}
           />
           <div className="text-xs text-gray-400 font-medium text-right">
             {companyData.description.length}/400
