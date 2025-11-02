@@ -76,16 +76,24 @@ build/
 .DS_Store
 *.pem
 
-# Credentials
-**/*.json
-!**/sample*.json
+# Credentials and sensitive JSON files
+*.json.key
+widd-*.json
+# Exclude specific credential files but allow important config files
+**/.env*.json
+**/credentials*.json
+**/secrets*.json
+**/private*.json
+# Exclude Google Cloud/Firebase service account keys (specific pattern)
+*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9].json
+# Keep important JSON files
 !**/package.json
 !**/package-lock.json
-!**/tsconfig.json
-*.json.key
-*-[a-zA-Z0-9]*[a-zA-Z0-9].json
-# Specific files
-widd-*.json
+!**/tsconfig*.json
+!**/sample*.json
+!**/schema*.json
+!**/migration*.json
+!**/migrations/*.json
 
 # Ignore old2 directory
 old2/
