@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { TileLayout } from './TileLayout';
 import { AgentControlBar } from './AgentControlBar';
-import { AudioVisualizer3D } from '@/components/room/AudioVisualizer3D';
 import { ChatTranscript } from './ChatTranscript';
 
 

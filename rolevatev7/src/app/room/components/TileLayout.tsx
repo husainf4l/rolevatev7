@@ -13,7 +13,7 @@ import {
 } from '@livekit/components-react';
 import { cn } from '@/lib/utils';
 import { ChatTranscript } from './ChatTranscript';
-import { AudioVisualizer3D } from '@/components/room/AudioVisualizer3D';
+import { SpaceStarVisualizer3D } from './SpaceStarVisualizer3D';
 
 const MotionContainer = motion.div;
 
@@ -97,10 +97,10 @@ export function TileLayout({ showVisualizer = true }: TileLayoutProps) {
 
           {/* 2. Animation - Center */}
           <div className="flex-shrink-0 w-full flex justify-center">
-            {/* Smaller 3D Audio Visualizer for Mobile */}
+            {/* Smaller 2025 Ultra-4K Teal Star for Mobile */}
             {showVisualizer && !isAvatar && (
               <div className="w-full max-w-sm h-48">
-                <AudioVisualizer3D 
+                <SpaceStarVisualizer3D 
                   isVisible={showVisualizer}
                   className="w-full h-full"
                 />
@@ -137,7 +137,7 @@ export function TileLayout({ showVisualizer = true }: TileLayoutProps) {
             {!isAvatar && (
               // Audio Agent with 3D Visualizer
               <React.Fragment>
-                {/* 3D Audio Visualizer */}
+                {/* 🌟 2025 Ultra-4K Teal Star Visualizer */}
                 {showVisualizer && (
                   <MotionContainer
                     key="visualizer"
@@ -147,14 +147,14 @@ export function TileLayout({ showVisualizer = true }: TileLayoutProps) {
                     transition={ANIMATION_TRANSITION}
                     className="w-full max-w-4xl h-[500px] flex-shrink-0"
                   >
-                    <AudioVisualizer3D 
+                    <SpaceStarVisualizer3D 
                       isVisible={showVisualizer}
                       className="w-full h-full"
                     />
                   </MotionContainer>
                 )}
 
-                {/* Audio Visualization Status - Under the 3D */}
+                {/* AI Activity Status - Under the Teal Planet */}
                 <div className="flex-shrink-0">
                   <p className="text-white/80 text-sm font-medium text-center">
                     {agentState === 'speaking' ? 'AI Speaking' : 

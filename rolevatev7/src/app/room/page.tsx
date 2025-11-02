@@ -7,7 +7,6 @@ import { SessionView } from './components/SessionView';
 import { PreRoomSetup } from './components/PreRoomSetup';
 import { apolloClient } from '@/lib/apollo';
 import { gql } from '@apollo/client';
-import './mobile-fixes.css';
 
 
 

@@ -56,20 +56,23 @@ const starVertexShader = `
     vPosition = position;
     vNormal = normal;
     
-    // Audio-reactive morphing for immersive experience
+    // Audio-reactive morphing - Less sensitive with idle breathing
     float time = u_time * 0.5;
     
-    // Bass-driven core pulsing
-    float bassPulse = sin(time * 2.0) * u_energy * 0.15;
+    // Idle breathing morphing - very subtle
+    float idleMorphing = sin(time * 0.6) * 0.008 + sin(time * 1.2) * 0.004; // Gentle breathing pattern
     
-    // Mid-frequency breathing pattern
-    float midBreath = sin(time * 0.8) * u_intensity * 0.1;
+    // Bass-driven core pulsing - Reduced
+    float bassPulse = sin(time * 2.0) * u_energy * 0.06;
     
-    // High-frequency surface detail
-    float surfaceDetail = noise(position * 3.0 + time * 0.5) * u_energy * 0.05;
+    // Mid-frequency breathing pattern - Reduced
+    float midBreath = sin(time * 0.8) * u_intensity * 0.04;
     
-    // Combine all audio-reactive effects
-    vec3 morphedPosition = position + normal * (bassPulse + midBreath + surfaceDetail);
+    // High-frequency surface detail - Minimal
+    float surfaceDetail = noise(position * 3.0 + time * 0.5) * u_energy * 0.02;
+    
+    // Combine all audio-reactive effects with idle breathing
+    vec3 morphedPosition = position + normal * max(bassPulse + midBreath + surfaceDetail, idleMorphing);
     
     gl_Position = projectionMatrix * modelViewMatrix * vec4(morphedPosition, 1.0);
   }
@@ -91,15 +94,16 @@ const starFragmentShader = `
     vec2 st = vUv;
     vec3 normal = normalize(vNormal);
     
-    // Professional Teal Colors
-    vec3 tealDark = vec3(0.05, 0.58, 0.53);   // Teal 600
-    vec3 tealBright = vec3(0.2, 0.8, 0.75);   // Bright teal
-    vec3 tealCore = vec3(0.6, 0.95, 0.9);     // Core glow
+    // Professional Teal Colors - Website Brand Color (#0891b2)
+    vec3 tealDark = vec3(0.032, 0.569, 0.698);   // #0891b2 - Main website color
+    vec3 tealBright = vec3(0.08, 0.64, 0.76);    // Slightly brighter teal
+    vec3 tealCore = vec3(0.15, 0.72, 0.82);      // Subtle core glow
     
-    // Audio-reactive breathing and energy
-    float bassPulse = sin(u_time * 2.0) * u_energy * 0.2 + 0.8;  // Bass drives core pulsing
-    float midBreath = sin(u_time * 0.8) * u_intensity * 0.15 + 0.85; // Mid frequencies drive breathing
-    float energy = u_energy * bassPulse * midBreath;
+    // Audio-reactive breathing and energy - Less sensitive with idle breathing
+    float idleBreathing = sin(u_time * 0.6) * 0.03 + 0.97; // Gentle idle breathing
+    float bassPulse = sin(u_time * 2.0) * u_energy * 0.08 + 0.92;  // Reduced sensitivity
+    float midBreath = sin(u_time * 0.8) * u_intensity * 0.06 + 0.94; // Reduced sensitivity  
+    float energy = max(u_energy * bassPulse * midBreath * 0.6, idleBreathing * 0.5); // Ensure minimum breathing
     
     // Distance from center
     vec2 center = st - vec2(0.5);
@@ -108,20 +112,23 @@ const starFragmentShader = `
     // Audio-reactive gradient layers
     vec3 color = tealDark;
     
-    // Bass-reactive core glow
-    float coreGlow = 1.0 - smoothstep(0.0, 0.25 + u_energy * 0.1, dist);
-    color = mix(color, tealBright, coreGlow * (0.8 + u_energy * 0.4));
+    // Bass-reactive core glow - Less intense with idle glow
+    float coreGlow = 1.0 - smoothstep(0.0, 0.25 + u_energy * 0.04, dist);
+    float idleGlow = sin(u_time * 0.7) * 0.02 + 0.98; // Gentle idle glow
+    color = mix(color, tealBright, coreGlow * max(0.4 + u_energy * 0.15, 0.2 * idleGlow));
     
-    // Intensity-driven center brightness
-    float centerGlow = 1.0 - smoothstep(0.0, 0.08 + u_intensity * 0.05, dist);
-    color = mix(color, tealCore, centerGlow * energy * (1.0 + u_intensity));
+    // Intensity-driven center brightness - Reduced with minimum brightness
+    float centerGlow = 1.0 - smoothstep(0.0, 0.08 + u_intensity * 0.02, dist);
+    float minBrightness = sin(u_time * 0.5) * 0.015 + 0.985; // Very subtle idle center breathing
+    color = mix(color, tealCore, centerGlow * max(energy * (0.6 + u_intensity * 0.3), 0.15 * minBrightness));
     
-    // Audio-reactive rim lighting
-    float rimLight = pow(1.0 - dot(normal, vec3(0.0, 0.0, 1.0)), 1.5 + u_energy);
-    color += tealBright * rimLight * (0.2 + u_energy * 0.5) * midBreath;
+    // Audio-reactive rim lighting - Subtle with idle rim
+    float rimLight = pow(1.0 - dot(normal, vec3(0.0, 0.0, 1.0)), 1.2 + u_energy * 0.3);
+    float idleRim = sin(u_time * 0.4) * 0.01 + 0.99; // Very gentle idle rim breathing
+    color += tealBright * rimLight * max(0.08 + u_energy * 0.2, 0.03 * idleRim) * max(midBreath, idleBreathing);
     
-    // Simple glow intensity
-    color *= (1.0 + energy * 0.5);
+    // Simple glow intensity - Reduced
+    color *= (1.0 + energy * 0.2);
     
     // Clean alpha
     float alpha = 1.0 - smoothstep(0.4, 0.5, dist);
@@ -273,14 +280,14 @@ export function SpaceStarVisualizer3D({
       const midAvg = midSum / (midEnd - midStart);
       const highAvg = highSum / (highEnd - highStart);
       
-      // More responsive audio mapping
-      const bassLevel = Math.pow(bassAvg / 255, 0.7) * 3.0;  // Bass drives core pulsing
-      const midLevel = Math.pow(midAvg / 255, 0.8) * 2.5;    // Mids drive breathing
-      const highLevel = Math.pow(highAvg / 255, 0.9) * 2.0;  // Highs drive surface activity
+      // Less sensitive audio mapping
+      const bassLevel = Math.pow(bassAvg / 255, 0.9) * 1.5;  // Reduced bass sensitivity
+      const midLevel = Math.pow(midAvg / 255, 1.0) * 1.2;    // Reduced mid sensitivity  
+      const highLevel = Math.pow(highAvg / 255, 1.1) * 1.0;  // Reduced high sensitivity
       
-      // Dynamic energy calculation with voice detection
-      const voiceActivity = agentStateRef.current === 'speaking' ? 1.5 : 0.3;
-      const overallEnergy = ((bassLevel * 0.5) + (midLevel * 0.4) + (highLevel * 0.3)) * voiceActivity;
+      // Dynamic energy calculation with voice detection - Less reactive
+      const voiceActivity = agentStateRef.current === 'speaking' ? 1.2 : 0.4;
+      const overallEnergy = ((bassLevel * 0.5) + (midLevel * 0.4) + (highLevel * 0.3)) * voiceActivity * 0.6;
       
       // Faster response times for better audio sync
       audioLevelRef.current = {
@@ -360,8 +367,8 @@ export function SpaceStarVisualizer3D({
       
       const starUniforms = {
         u_time: { value: 0.0 },
-        u_intensity: { value: 0.8 },
-        u_energy: { value: 0.5 },
+        u_intensity: { value: 0.4 }, // Reduced base intensity
+        u_energy: { value: 0.3 },    // Reduced base energy
         u_mouse: { value: new THREE.Vector2(0.5, 0.5) }
       };
 
@@ -390,7 +397,7 @@ export function SpaceStarVisualizer3D({
       const innerGlowMaterial = new THREE.ShaderMaterial({
         uniforms: {
           u_time: { value: 0.0 },
-          u_intensity: { value: 0.4 }
+          u_intensity: { value: 0.2 } // Reduced intensity for inner glow
         },
         vertexShader: `
           #ifdef GL_ES
@@ -417,9 +424,10 @@ export function SpaceStarVisualizer3D({
             float fresnel = pow(1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
             float pulse = sin(u_time * 1.8) * 0.25 + 0.75;
             float subPulse = sin(u_time * 3.5) * 0.15 + 0.85;
-            vec3 tariqGlow = vec3(0.15, 0.55, 0.95);
-            float intensity = fresnel * pulse * subPulse * u_intensity;
-            gl_FragColor = vec4(tariqGlow, intensity * 0.45);
+            float idlePulse = sin(u_time * 0.6) * 0.08 + 0.92; // Gentle idle breathing
+            vec3 tealGlow = vec3(0.032, 0.569, 0.698); // Website teal color #0891b2
+            float intensity = fresnel * max(pulse * subPulse, idlePulse) * u_intensity;
+            gl_FragColor = vec4(tealGlow, max(intensity * 0.25, 0.08)); // Reduced opacity with idle minimum
           }
         `,
         transparent: true,
@@ -435,7 +443,7 @@ export function SpaceStarVisualizer3D({
       const outerGlowMaterial = new THREE.ShaderMaterial({
         uniforms: {
           u_time: { value: 0.0 },
-          u_intensity: { value: 0.2 }
+          u_intensity: { value: 0.1 } // Reduced intensity for outer glow
         },
         vertexShader: `
           #ifdef GL_ES
@@ -459,9 +467,10 @@ export function SpaceStarVisualizer3D({
             float fresnel = pow(1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.5);
             float breath = sin(u_time * 1.0) * 0.35 + 0.65;
             float subBreath = sin(u_time * 2.2) * 0.2 + 0.8;
-            vec3 tariqAura = vec3(0.08, 0.35, 0.85);
-            float intensity = fresnel * breath * subBreath * u_intensity;
-            gl_FragColor = vec4(tariqAura, intensity * 0.18);
+            float idleBreath = sin(u_time * 0.4) * 0.05 + 0.95; // Very gentle idle breathing
+            vec3 tealAura = vec3(0.025, 0.45, 0.58); // Darker teal for outer glow
+            float intensity = fresnel * max(breath * subBreath, idleBreath) * u_intensity;
+            gl_FragColor = vec4(tealAura, max(intensity * 0.1, 0.04)); // Reduced opacity with idle minimum
           }
         `,
         transparent: true,
@@ -571,21 +580,34 @@ export function SpaceStarVisualizer3D({
       const overallLevel = audioLevels.overall || 0;
       const peakLevel = audioLevels.peak || 0;
       
-      // Enhanced audio responsiveness
-      const energyBoost = currentState.energy;
-      const bassEnergy = Math.min(bassLevel * energyBoost * 1.5, 2.0);     // Bass drives core pulsing
-      const midIntensity = Math.min(midLevel * currentState.intensity * 2.0, 1.5); // Mid drives breathing
-      const overallEnergy = Math.min(overallLevel * energyBoost, 1.8);     // Overall drives glow
-      const peakBoost = Math.min(peakLevel * energyBoost * 2.5, 3.0);     // Peak drives brightness
+      // Reduced audio responsiveness with idle breathing
+      const energyBoost = currentState.energy * 0.5; // Reduce overall boost
+      const bassEnergy = Math.min(bassLevel * energyBoost * 0.8, 1.0);     // Reduced bass response
+      const midIntensity = Math.min(midLevel * currentState.intensity * 0.8, 0.8); // Reduced mid response
+      const overallEnergy = Math.min(overallLevel * energyBoost * 0.6, 1.0);     // Reduced overall response
+      const peakBoost = Math.min(peakLevel * energyBoost * 1.0, 1.2);     // Reduced peak response
       
-      // Dynamic responsiveness based on voice activity
-      const voiceBoost = currentAgentState === 'speaking' ? 1.8 : 0.6;
-      const microFluctuation = (Math.random() - 0.5) * 0.02;
-      const naturalVariation = Math.sin(time * 0.7) * 0.05 + Math.cos(time * 1.1) * 0.03;
+      // Idle breathing patterns for silent states
+      const idleBreathing = Math.sin(time * 0.6) * 0.08 + 0.92; // Gentle breathing
+      const idleVariation = Math.sin(time * 0.4) * 0.03 + Math.cos(time * 0.9) * 0.02; // Natural variation
       
-      // Audio-reactive final calculations
-      const finalIntensity = Math.min(currentState.base + midIntensity + peakBoost * 0.3 + naturalVariation, 2.5) * voiceBoost;
-      const finalEnergy = Math.min(bassEnergy + overallEnergy * 0.8 + microFluctuation, 2.0) * voiceBoost;
+      // Dynamic responsiveness based on voice activity - More subtle
+      const voiceBoost = currentAgentState === 'speaking' ? 1.3 : 0.7;
+      const microFluctuation = (Math.random() - 0.5) * 0.01; // Smaller fluctuations
+      const naturalVariation = Math.sin(time * 0.7) * 0.02 + Math.cos(time * 1.1) * 0.015; // Smaller variations
+      
+      // Audio-reactive final calculations with idle minimums - Less intense
+      const minIdleIntensity = 0.15 + idleBreathing * 0.1; // Minimum breathing intensity
+      const minIdleEnergy = 0.1 + idleVariation * 0.05; // Minimum breathing energy
+      
+      const finalIntensity = Math.max(
+        Math.min(currentState.base + midIntensity + peakBoost * 0.2 + naturalVariation, 1.5) * voiceBoost,
+        minIdleIntensity
+      );
+      const finalEnergy = Math.max(
+        Math.min(bassEnergy + overallEnergy * 0.5 + microFluctuation, 1.2) * voiceBoost,
+        minIdleEnergy
+      );
       
       // Update main star uniforms with enhanced audio response
       starUniforms.u_intensity.value = finalIntensity;
@@ -595,43 +617,60 @@ export function SpaceStarVisualizer3D({
       layers.forEach((layer, index) => {
         layer.material.uniforms.u_time.value = time;
         
-        // Different layers respond to different frequencies
+        // Different layers respond to different frequencies - Less intense with idle breathing
+        const layerIdleBreathing = Math.sin(time * (0.5 + index * 0.1)) * 0.05 + 0.95; // Slightly different breathing per layer
         let layerIntensity;
         if (index === 0) {
-          // Inner glow: Bass + Mid frequencies
-          layerIntensity = Math.min(currentState.base + bassEnergy * 0.9 + midIntensity * 0.7, 2.0) * voiceBoost;
+          // Inner glow: Bass + Mid frequencies - Reduced with idle minimum
+          const innerIdleMin = 0.12 + layerIdleBreathing * 0.03;
+          layerIntensity = Math.max(
+            Math.min(currentState.base + bassEnergy * 0.5 + midIntensity * 0.4, 1.2) * voiceBoost,
+            innerIdleMin
+          );
         } else {
-          // Outer glow: Mid + High frequencies  
-          layerIntensity = Math.min(currentState.base * 0.8 + midIntensity * 1.2 + overallEnergy * 0.6, 1.8) * voiceBoost;
+          // Outer glow: Mid + High frequencies - Reduced with idle minimum
+          const outerIdleMin = 0.08 + layerIdleBreathing * 0.02;
+          layerIntensity = Math.max(
+            Math.min(currentState.base * 0.6 + midIntensity * 0.7 + overallEnergy * 0.3, 1.0) * voiceBoost,
+            outerIdleMin
+          );
         }
         
         layer.material.uniforms.u_intensity.value = layerIntensity;
         
-        // Audio-reactive rotation - stronger with more audio activity
-        const rotationSpeed = 0.001 + (audioLevels.overall * 0.003);
+        // Audio-reactive rotation - gentler with audio activity
+        const rotationSpeed = 0.0005 + (audioLevels.overall * 0.0015); // Reduced rotation speed
         layer.mesh.rotation.y += rotationSpeed * (index + 1);
-        layer.mesh.rotation.x += (rotationSpeed * 0.5) * (index + 1);
+        layer.mesh.rotation.x += (rotationSpeed * 0.3) * (index + 1); // Reduced X rotation
       });
 
-      // Audio-reactive star rotation - gets faster with more energy
-      const starRotationSpeed = 0.002 + (audioLevels.overall * 0.008) + (audioLevels.peak * 0.01);
+      // Audio-reactive star rotation - gentler with energy and idle rotation
+      const idleRotationSpeed = 0.0003; // Very slow idle rotation
+      const starRotationSpeed = Math.max(
+        0.001 + (audioLevels.overall * 0.003) + (audioLevels.peak * 0.004),
+        idleRotationSpeed
+      ); // Reduced speeds with idle minimum
       starMesh.rotation.y += starRotationSpeed;
-      starMesh.rotation.x += starRotationSpeed * 0.5;
+      starMesh.rotation.x += starRotationSpeed * 0.3; // Reduced X rotation
 
-      // Audio-reactive camera movement for immersive experience
-      const breathingMotion = Math.sin(time * 0.8) * (0.2 + audioLevels.overall * 0.4);
-      const bassZoom = audioLevels.bass * 1.5; // Bass pulls camera closer
+      // Audio-reactive camera movement - More subtle with idle breathing
+      const idleCameraBreathing = Math.sin(time * 0.5) * 0.05; // Gentle idle camera breathing
+      const breathingMotion = Math.max(
+        Math.sin(time * 0.8) * (0.1 + audioLevels.overall * 0.2),
+        idleCameraBreathing
+      ); // Reduced breathing with idle minimum
+      const bassZoom = audioLevels.bass * 0.8; // Reduced bass zoom effect
       camera.position.z = 18 + breathingMotion - bassZoom;
       
-      // Audio-reactive camera sway
-      const audioSway = audioLevels.mid * 0.3;
-      camera.position.x = Math.sin(time * 0.3) * (0.08 + audioSway);
-      camera.position.y = Math.cos(time * 0.2) * (0.03 + audioSway * 0.5);
+      // Audio-reactive camera sway - More subtle
+      const audioSway = audioLevels.mid * 0.15; // Reduced sway
+      camera.position.x = Math.sin(time * 0.3) * (0.04 + audioSway); // Reduced movement
+      camera.position.y = Math.cos(time * 0.2) * (0.015 + audioSway * 0.3); // Reduced movement
       
-      // Add subtle shake on audio peaks
-      if (audioLevels.peak > 0.7) {
-        camera.position.x += (Math.random() - 0.5) * audioLevels.peak * 0.05;
-        camera.position.y += (Math.random() - 0.5) * audioLevels.peak * 0.03;
+      // Add subtle shake on audio peaks - Less intense
+      if (audioLevels.peak > 0.8) { // Higher threshold
+        camera.position.x += (Math.random() - 0.5) * audioLevels.peak * 0.02; // Reduced shake
+        camera.position.y += (Math.random() - 0.5) * audioLevels.peak * 0.015; // Reduced shake
       }
       
       camera.lookAt(0, 0, 0);

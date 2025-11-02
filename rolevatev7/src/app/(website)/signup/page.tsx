@@ -230,7 +230,7 @@ export default function SignupPage() {
                   </div>
                 )}
                 <div className="mt-1.5 text-xs text-gray-500">
-                  Password must contain at least 8 characters with uppercase, lowercase, and numbers.
+                  Password must contain at least 8 characters with uppercase, lowercase, numbers, and special characters (!@#$%^&*).
                 </div>
               </div>
 
