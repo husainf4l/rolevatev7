@@ -15,6 +15,7 @@ import { applicationService } from "@/services/application";
 import { useAuth } from "@/hooks/useAuth";
 import { apolloClient } from "@/lib/apollo";
 import { gql } from "@apollo/client";
+import { PhoneInput, Country } from "@/components/ui/phone-input";
 
 interface CandidateCredentials {
   email: string;
@@ -183,6 +184,8 @@ export default function JobApplicationPage() {
 
     if (!formData.phone.trim()) {
       errors.phone = "Phone number is required";
+    } else if (!formData.phone.startsWith("+")) {
+      errors.phone = "Please select a country code";
     }
 
     if (!formData.resume) {
@@ -759,48 +762,51 @@ export default function JobApplicationPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="email">
-                      Email Address <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="john.doe@example.com"
-                      className={formErrors.email ? "border-red-500" : ""}
-                      spellCheck={true}
-                    />
-                    {formErrors.email && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {formErrors.email}
-                      </p>
-                    )}
-                  </div>
+                <div>
+                  <Label htmlFor="email">
+                    Email Address <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="john.doe@example.com"
+                    className={formErrors.email ? "border-red-500" : ""}
+                    spellCheck={true}
+                  />
+                  {formErrors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formErrors.email}
+                    </p>
+                  )}
+                </div>
 
-                  <div>
-                    <Label htmlFor="phone">
-                      Phone Number <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+1 (555) 123-4567"
-                      className={formErrors.phone ? "border-red-500" : ""}
-                      spellCheck={true}
-                    />
-                    {formErrors.phone && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {formErrors.phone}
-                      </p>
-                    )}
-                  </div>
+                <div>
+                  <PhoneInput
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={(value) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        phone: value,
+                      }));
+                      // Clear error for phone field
+                      if (formErrors.phone) {
+                        setFormErrors((prev) => {
+                          const newErrors = { ...prev };
+                          delete newErrors.phone;
+                          return newErrors;
+                        });
+                      }
+                    }}
+                    error={formErrors.phone}
+                    label="Phone Number"
+                    required={true}
+                    placeholder="796026659"
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
