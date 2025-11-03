@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm install @livekit/components-react livekit-client)",
+      "Bash(rm src/app/dashboard/candidates/page-old.tsx)",
+      "Read(//Users/husain/Desktop/rolevate/rolevate-backendgql/src/application/**)",
+      "Bash(for file in src/app/userdashboard/applications/[jobId]/page.tsx src/app/userdashboard/page.tsx src/components/dashboard/RecentApplicationsWidget.tsx src/components/dashboard/RecentCVs.tsx)",
+      "Bash(do)",
+      "Bash(done)",
+      "Bash(perl -i -pe 's/skills_matched\\?\\s*\\.\\s*matched/skills_matched/g; s/skills_matched\\?\\s*\\.\\s*missing/skills_missing/g' src/app/userdashboard/applications/[jobId]/page.tsx)",
+      "Bash(for file in /Users/husain/Desktop/rolevate/rolevatev6/src/services/{cv.ts,profile.ts,savedJobs.ts,application.ts,application.service.ts,job.ts,jobs.service.ts,job.service.ts,configuration.ts})",
+      "Bash(if [ -f \"$file\" ])",
+      "Bash(then)",
+      "Bash(head -30 \"$file\")",
+      "Bash(fi)",
+      "Read(//Users/husain/Desktop/rolevate/rolevate-backendgql/**)",
+      "Bash(grep -r \"GraphQL\\|gql\\`\" /Users/husain/Desktop/rolevate/rolevatev6/src --include=\"*.tsx\" --include=\"*.ts\")",
+      "Bash(curl -X POST http://localhost:4000/graphql -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao\" -d '{\"\"\"\"query\"\"\"\":\"\"\"\"query { me { id } }\"\"\"\"}')",
+      "Bash(curl -X POST http://localhost:4005/api/graphql -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao\" -d '{\"\"\"\"query\"\"\"\":\"\"\"\"query { me { id email } }\"\"\"\"}')",
+      "Bash(curl -X POST http://localhost:4005/api/graphql -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao\" -d '{\"\"\"\"query\"\"\"\":\"\"\"\"query GetCVs($userId: ID!) { candidateProfileByUser(userId: $userId) { id cvs { id fileName isPrimary } } }\"\"\"\",\"\"\"\"variables\"\"\"\":{\"\"\"\"userId\"\"\"\":\"\"\"\"46c4be65-9863-4f92-87bb-700f0c0718b9\"\"\"\"}}')",
+      "Bash(curl -s -X POST http://localhost:4005/api/graphql -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao\" -d '{\"\"query\"\":\"\"query GetCVs($userId: ID!) { candidateProfileByUser(userId: $userId) { id cvs { id fileName isPrimary } } }\"\",\"\"variables\"\":{\"\"userId\"\":\"\"46c4be65-9863-4f92-87bb-700f0c0718b9\"\"}}')",
+      "Bash(curl -s -X POST http://localhost:4005/api/graphql -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao\" -d @/tmp/test-activate.json)",
+      "Bash(curl -s -X POST 'http://localhost:4005/api/graphql' -H 'Content-Type: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsLWh1c3NlaW5Acm94YXRlLmNvbSIsInN1YiI6IjQ2YzRiZTY1LTk4NjMtNGY5Mi04N2JiLTcwMGYwYzA3MThiOSIsInVzZXJUeXBlIjoiQ0FORElEQVRFIiwiY29tcGFueUlkIjpudWxsLCJpYXQiOjE3NjA4NjQ4MjAsImV4cCI6MTc2MDg2ODQyMH0.I3qtJPim_WEOwijD22FFThl8c8l7qmWMkBSbE0-J9Ao' -d @/tmp/test-activate.json)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
