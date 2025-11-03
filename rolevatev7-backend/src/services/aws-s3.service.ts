@@ -5,10 +5,14 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AwsS3Service {
-  private s3Client: S3Client;
-  private bucketName: string;
+  private s3Client: S3Client | null = null;
+  private bucketName: string | null = null;
 
   constructor() {
+    this.initializeS3Client();
+  }
+
+  private initializeS3Client(): void {
     if (!process.env.AWS_REGION || !process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !process.env.AWS_BUCKET_NAME) {
       throw new Error('AWS configuration is missing. Please check your environment variables.');
     }
@@ -21,6 +25,21 @@ export class AwsS3Service {
       },
     });
     this.bucketName = process.env.AWS_BUCKET_NAME;
+    console.log('✅ S3Client initialized with region:', process.env.AWS_REGION);
+  }
+
+  private getS3Client(): S3Client {
+    if (!this.s3Client) {
+      this.initializeS3Client();
+    }
+    return this.s3Client!;
+  }
+
+  private getBucketName(): string {
+    if (!this.bucketName) {
+      this.initializeS3Client();
+    }
+    return this.bucketName!;
   }
 
   async uploadCV(file: Buffer, originalName: string, candidateId?: string): Promise<string> {
@@ -34,21 +53,21 @@ export class AwsS3Service {
       console.log('☁️ Uploading CV to S3:', fileName);
 
       const command = new PutObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.getBucketName(),
         Key: fileName,
         Body: file,
         ContentType: this.getContentType(fileExtension),
         Metadata: {
-          originalName,
-          candidateId: candidateId || 'anonymous',
-          uploadedAt: new Date().toISOString(),
+          originalname: this.sanitizeFilename(originalName), // AWS metadata keys must be lowercase
+          candidateid: candidateId || 'anonymous',
+          uploadedat: new Date().toISOString(),
         },
       });
 
-      await this.s3Client.send(command);
+      await this.getS3Client().send(command);
 
       // Return the S3 URL
-      const s3Url = `https://${this.bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+      const s3Url = `https://${this.getBucketName()}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
       console.log('✅ CV uploaded to S3:', s3Url);
 
       return s3Url;
@@ -71,7 +90,7 @@ export class AwsS3Service {
       console.log('☁️ Uploading file to S3:', key);
 
       const command = new PutObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.getBucketName(),
         Key: key,
         Body: file,
         ContentType: contentType,
@@ -81,10 +100,10 @@ export class AwsS3Service {
         },
       });
 
-      await this.s3Client.send(command);
+      await this.getS3Client().send(command);
 
       // Return the S3 URL
-      const s3Url = `https://${this.bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+      const s3Url = `https://${this.getBucketName()}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
       console.log('✅ File uploaded to S3:', s3Url);
 
       return s3Url;
@@ -102,11 +121,11 @@ export class AwsS3Service {
       console.log('📥 Downloading file from S3:', key);
 
       const command = new GetObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.getBucketName(),
         Key: key,
       });
 
-      const response = await this.s3Client.send(command);
+      const response = await this.getS3Client().send(command);
 
       if (!response.Body) {
         throw new Error('Empty response body');
@@ -136,11 +155,11 @@ export class AwsS3Service {
       const key = this.extractKeyFromUrl(s3Url);
 
       const command = new GetObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.getBucketName(),
         Key: key,
       });
 
-      const presignedUrl = await getSignedUrl(this.s3Client, command, {
+      const presignedUrl = await getSignedUrl(this.getS3Client(), command, {
         expiresIn, // Default 1 hour
       });
 
@@ -159,11 +178,11 @@ export class AwsS3Service {
       console.log('🗑️ Deleting file from S3:', key);
 
       const command = new DeleteObjectCommand({
-        Bucket: this.bucketName,
+        Bucket: this.getBucketName(),
         Key: key,
       });
 
-      await this.s3Client.send(command);
+      await this.getS3Client().send(command);
       console.log('✅ File deleted from S3:', key);
     } catch (error) {
       console.error('❌ Failed to delete file from S3:', error);
