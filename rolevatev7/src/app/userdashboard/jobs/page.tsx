@@ -77,6 +77,7 @@ export default function UserDashboardJobsPage() {
         salary: jobPost.salary || 'Competitive',
         postedAt: jobPost.createdAt ? new Date(jobPost.createdAt).toLocaleDateString() : 'Recently',
         description: jobPost.shortDescription || jobPost.description || '',
+        slug: jobPost.slug || '',
       };
 
       // Only add logo field if it exists (handles exactOptionalPropertyTypes)
@@ -185,8 +186,9 @@ export default function UserDashboardJobsPage() {
     }
   });
 
-  const handleApply = (jobId: string) => {
-    router.push(`/jobs/${jobId}`);
+  const handleApply = (jobId: string, jobSlug?: string) => {
+    const identifier = jobSlug || jobId;
+    router.push(`/jobs/${identifier}`);
   };
 
   const handleSaveJob = async (jobId: string) => {
@@ -316,7 +318,7 @@ export default function UserDashboardJobsPage() {
                 <JobListCard
                   key={job.id}
                   job={job}
-                  onApply={handleApply}
+                  onApply={(jobId) => handleApply(jobId, job.slug)}
                   onSave={handleSaveJob}
                   isSaved={isJobSaved(job.id)}
                 />

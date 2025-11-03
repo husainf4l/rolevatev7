@@ -12,11 +12,12 @@ export interface JobData {
   description?: string;
   postedAt?: string;
   deadline?: string;
+  slug?: string;
 }
 
 interface JobListCardProps {
   job: JobData;
-  onApply?: (jobId: string) => void;
+  onApply?: (jobId: string, jobSlug?: string) => void;
   onSave?: (jobId: string) => void;
   isSaved?: boolean;
   showSaveButton?: boolean;
@@ -69,7 +70,7 @@ const JobListCard: React.FC<JobListCardProps> = ({
             {showApplyButton && (
               <Button
                 size="sm"
-                onClick={() => onApply?.(job.id)}
+                onClick={() => onApply?.(job.id, job.slug)}
               >
                 Apply
               </Button>

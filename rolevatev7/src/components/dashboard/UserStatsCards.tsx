@@ -85,7 +85,7 @@ const statCards = [
 export default function UserStatsCards({ stats, loading = false }: UserStatsCardsProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div
             key={i}
@@ -103,7 +103,7 @@ export default function UserStatsCards({ stats, loading = false }: UserStatsCard
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+    <div className="grid grid-cols-2 gap-4">
       {statCards.map((card, index) => (
         <motion.div
           key={card.key}

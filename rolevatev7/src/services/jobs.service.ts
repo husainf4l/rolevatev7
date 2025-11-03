@@ -203,7 +203,7 @@ class JobsService {
         gqlFilter.department = filters.department;
       }
 
-      const { data } = await apolloClient.query<{ 
+      const { data } = await apolloClient.query<{
         jobs: any[]
       }>({
         query: this.GET_COMPANY_JOBS_QUERY,
@@ -289,7 +289,7 @@ class JobsService {
         gqlFilter.department = filters.department;
       }
 
-      const { data } = await apolloClient.query<{ 
+      const { data } = await apolloClient.query<{
         jobs: any[]
       }>({
         query: this.GET_COMPANY_JOBS_QUERY,
@@ -395,7 +395,7 @@ class JobsService {
    */
   async getFeaturedJobs(limit: number = 6): Promise<Job[]> {
     try {
-      const { data } = await apolloClient.query<{ 
+      const { data } = await apolloClient.query<{
         jobs: any[]
       }>({
         query: this.GET_FEATURED_JOBS_QUERY,
@@ -451,8 +451,8 @@ class JobsService {
    * Search jobs by keyword
    */
   async searchJobs(
-    keyword: string, 
-    page: number = 1, 
+    keyword: string,
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { search: keyword });
@@ -462,8 +462,8 @@ class JobsService {
    * Filter jobs by location
    */
   async getJobsByLocation(
-    location: string, 
-    page: number = 1, 
+    location: string,
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { location });
@@ -473,8 +473,8 @@ class JobsService {
    * Filter jobs by company
    */
   async getJobsByCompany(
-    company: string, 
-    page: number = 1, 
+    company: string,
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { company });
@@ -484,8 +484,8 @@ class JobsService {
    * Filter jobs by type (FULL_TIME, PART_TIME, etc.)
    */
   async getJobsByType(
-    type: string, 
-    page: number = 1, 
+    type: string,
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { type });
@@ -495,8 +495,8 @@ class JobsService {
    * Filter jobs by level (ENTRY, MID, SENIOR, etc.)
    */
   async getJobsByLevel(
-    level: string, 
-    page: number = 1, 
+    level: string,
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { level });
@@ -506,8 +506,8 @@ class JobsService {
    * Filter jobs by skills
    */
   async getJobsBySkills(
-    skills: string[], 
-    page: number = 1, 
+    skills: string[],
+    page: number = 1,
     limit: number = 10
   ): Promise<JobsResponse> {
     return this.getJobs(page, limit, { skills });
@@ -551,7 +551,7 @@ class JobsService {
         gqlFilter.department = filters.department;
       }
 
-      const { data } = await apolloClient.query<{ 
+      const { data } = await apolloClient.query<{
         jobs: any[]
       }>({
         query: this.GET_COMPANY_JOBS_QUERY,
@@ -591,7 +591,7 @@ class JobsService {
     try {
       const { data } = await apolloClient.mutate<{ updateJob: any }>({
         mutation: this.UPDATE_JOB_MUTATION,
-        variables: { 
+        variables: {
           input: {
             id,
             ...input

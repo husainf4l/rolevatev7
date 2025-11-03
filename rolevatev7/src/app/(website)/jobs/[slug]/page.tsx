@@ -374,9 +374,9 @@ export default function JobDetailPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
         {/* Breadcrumb */}
-        <nav className="mb-8 text-sm text-gray-500">
+        <nav className="mb-6 sm:mb-8 text-xs sm:text-sm text-gray-500 overflow-x-auto whitespace-nowrap scrollbar-hide">
           <Link href="/jobs" className="hover:text-gray-700">Jobs</Link>
           <span className="mx-2 text-gray-300">/</span>
           <Link href={`/jobs?department=${job.department}`} className="hover:text-gray-700">
@@ -387,60 +387,60 @@ export default function JobDetailPage() {
         </nav>
 
         {/* Header */}
-        <div className="mb-12 pb-12 border-b border-gray-200">
+        <div className="mb-8 sm:mb-12 pb-8 sm:pb-12 border-b border-gray-200">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
             {/* Left Section: Company & Title */}
             <div className="flex-1">
               {/* Company Header */}
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 bg-gray-100 rounded-sm flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-200">
+              <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-sm flex items-center justify-center overflow-hidden shrink-0 border border-gray-200">
                   {job.companyLogo ? (
-                    <img 
-                      src={job.companyLogo} 
+                    <img
+                      src={job.companyLogo}
                       alt={job.companyData?.name || job.company}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-gray-600 font-bold text-xl">
+                    <span className="text-gray-600 font-bold text-lg sm:text-xl">
                       {job.companyData?.name.charAt(0).toUpperCase() || job.company.charAt(0).toUpperCase()}
                     </span>
                   )}
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">Company</div>
-                  <div className="text-2xl font-semibold text-gray-900">
+                  <div className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wide">Company</div>
+                  <div className="text-lg sm:text-2xl font-semibold text-gray-900">
                     {job.companyData?.name || job.company}
                   </div>
                 </div>
               </div>
 
               {/* Job Title */}
-              <h1 className="text-4xl font-bold text-gray-900 mb-8 tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 tracking-tight leading-tight">
                 {job.title}
               </h1>
 
               {/* Job Key Details - Grid layout */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Location</div>
-                  <div className="text-gray-900 font-medium">{job.location || "Not specified"}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Location</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{job.location || "Not specified"}</div>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Salary</div>
-                  <div className="text-gray-900 font-medium">{job.salary || "Competitive"}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Salary</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{job.salary || "Competitive"}</div>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Job Type</div>
-                  <div className="text-gray-900 font-medium">{formatJobType(job.type)}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Job Type</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{formatJobType(job.type)}</div>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Experience</div>
-                  <div className="text-gray-900 font-medium">{formatJobLevel(job.level)}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Experience</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{formatJobLevel(job.level)}</div>
                 </div>
               </div>
 
               {/* Quick Info Row */}
-              <div className="flex flex-wrap gap-6 text-sm text-gray-600">
+              <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-gray-600">
                 <div className="flex items-center gap-2">
                   <span className="text-gray-400">•</span>
                   <span>Posted {formatPostedDate(job.createdAt)}</span>
@@ -457,7 +457,7 @@ export default function JobDetailPage() {
             </div>
 
             {/* Right Section: Action Buttons */}
-            <div className="lg:w-80 flex-shrink-0">
+            <div className="lg:w-80 shrink-0">
               <div className="space-y-2 flex flex-col">
                 <Link href={`/jobs/${slug}/apply`}>
                   <Button
@@ -474,8 +474,8 @@ export default function JobDetailPage() {
                   variant={isSaved ? "default" : "outline"}
                   size="lg"
                   className={`w-full transition-all ${
-                    isSaved 
-                      ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    isSaved
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
                       : 'border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
                   }`}
                 >
@@ -483,8 +483,8 @@ export default function JobDetailPage() {
                 </Button>
               </div>
 
-              {/* Additional Info Card */}
-              <div className="mt-6 p-4 bg-gray-50 rounded-sm border border-gray-200">
+              {/* Additional Info Card - Hidden on mobile, shown in sidebar */}
+              <div className="hidden lg:block mt-6 p-4 bg-gray-50 rounded-sm border border-gray-200">
                 <div className="space-y-3 text-sm">
                   <div>
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">About Company</div>
@@ -498,13 +498,13 @@ export default function JobDetailPage() {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-12">
+          <div className="lg:col-span-2 space-y-8 sm:space-y-12">
             {/* Job Description Overview */}
             <div>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Overview</h2>
-              <p className="text-gray-700 leading-relaxed text-lg">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Overview</h2>
+              <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
                 {job.description}
               </p>
             </div>
@@ -512,9 +512,9 @@ export default function JobDetailPage() {
             {/* Dynamic Job Description Sections */}
             {parseJobDescription(job.description).map((section, index) => (
               <div key={index}>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">{section.title}</h2>
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">{section.title}</h2>
                 <div className="prose prose-gray max-w-none">
-                  <div className="text-gray-600 leading-relaxed whitespace-pre-line">
+                  <div className="text-sm sm:text-base text-gray-600 leading-relaxed whitespace-pre-line">
                     {section.content}
                   </div>
                 </div>
@@ -524,12 +524,12 @@ export default function JobDetailPage() {
             {/* Required Skills from job data */}
             {job.skills && job.skills.length > 0 && (
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">Required Skills</h2>
-                <div className="flex flex-wrap gap-3">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">Required Skills</h2>
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {job.skills.map((skill, index) => (
                     <Badge
                       key={index}
-                      className="text-sm bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200 transition-colors"
+                      className="text-xs sm:text-sm bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200 transition-colors"
                     >
                       {skill}
                     </Badge>
@@ -540,48 +540,48 @@ export default function JobDetailPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Quick Stats */}
-            <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-sm border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">Position Details</h3>
-              <div className="space-y-6">
+            <div className="bg-gradient-to-br from-gray-50 to-white p-4 sm:p-6 rounded-sm border border-gray-200">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Position Details</h3>
+              <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Employment Type</div>
-                  <div className="text-gray-900 font-medium">{formatJobType(job.type)}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Employment Type</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{formatJobType(job.type)}</div>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Seniority Level</div>
-                  <div className="text-gray-900 font-medium">{formatJobLevel(job.level)}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Seniority Level</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{formatJobLevel(job.level)}</div>
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Salary Range</div>
-                  <div className="text-gray-900 font-medium">{job.salary || "Competitive"}</div>
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 sm:mb-2">Salary Range</div>
+                  <div className="text-sm sm:text-base text-gray-900 font-medium">{job.salary || "Competitive"}</div>
                 </div>
               </div>
             </div>
 
             {/* Company Overview */}
-            <div className="bg-gradient-to-br from-gray-50 to-white p-6 rounded-sm border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-6">About the Company</h3>
+            <div className="bg-gradient-to-br from-gray-50 to-white p-4 sm:p-6 rounded-sm border border-gray-200">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">About the Company</h3>
               <div className="space-y-4">
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
                   {job.companyData?.description || "A leading organization in the industry with a commitment to excellence and innovation."}
                 </p>
               </div>
             </div>
 
             {/* Application Info */}
-            <div className="bg-blue-50 p-6 rounded-sm border border-blue-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Info</h3>
-              <div className="space-y-3 text-sm">
+            <div className="bg-blue-50 p-4 sm:p-6 rounded-sm border border-blue-200">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Application Info</h3>
+              <div className="space-y-3 text-xs sm:text-sm">
                 <div>
                   <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Job Posted</div>
-                  <p className="text-gray-900 font-medium">{formatPostedDate(job.createdAt)}</p>
+                  <p className="text-sm sm:text-base text-gray-900 font-medium">{formatPostedDate(job.createdAt)}</p>
                 </div>
                 {job.deadline && (
                   <div>
                     <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Application Deadline</div>
-                    <p className={`font-medium ${new Date(job.deadline) < new Date() ? 'text-red-600' : 'text-gray-900'}`}>
+                    <p className={`text-sm sm:text-base font-medium ${new Date(job.deadline) < new Date() ? 'text-red-600' : 'text-gray-900'}`}>
                       {formatDeadlineDate(job.deadline)}
                     </p>
                   </div>
