@@ -151,13 +151,24 @@ export class UserResolver {
     };
   }
 
-  @Mutation(() => UserDto)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserType.ADMIN, UserType.SYSTEM)
+  @Mutation(() => UserDto, {
+    description: 'Update user profile. Users can update their own profile, admins can update any user.'
+  })
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @Args('id') id: string,
     @Args('input') input: UpdateUserInput,
+    @Context() context: any,
   ): Promise<UserDto> {
+    const userId = context.request.user.id;
+    const userRole = context.request.user.userType;
+    
+    // Allow users to update their own profile, or admins to update any user
+    // Permitted roles to update their own profile: CANDIDATE, BUSINESS, ADMIN, SYSTEM
+    if (id !== userId && userRole !== UserType.ADMIN && userRole !== UserType.SYSTEM) {
+      throw new Error('Access denied. You can only update your own profile.');
+    }
+
     const user = await this.userService.update(id, input);
     return {
       id: user.id,
