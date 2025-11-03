@@ -37,6 +37,7 @@ const navigationItems = [
     icon: CalendarDaysIcon,
     label: "Interviews",
     href: "/userdashboard/interviews",
+    hideOnMobile: true,
   },
   {
     icon: BookmarkIcon,
@@ -119,11 +120,39 @@ export default function UserSidebar() {
           {/* Navigation */}
           <nav className="flex-1 px-2 py-6">
             <div className="space-y-4">
-              {navigationItems.map((item) => {
+              {navigationItems.map((item: any) => {
                 const isActive =
                   pathname === item.href ||
                   (item.href !== "/userdashboard" &&
                     pathname?.startsWith(item.href));
+                
+                // Hide Interviews on mobile
+                if (item.hideOnMobile) {
+                  return (
+                    <div key={item.label} className="hidden lg:block">
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`group flex flex-col items-center justify-center px-2 py-3 text-xs font-medium rounded-lg transition-all duration-200 ${
+                          isActive
+                            ? "bg-primary-600 text-white"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        }`}
+                        title={item.label}
+                      >
+                        <item.icon
+                          className={`h-6 w-6 mb-1 transition-colors duration-200 ${
+                            isActive
+                              ? "text-white"
+                              : "text-gray-400 group-hover:text-primary-600"
+                          }`}
+                        />
+                        <span className="text-center leading-tight">{item.label}</span>
+                      </Link>
+                    </div>
+                  );
+                }
+                
                 return (
                   <Link
                     key={item.label}

@@ -359,19 +359,20 @@ export default function Navbar() {
                     </div>
                   ) : (
                     // Not authenticated mobile menu
-                    <div className="space-y-3">
+                    <div className="space-y-3 py-2">
                       <Link href="/login">
                         <button
                           onClick={closeMenu}
-                          className="w-full rounded-md py-3 text-base font-medium border border-primary-600 text-primary-600 hover:bg-primary-50 transition-all duration-300"
+                          className="w-full rounded-md py-3 px-4 text-base font-medium border-2 border-primary-600 text-primary-600 hover:bg-primary-50 transition-all duration-300"
                         >
                           Sign In
                         </button>
                       </Link>
+                      <div className="h-2"></div>
                       <Link href="/signup">
                         <button
                           onClick={closeMenu}
-                          className="w-full rounded-md py-3 text-base font-semibold bg-primary-600 hover:bg-primary-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl"
+                          className="w-full rounded-md py-3 px-4 text-base font-semibold bg-primary-600 hover:bg-primary-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl"
                         >
                           Sign Up
                         </button>

@@ -38,6 +38,10 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [cvs, setCvs] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Editable profile state
+  const [editedProfile, setEditedProfile] = useState<any>(null);
 
   // Password change state
   const [passwordData, setPasswordData] = useState({
@@ -68,6 +72,7 @@ export default function ProfilePage() {
         ]);
 
         setProfile(profileData);
+        setEditedProfile(profileData); // Initialize edited profile
         setCvs(cvsData || []);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to load profile";
@@ -124,6 +129,56 @@ export default function ProfilePage() {
     } finally {
       setChangingPassword(false);
     }
+  };
+
+  // Handle save profile changes
+  const handleSaveProfile = async () => {
+    if (!editedProfile) return;
+    
+    try {
+      setIsSaving(true);
+      toast.loading("Saving changes...");
+      
+      // Update profile via GraphQL mutation
+      const { data } = await apolloClient.mutate<{ updateProfile: boolean }>({
+        mutation: gql`
+          mutation UpdateProfile($input: UpdateProfileInput!) {
+            updateProfile(input: $input)
+          }
+        `,
+        variables: {
+          input: {
+            name: editedProfile.name,
+            email: editedProfile.email,
+            phone: editedProfile.phone,
+            location: editedProfile.location,
+            bio: editedProfile.bio,
+            experience: editedProfile.experience,
+            education: editedProfile.education,
+          },
+        },
+      });
+
+      if (data?.updateProfile) {
+        setProfile(editedProfile);
+        toast.dismiss();
+        toast.success("Profile updated successfully!");
+      }
+    } catch (err: any) {
+      toast.dismiss();
+      toast.error(err.message || "Failed to update profile");
+      console.error("Profile update error:", err);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // Handle input change
+  const handleProfileChange = (field: string, value: string) => {
+    setEditedProfile((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   // Handle CV upload
@@ -270,53 +325,73 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex-1 p-8 bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="max-w-6xl mx-auto">
+    <div className="flex-1 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">My Profile</h1>
-          <p className="text-gray-600">Manage your personal and professional information</p>
+        <div className="mb-6 lg:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-1 lg:mb-2">My Profile</h1>
+          <p className="text-sm sm:text-base text-gray-600">Manage your personal and professional information</p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex overflow-x-auto gap-2 mb-8 pb-2 border-b border-gray-200">
-          {TABS.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap font-medium transition-all ${
-                  isActive
-                    ? "bg-primary-600 text-white shadow-md"
-                    : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-                {tab.label}
-              </button>
-            );
-          })}
+        {/* Tab Navigation - Scrollable on mobile, responsive on desktop */}
+        <div className="mb-6 lg:mb-8">
+          <div className="flex overflow-x-auto gap-2 pb-3 lg:pb-4 -mx-4 sm:mx-0 px-4 sm:px-0 scrollbar-hide">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg whitespace-nowrap text-sm sm:text-base font-medium transition-all flex-shrink-0 ${
+                    isActive
+                      ? "bg-primary-600 text-white shadow-md"
+                      : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                  }`}
+                >
+                  <Icon className="w-4 sm:w-5 h-4 sm:h-5" />
+                  <span className="hidden xs:inline">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          <style>{`
+            .scrollbar-hide::-webkit-scrollbar {
+              display: none;
+            }
+            .scrollbar-hide {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+          `}</style>
         </div>
 
         {/* Tab Content */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+        <div className="bg-white rounded-lg lg:rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 lg:p-8">
           {/* Personal Info Tab */}
           {activeTab === "personal" && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900">Personal Information</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Personal Information</h2>
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 text-sm sm:text-base font-medium transition-colors"
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Full Name
                   </label>
                   <input
                     type="text"
-                    value={profile?.name || ""}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                    value={editedProfile?.name || ""}
+                    onChange={(e) => handleProfileChange("name", e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -325,9 +400,9 @@ export default function ProfilePage() {
                   </label>
                   <input
                     type="email"
-                    value={profile?.email || user?.email || ""}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                    value={editedProfile?.email || user?.email || ""}
+                    onChange={(e) => handleProfileChange("email", e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -336,9 +411,9 @@ export default function ProfilePage() {
                   </label>
                   <input
                     type="tel"
-                    value={profile?.phone || ""}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                    value={editedProfile?.phone || ""}
+                    onChange={(e) => handleProfileChange("phone", e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -347,9 +422,9 @@ export default function ProfilePage() {
                   </label>
                   <input
                     type="text"
-                    value={profile?.location || ""}
-                    disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                    value={editedProfile?.location || ""}
+                    onChange={(e) => handleProfileChange("location", e.target.value)}
+                    className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -359,10 +434,10 @@ export default function ProfilePage() {
                   Bio
                 </label>
                 <textarea
-                  value={profile?.bio || ""}
-                  disabled
+                  value={editedProfile?.bio || ""}
+                  onChange={(e) => handleProfileChange("bio", e.target.value)}
                   rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                  className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
               </div>
             </div>
@@ -370,23 +445,32 @@ export default function ProfilePage() {
 
           {/* Professional Info Tab */}
           {activeTab === "professional" && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900">Professional Information</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Professional Information</h2>
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 text-sm sm:text-base font-medium transition-colors"
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Experience
                 </label>
                 <textarea
-                  value={profile?.experience || ""}
-                  disabled
+                  value={editedProfile?.experience || ""}
+                  onChange={(e) => handleProfileChange("experience", e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                  className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
                   Skills
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -394,24 +478,24 @@ export default function ProfilePage() {
                     profile.skills.map((skill: string, idx: number) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium"
+                        className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs sm:text-sm font-medium"
                       >
                         {skill}
                       </span>
                     ))
                   ) : (
-                    <p className="text-gray-500">No skills added yet</p>
+                    <p className="text-gray-500 text-sm">No skills added yet</p>
                   )}
                 </div>
               </div>
 
               {profile?.workExperiences && profile.workExperiences.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-4">Work Experience</h3>
-                  <div className="space-y-4">
+                  <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-base sm:text-lg">Work Experience</h3>
+                  <div className="space-y-3 sm:space-y-4">
                     {profile.workExperiences.map((exp: any, idx: number) => (
-                      <div key={idx} className="p-4 border border-gray-200 rounded-lg">
-                        <h4 className="font-medium text-gray-900">{exp.position}</h4>
+                      <div key={idx} className="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                        <h4 className="font-medium text-gray-900 text-sm sm:text-base">{exp.position}</h4>
                         <p className="text-sm text-gray-600">{exp.company}</p>
                         {exp.startDate && (
                           <p className="text-xs text-gray-500 mt-1">
@@ -429,28 +513,37 @@ export default function ProfilePage() {
 
           {/* Education Tab */}
           {activeTab === "education" && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900">Education</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Education</h2>
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={isSaving}
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 text-sm sm:text-base font-medium transition-colors"
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </button>
+              </div>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Education
                 </label>
                 <textarea
-                  value={profile?.education || ""}
-                  disabled
+                  value={editedProfile?.education || ""}
+                  onChange={(e) => handleProfileChange("education", e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600"
+                  className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                 />
               </div>
 
               {profile?.educations && profile.educations.length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-4">Education Details</h3>
-                  <div className="space-y-4">
+                  <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-base sm:text-lg">Education Details</h3>
+                  <div className="space-y-3 sm:space-y-4">
                     {profile.educations.map((edu: any, idx: number) => (
-                      <div key={idx} className="p-4 border border-gray-200 rounded-lg">
-                        <h4 className="font-medium text-gray-900">{edu.degree}</h4>
+                      <div key={idx} className="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                        <h4 className="font-medium text-gray-900 text-sm sm:text-base">{edu.degree}</h4>
                         <p className="text-sm text-gray-600">{edu.institution}</p>
                         {edu.fieldOfStudy && (
                           <p className="text-sm text-gray-600">{edu.fieldOfStudy}</p>
@@ -471,11 +564,11 @@ export default function ProfilePage() {
 
           {/* Documents Tab */}
           {activeTab === "documents" && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900">Your Documents</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Your Documents</h2>
               
               <div 
-                className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                className={`border-2 border-dashed rounded-lg p-6 sm:p-8 text-center transition-colors ${
                   dragActive 
                     ? "border-primary-400 bg-primary-50" 
                     : "border-gray-300 hover:border-primary-400"
@@ -485,21 +578,16 @@ export default function ProfilePage() {
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <DocumentArrowUpIcon className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                <p className="text-gray-600 mb-2">Drop your CV here or click to upload</p>
-                <p className="text-sm text-gray-500 mb-4">Supported formats: PDF, DOC, DOCX</p>
+                <DocumentArrowUpIcon className="w-10 sm:w-12 h-10 sm:h-12 text-gray-400 mx-auto mb-2 sm:mb-3" />
+                <p className="text-gray-600 mb-1 sm:mb-2 text-sm sm:text-base">Drop your CV here or click to upload</p>
+                <p className="text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">Supported formats: PDF, DOC, DOCX</p>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx"
                   onChange={(e) => {
-                    console.log('[DEBUG] File input changed, files:', e.target.files);
                     const file = e.target.files?.[0];
-                    console.log('[DEBUG] Selected file:', file);
                     if (file) {
-                      console.log('[DEBUG] Calling handleCVUpload with file:', file.name, file.type, file.size);
                       handleCVUpload(file);
-                    } else {
-                      console.log('[DEBUG] No file selected');
                     }
                   }}
                   className="hidden"
@@ -507,38 +595,36 @@ export default function ProfilePage() {
                 />
                 <label
                   htmlFor="cv-upload"
-                  className="inline-block px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer font-medium"
+                  className="inline-block px-3 sm:px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 cursor-pointer font-medium text-sm sm:text-base"
                 >
                   Choose File
                 </label>
               </div>
 
               {cvs.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="font-semibold text-gray-900">Your CVs</h3>
+                <div className="space-y-2 sm:space-y-3">
+                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg">Your CVs</h3>
                   {cvs.map((cv: any) => (
-                    <div key={cv.id} className="p-4 border border-gray-200 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-medium text-gray-900">{cv.fileName || cv.filename}</p>
-                          <p className="text-sm text-gray-500">
+                    <div key={cv.id} className="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-gray-900 text-sm sm:text-base truncate">{cv.fileName || cv.filename}</p>
+                          <p className="text-xs sm:text-sm text-gray-500">
                             Uploaded {new Date(cv.uploadedAt || cv.createdAt).toLocaleDateString()}
                           </p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          {cv.isPrimary && (
-                            <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                              Primary
-                            </span>
-                          )}
-                        </div>
+                        {cv.isPrimary && (
+                          <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full w-fit">
+                            Primary
+                          </span>
+                        )}
                       </div>
-                      <div className="flex gap-2 mt-3">
+                      <div className="flex flex-col sm:flex-row gap-2 mt-2 sm:mt-3">
                         {!cv.isPrimary && (
                           <button
                             onClick={() => handleActivateCV(cv.id)}
                             disabled={activatingCV === cv.id}
-                            className="px-3 py-1 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white text-sm rounded-lg font-medium transition-colors"
+                            className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white text-xs sm:text-sm rounded-lg font-medium transition-colors"
                           >
                             {activatingCV === cv.id ? 'Activating...' : 'Activate'}
                           </button>
@@ -547,14 +633,14 @@ export default function ProfilePage() {
                           href={cv.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg font-medium transition-colors"
+                          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm rounded-lg font-medium transition-colors text-center"
                         >
                           Download
                         </a>
                         <button
                           onClick={() => handleDeleteCV(cv.id)}
                           disabled={deletingCV === cv.id}
-                          className="px-3 py-1 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white text-sm rounded-lg font-medium transition-colors"
+                          className="px-3 py-1.5 bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white text-xs sm:text-sm rounded-lg font-medium transition-colors"
                         >
                           {deletingCV === cv.id ? 'Deleting...' : 'Delete'}
                         </button>
@@ -568,16 +654,16 @@ export default function ProfilePage() {
 
           {/* Security Tab */}
           {activeTab === "security" && (
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-900">Security Settings</h2>
+            <div className="space-y-4 sm:space-y-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Security Settings</h2>
               
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                <p className="text-blue-800 text-sm">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                <p className="text-blue-800 text-xs sm:text-sm">
                   Keep your account secure by using a strong password
                 </p>
               </div>
 
-              <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
+              <form onSubmit={handleChangePassword} className="space-y-3 sm:space-y-4 max-w-md">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Current Password
@@ -592,7 +678,7 @@ export default function ProfilePage() {
                           currentPassword: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       required
                     />
                     <button
@@ -603,7 +689,7 @@ export default function ProfilePage() {
                           current: !showPasswords.current,
                         })
                       }
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs sm:text-sm"
                     >
                       {showPasswords.current ? "Hide" : "Show"}
                     </button>
@@ -624,7 +710,7 @@ export default function ProfilePage() {
                           newPassword: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       required
                     />
                     <button
@@ -635,7 +721,7 @@ export default function ProfilePage() {
                           new: !showPasswords.new,
                         })
                       }
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs sm:text-sm"
                     >
                       {showPasswords.new ? "Hide" : "Show"}
                     </button>
@@ -656,7 +742,7 @@ export default function ProfilePage() {
                           confirmPassword: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                      className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       required
                     />
                     <button
@@ -667,7 +753,7 @@ export default function ProfilePage() {
                           confirm: !showPasswords.confirm,
                         })
                       }
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-xs sm:text-sm"
                     >
                       {showPasswords.confirm ? "Hide" : "Show"}
                     </button>
@@ -677,7 +763,7 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={changingPassword}
-                  className="w-full px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 transition-colors font-medium"
+                  className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-400 transition-colors font-medium"
                 >
                   {changingPassword ? "Updating..." : "Update Password"}
                 </button>

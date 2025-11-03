@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ArrowRightOnRectangleIcon, UserIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { ArrowRightOnRectangleIcon, UserIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
 interface UserData {
@@ -108,16 +108,6 @@ export default function UserProfileSection({ userData, onLogout }: UserProfileSe
               >
                 <UserIcon className="h-4 w-4 text-gray-400 group-hover/item:text-primary-600 transition-colors" />
                 <span className="group-hover/item:text-primary-600 transition-colors">My Profile</span>
-              </Link>
-
-              {/* Settings Link */}
-              <Link
-                href="/userdashboard/profile"
-                className="flex items-center space-x-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-150 group/item"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Cog6ToothIcon className="h-4 w-4 text-gray-400 group-hover/item:text-primary-600 transition-colors" />
-                <span className="group-hover/item:text-primary-600 transition-colors">Settings</span>
               </Link>
             </div>
 

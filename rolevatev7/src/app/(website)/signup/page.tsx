@@ -283,7 +283,7 @@ export default function SignupPage() {
           </div>
 
           {/* Illustration */}
-          <div className="order-1 lg:order-2">
+          <div className="hidden lg:block order-1 lg:order-2">
             <div className="relative bg-gray-50 rounded-3xl p-8 lg:p-12">
               <div className="aspect-square rounded-2xl overflow-hidden mb-8">
                 <Image

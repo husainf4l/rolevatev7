@@ -216,8 +216,8 @@ export default function SavedJobsPage() {
 
         {/* Filters */}
         <div className="bg-white rounded-sm p-4 border border-gray-200 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
               <select className="px-3 py-2 border border-gray-300 rounded-sm text-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                 <option>All Jobs</option>
                 <option>Full-time</option>
@@ -232,7 +232,7 @@ export default function SavedJobsPage() {
                 <option>Sort by: Deadline</option>
               </select>
             </div>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 text-center md:text-right">
               {savedJobsDetails.length} saved jobs
             </div>
           </div>
@@ -324,8 +324,8 @@ export default function SavedJobsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-4 border-t border-gray-200 gap-3">
+                  <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 text-sm text-gray-500">
                     <span>
                       Saved on {new Date(job.createdAt).toLocaleDateString()}
                     </span>
@@ -338,13 +338,13 @@ export default function SavedJobsPage() {
                   <div className="flex items-center space-x-2">
                     <a
                       href={`/jobs/${job.slug || job.id}`}
-                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-50 transition-colors"
+                      className="flex-1 md:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-50 transition-colors text-center"
                     >
                       View Details
                     </a>
                     <a
                       href={`/jobs/${job.slug || job.id}/apply`}
-                      className="px-4 py-2 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                      className="flex-1 md:flex-none px-4 py-2 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-center"
                     >
                       Apply Now
                     </a>

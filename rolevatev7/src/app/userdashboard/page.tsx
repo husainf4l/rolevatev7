@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import UserStatsCards from "@/components/dashboard/UserStatsCards";
 import RecentApplicationsWidget from "@/components/dashboard/RecentApplicationsWidget";
-import UserUpcomingInterviews, { Interview } from "@/components/dashboard/UserUpcomingInterviews";
 import UserQuickActions from "@/components/dashboard/UserQuickActions";
 import UserProfileCompletionWidget from "@/components/dashboard/UserProfileCompletionWidget";
 import { getCandidateApplications, Application } from "@/services/application";
@@ -14,7 +13,6 @@ import { motion } from "framer-motion";
 export default function UserDashboardPage() {
   const { user } = useAuth();
   const [applications, setApplications] = useState<Application[]>([]);
-  const [upcomingInterviews, setUpcomingInterviews] = useState<Interview[]>([]);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
 
@@ -92,24 +90,6 @@ export default function UserDashboardPage() {
       // Fetch applications
       const applicationsData = await getCandidateApplications();
       setApplications(applicationsData);
-
-      // Mock upcoming interviews (replace with actual API call when available)
-      const mockInterviews: Interview[] = applicationsData
-        .filter((app) => app.status === "SHORTLISTED")
-        .map((app) => ({
-          id: app.id,
-          jobTitle: app.job.title,
-          company: app.job.company?.name || 'Unknown',
-          date: new Date(
-            Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000
-          ).toISOString(),
-          time: "10:00 AM",
-          type: "VIDEO" as const,
-          meetingLink: "https://meet.google.com/example",
-          applicationId: app.id,
-          jobId: app.jobId,
-        }));
-      setUpcomingInterviews(mockInterviews);
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     } finally {
@@ -201,14 +181,10 @@ export default function UserDashboardPage() {
           </div>
 
           {/* Right Column - 1/3 width */}
-          <div className="space-y-6">
+          <div className="hidden lg:block space-y-6">
             <UserProfileCompletionWidget
               sections={profileSections}
               completionPercentage={completionPercentage}
-            />
-            <UserUpcomingInterviews
-              interviews={upcomingInterviews}
-              loading={loading}
             />
           </div>
         </div>

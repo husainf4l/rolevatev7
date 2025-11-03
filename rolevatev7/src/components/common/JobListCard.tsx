@@ -34,8 +34,8 @@ const JobListCard: React.FC<JobListCardProps> = ({
 }) => {
   return (
     <Card className="mb-4">
-      <CardContent className="p-6">
-        <div className="flex justify-between items-start">
+      <CardContent className="p-4 md:p-6">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
           <div className="flex-1">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               {job.title}
@@ -56,13 +56,13 @@ const JobListCard: React.FC<JobListCardProps> = ({
               {job.deadline && <span>Deadline: {job.deadline}</span>}
             </div>
           </div>
-          <div className="flex gap-2 ml-4">
+          <div className="flex gap-2 w-full md:w-auto">
             {showSaveButton && (
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onSave?.(job.id)}
-                className={isSaved ? 'bg-blue-50 border-blue-200' : ''}
+                className={`flex-1 md:flex-none ${isSaved ? 'bg-blue-50 border-blue-200' : ''}`}
               >
                 {isSaved ? 'Saved' : 'Save'}
               </Button>
@@ -71,6 +71,7 @@ const JobListCard: React.FC<JobListCardProps> = ({
               <Button
                 size="sm"
                 onClick={() => onApply?.(job.id, job.slug)}
+                className="flex-1 md:flex-none"
               >
                 Apply
               </Button>
