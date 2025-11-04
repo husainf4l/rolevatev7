@@ -321,13 +321,46 @@ export default function UserProfilePage() {
           }
         }
       } else {
-        // Business user - would need updateUser mutation
-        console.warn("No candidate profile found for user. updateUser mutation needed.");
-        setSaveStatus({
-          type: "error",
-          message: "Profile update not available - missing backend mutation",
+        // Business user - update user profile
+        const updateResponse = await fetch(`${API_CONFIG.API_BASE_URL}/graphql`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            query: `
+              mutation UpdateUser($id: String!, $input: UpdateUserInput!) {
+                updateUser(id: $id, input: $input) {
+                  id
+                  name
+                  phone
+                }
+              }
+            `,
+            variables: {
+              id: userId,
+              input: {
+                name: userProfile.name,
+                phone: userProfile.phone,
+              }
+            }
+          }),
         });
-        setTimeout(() => setSaveStatus(null), 3000);
+
+        if (updateResponse.ok) {
+          const updateResult = await updateResponse.json();
+          if (updateResult.errors) {
+            throw new Error(updateResult.errors[0].message);
+          }
+          setSaveStatus({
+            type: "success",
+            message: "Profile updated successfully!",
+          });
+          setTimeout(() => setSaveStatus(null), 3000);
+        } else {
+          throw new Error("Failed to update profile");
+        }
       }
     } catch (error: any) {
       console.error("Error saving profile:", error);
@@ -564,7 +597,7 @@ export default function UserProfilePage() {
         subtitle="Manage your personal account settings and preferences"
       />
 
-      <main className="pt-20 px-4 lg:px-8 max-w-4xl mx-auto">
+      <main className="pt-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto overflow-x-hidden">
         {/* Save Status */}
         {saveStatus && (
           <div
@@ -575,19 +608,19 @@ export default function UserProfilePage() {
             }`}
           >
             {saveStatus.type === "success" ? (
-              <CheckCircleIcon className="w-5 h-5" />
+              <CheckCircleIcon className="w-5 h-5 flex-shrink-0" />
             ) : (
-              <ExclamationTriangleIcon className="w-5 h-5" />
+              <ExclamationTriangleIcon className="w-5 h-5 flex-shrink-0" />
             )}
             {saveStatus.message}
           </div>
         )}
 
         {/* Profile Header */}
-        <div className="rounded-sm shadow-2xl p-8 mb-8 border border-gray-200">
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="relative">
-              <div className="w-24 h-24 rounded-full overflow-hidden bg-primary-600 flex items-center justify-center">
+        <div className="rounded-sm shadow-2xl p-4 sm:p-8 mb-8 border border-gray-200">
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+            <div className="relative flex-shrink-0">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden bg-primary-600 flex items-center justify-center">
                 {userProfile.avatar ? (
                   <img
                     src={
@@ -601,13 +634,13 @@ export default function UserProfilePage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-3xl font-bold text-white">
+                  <span className="text-2xl sm:text-3xl font-bold text-white">
                     {userProfile.name?.split(' ').map(n => n.charAt(0)).join('')}
                   </span>
                 )}
               </div>
-              <label className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors">
-                <CameraIcon className="w-4 h-4 text-gray-600" />
+              <label className="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors">
+                <CameraIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" />
                 <input
                   type="file"
                   accept="image/*"
@@ -616,40 +649,40 @@ export default function UserProfilePage() {
                 />
               </label>
             </div>
-            <div className="text-center sm:text-left">
-              <h1 className="text-3xl font-bold text-gray-900">
+            <div className="text-center sm:text-left flex-1 min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 truncate">
                 {userProfile.name}
               </h1>
-              <p className="text-lg text-gray-600 mt-1">
+              <p className="text-base sm:text-lg text-gray-600 mt-1">
                 {userProfile.userType === "CANDIDATE" ? "Job Seeker" : "Employer"}
               </p>
-              <p className="text-sm text-gray-500">{userProfile.email}</p>
+              <p className="text-sm text-gray-500 truncate">{userProfile.email}</p>
             </div>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="rounded-sm shadow-xl border border-gray-200 mb-8">
-          <div className="flex gap-1 p-2">
+        <div className="rounded-sm shadow-xl border border-gray-200 mb-8 overflow-x-auto">
+          <div className="flex gap-1 p-2 min-w-max">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 flex-shrink-0 ${
                   activeTab === tab.id
                     ? "bg-primary-600 text-white shadow-lg"
                     : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
                 }`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <tab.icon className="w-5 h-5" />
-                {tab.label}
+                <tab.icon className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden xs:inline">{tab.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Tab Content */}
-        <div className="rounded-sm shadow-xl p-8 border border-gray-200">
+        <div className="rounded-sm shadow-xl p-4 sm:p-8 border border-gray-200 overflow-x-hidden">
           {/* Personal Info Tab */}
           {activeTab === "profile" && (
             <div className="space-y-8">
@@ -662,7 +695,7 @@ export default function UserProfilePage() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -679,13 +712,7 @@ export default function UserProfilePage() {
                       }
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                       placeholder="Enter your full name"
-                      disabled={userProfile.userType === "BUSINESS"}
                     />
-                    {userProfile.userType === "BUSINESS" && (
-                      <p className="text-xs text-gray-500 mt-1">
-                        Business users: Update name in user settings
-                      </p>
-                    )}
                   </div>
 
                   <div>
@@ -787,8 +814,8 @@ export default function UserProfilePage() {
                     Email Notifications
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-gray-900">
                           Daily Digest
                         </h4>
@@ -796,7 +823,7 @@ export default function UserProfilePage() {
                           Receive a daily summary of activities
                         </p>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                         <input
                           type="checkbox"
                           checked={notificationSettings.emailDigest}
@@ -837,8 +864,8 @@ export default function UserProfilePage() {
                       </label>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-gray-900">
                           Task Assignments
                         </h4>
@@ -846,7 +873,7 @@ export default function UserProfilePage() {
                           Get notified when tasks are assigned to you
                         </p>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                         <input
                           type="checkbox"
                           checked={notificationSettings.emailOnAssignment}
@@ -862,8 +889,8 @@ export default function UserProfilePage() {
                       </label>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-gray-900">
                           Weekly Reports
                         </h4>
@@ -871,7 +898,7 @@ export default function UserProfilePage() {
                           Receive weekly performance reports
                         </p>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                         <input
                           type="checkbox"
                           checked={notificationSettings.emailWeeklyReport}
@@ -894,8 +921,8 @@ export default function UserProfilePage() {
                     Other Notifications
                   </h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-gray-900">
                           Browser Notifications
                         </h4>
@@ -903,7 +930,7 @@ export default function UserProfilePage() {
                           Show notifications in your browser
                         </p>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                         <input
                           type="checkbox"
                           checked={notificationSettings.browserNotifications}
@@ -919,8 +946,8 @@ export default function UserProfilePage() {
                       </label>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
                         <h4 className="text-sm font-medium text-gray-900">
                           SMS Reminders
                         </h4>
@@ -928,7 +955,7 @@ export default function UserProfilePage() {
                           Receive important reminders via SMS
                         </p>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
                         <input
                           type="checkbox"
                           checked={notificationSettings.smsReminders}
@@ -1134,32 +1161,30 @@ export default function UserProfilePage() {
                   Security Settings
                 </h3>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">
-                        Two-Factor Authentication
-                      </h4>
-                      <p className="text-sm text-gray-500">
-                        Add an extra layer of security to your account
-                      </p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={securitySettings.twoFactorEnabled}
-                        onChange={(e) =>
-                          setSecuritySettings({
-                            ...securitySettings,
-                            twoFactorEnabled: e.target.checked,
-                          })
-                        }
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-600/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
-                    </label>
-                  </div>
-
-                  <div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="text-sm font-medium text-gray-900">
+                          Two-Factor Authentication
+                        </h4>
+                        <p className="text-sm text-gray-500">
+                          Add an extra layer of security to your account
+                        </p>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                        <input
+                          type="checkbox"
+                          checked={securitySettings.twoFactorEnabled}
+                          onChange={(e) =>
+                            setSecuritySettings({
+                              ...securitySettings,
+                              twoFactorEnabled: e.target.checked,
+                            })
+                          }
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-600/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600"></div>
+                      </label>
+                    </div>                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Session Timeout (minutes)
                     </label>

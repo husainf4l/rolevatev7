@@ -85,17 +85,17 @@ const statCards = [
 export default function UserStatsCards({ stats, loading = false }: UserStatsCardsProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div
             key={i}
-            className="bg-white rounded-xl p-6 border border-gray-200 animate-pulse"
+            className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 animate-pulse"
           >
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-8 h-8 bg-gray-200 rounded-sm"></div>
             </div>
-            <div className="h-8 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+            <div className="h-6 bg-gray-200 rounded mb-1.5"></div>
+            <div className="h-3 bg-gray-200 rounded w-2/3"></div>
           </div>
         ))}
       </div>
@@ -103,25 +103,25 @@ export default function UserStatsCards({ stats, loading = false }: UserStatsCard
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
       {statCards.map((card, index) => (
         <motion.div
           key={card.key}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.05, duration: 0.3 }}
-          className={`bg-white rounded-xl p-6 border ${card.borderColor} hover:shadow-lg transition-all duration-300 cursor-pointer group`}
+          className={`bg-white rounded-sm p-3 sm:p-4 border ${card.borderColor} hover:shadow-md transition-all duration-300 cursor-pointer group`}
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className={`${card.bgColor} p-3 rounded-lg group-hover:scale-110 transition-transform duration-300`}>
-              <card.icon className={`w-6 h-6 ${card.iconColor}`} />
+          <div className="flex items-center justify-between mb-2">
+            <div className={`${card.bgColor} p-2 rounded-sm group-hover:scale-110 transition-transform duration-300`}>
+              <card.icon className={`w-4 h-4 ${card.iconColor}`} />
             </div>
           </div>
-          <div className="space-y-1">
-            <p className="text-3xl font-bold text-gray-900">
+          <div className="space-y-0.5">
+            <p className="text-lg sm:text-xl font-bold text-gray-900">
               {stats[card.key].toLocaleString()}
             </p>
-            <p className="text-sm text-gray-600 font-medium">{card.label}</p>
+            <p className="text-xs sm:text-sm text-gray-600 font-medium">{card.label}</p>
           </div>
         </motion.div>
       ))}

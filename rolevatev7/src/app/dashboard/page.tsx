@@ -56,17 +56,23 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="p-8 pt-20">
-      <div className="max-w-7xl mx-auto">
-        <Header />
-        <StatsCards />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          <Calendar />
-          <RecentApplications />
+    <div className="min-h-screen bg-white">
+      <Header />
+      <div className="w-full pt-16 lg:pt-16">
+        <div className="px-2 sm:px-3">
+          <StatsCards />
         </div>
 
-        <RecentJobs />
+        <div className="px-2 sm:px-3 mt-4 sm:mt-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <Calendar />
+            <RecentApplications />
+          </div>
+        </div>
+
+        <div className="px-2 sm:px-3">
+          <RecentJobs />
+        </div>
       </div>
     </div>
   );

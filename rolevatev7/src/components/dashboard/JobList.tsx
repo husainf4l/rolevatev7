@@ -138,29 +138,29 @@ const JobList: React.FC<JobListProps> = ({
   const router = useRouter();
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200">
+    <div className="bg-white">
       {/* Header */}
-      <div className="p-6 border-b border-gray-200 bg-white rounded-t-xl">
-        <div className="flex items-center justify-between">
+      <div className="px-2 sm:px-3 pt-3 sm:pt-4 pb-2 sm:pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
               Job Postings
             </h2>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">
               {filteredJobs.length} of {jobs.length} jobs
             </p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full shadow-sm"></div>
+              <div className="w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm"></div>
               <span className="text-xs font-medium text-gray-700">Active</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-gray-400 rounded-full shadow-sm"></div>
+              <div className="w-2.5 h-2.5 bg-gray-400 rounded-full shadow-sm"></div>
               <span className="text-xs font-medium text-gray-700">Draft</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-sm"></div>
+              <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full shadow-sm"></div>
               <span className="text-xs font-medium text-gray-700">Paused</span>
             </div>
           </div>
@@ -168,39 +168,41 @@ const JobList: React.FC<JobListProps> = ({
       </div>
 
       {/* Jobs List */}
-      <div className="p-4 space-y-4">
+      <div className="px-2 sm:px-3 pb-4 sm:pb-6 space-y-2">
         {loading ? (
           <div className="space-y-4">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="p-6 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Skeleton className="w-12 h-12 rounded-full" />
-                    <div>
-                      <Skeleton className="w-48 h-5 mb-2" />
-                      <Skeleton className="w-32 h-4" />
+              <div key={i} className="p-4 sm:p-5 bg-white rounded-2xl shadow-sm border border-gray-100">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div className="flex-1 min-w-0">
+                    <Skeleton className="w-64 h-5 mb-2" />
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="w-20 h-6 rounded-full" />
+                      <Skeleton className="w-20 h-6 rounded-full" />
+                      <Skeleton className="w-24 h-6 rounded-full" />
                     </div>
                   </div>
-                  <Skeleton className="w-20 h-6 rounded-full" />
-                </div>
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center space-x-4">
-                    <Skeleton className="w-24 h-4" />
-                    <Skeleton className="w-32 h-4" />
-                    <Skeleton className="w-28 h-4" />
+                  <div className="flex items-center gap-1">
+                    <Skeleton className="w-6 h-6 rounded-lg" />
+                    <Skeleton className="w-6 h-6 rounded-lg" />
+                    <Skeleton className="w-6 h-6 rounded-lg" />
                   </div>
-                  <Skeleton className="w-full h-12" />
                 </div>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {[1, 2, 3, 4].map((j) => (
-                    <Skeleton key={j} className="w-20 h-6 rounded-full" />
-                  ))}
-                </div>
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <Skeleton className="w-full h-4 mb-3" />
+                <div className="flex flex-wrap items-center gap-3 mb-3">
+                  <Skeleton className="w-28 h-4" />
                   <Skeleton className="w-32 h-4" />
-                  <div className="flex space-x-2">
-                    <Skeleton className="w-16 h-8" />
-                    <Skeleton className="w-24 h-8" />
+                  <Skeleton className="w-20 h-4" />
+                  <Skeleton className="w-24 h-4" />
+                </div>
+                <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="w-32 h-4" />
+                    <Skeleton className="w-40 h-4" />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="w-20 h-6" />
+                    <Skeleton className="w-16 h-6" />
                   </div>
                 </div>
               </div>
@@ -281,117 +283,100 @@ const JobListItem: React.FC<JobListItemProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 group">
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-4">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200 group overflow-hidden">
+      <div className="p-3 sm:p-4">
+        {/* Header Section - Title & Actions */}
+        <div className="flex items-start justify-between gap-2 mb-2">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-3">
-              <h3 className="text-lg font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors duration-200">
-                {job.title}
-              </h3>
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors duration-200">
+              {job.title}
+            </h3>
+            <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
               <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${getTypeColor(
-                  job.type
-                )}`}
+                className={`px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm ${getTypeColor(job.type)}`}
               >
                 {getTypeDisplayText(job.type)}
               </span>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${getStatusColor(
-                  job.status
-                )}`}
+                className={`px-2 py-0.5 rounded-full text-xs font-semibold shadow-sm ${getStatusColor(job.status)}`}
               >
                 {getStatusDisplayText(job.status)}
               </span>
-            </div>
-            
-            <div className="flex items-center gap-2 mb-3">
-              <div className="px-3 py-1 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full shadow-sm">
-                <span className="text-sm font-semibold text-gray-700">{job.department}</span>
-              </div>
-            </div>
-            
-            <p className="text-gray-700 mb-4 text-sm leading-relaxed">
-              {job.shortDescription || job.description}
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-sm">
-                  <MapPinIcon className="w-4 h-4" />
-                </div>
-                <span className="font-medium">{job.location}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-sm">
-                  <CurrencyDollarIcon className="w-4 h-4" />
-                </div>
-                <span className="font-medium">{job.salary}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-sm">
-                  <UsersIcon className="w-4 h-4" />
-                </div>
-                <span className="font-medium">{job.applicants} applicants</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg shadow-sm">
-                  <EyeIcon className="w-4 h-4" />
-                </div>
-                <span className="font-medium">{job.views} views</span>
+              <div className="px-2 py-0.5 bg-gradient-to-r from-gray-100 to-gray-200 rounded-full shadow-sm">
+                <span className="text-xs font-semibold text-gray-700">{job.department}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 ml-6">
+          <div className="flex items-center gap-1 flex-shrink-0">
             <button 
               title="View Details"
-              className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-600/10 rounded-lg transition-all duration-200 transform hover:scale-110"
+              className="p-1 text-gray-400 hover:text-primary-600 hover:bg-primary-600/10 rounded-lg transition-all duration-200"
             >
-              <EyeIcon className="w-5 h-5" />
+              <EyeIcon className="w-4 h-4" />
             </button>
             <button 
               title="Edit Job"
               onClick={() => router.push(`/dashboard/jobs/${job.id}`)}
-              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 transform hover:scale-110"
+              className="p-1 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
             >
-              <PencilIcon className="w-5 h-5" />
+              <PencilIcon className="w-4 h-4" />
             </button>
             <button 
               title="Delete Job"
               onClick={() => onDeleteJob(job.id, job.title)}
-              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 transform hover:scale-110"
+              className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
             >
-              <TrashIcon className="w-5 h-5" />
+              <TrashIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div className="flex items-center gap-6 text-sm text-gray-500">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-              <span>Posted {formatPostedDate(job.createdAt)}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
-              <span>Deadline: {formatDeadline(job.deadline || "")}</span>
-            </div>
+        {/* Description - Single Line */}
+        <p className="text-gray-600 text-xs mb-2 line-clamp-1">
+          {job.shortDescription || job.description}
+        </p>
+
+        {/* Quick Details - Inline Compact */}
+        <div className="flex flex-wrap items-center gap-2 mb-2 text-xs">
+          <div className="flex items-center gap-1">
+            <MapPinIcon className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            <span className="text-gray-700 truncate">{job.location}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <CurrencyDollarIcon className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            <span className="text-gray-700 truncate">{job.salary}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <UsersIcon className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            <span className="text-gray-700 whitespace-nowrap">{job.applicants}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <EyeIcon className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            <span className="text-gray-700 whitespace-nowrap">{job.views}</span>
+          </div>
+        </div>
+
+        {/* Footer - Dates & Actions */}
+        <div className="flex flex-col gap-2 pt-2 border-t border-gray-100">
+          <div className="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+            <span className="whitespace-nowrap">📅 Posted {formatPostedDate(job.createdAt)}</span>
+            <span className="whitespace-nowrap">⏰ Deadline: {formatDeadline(job.deadline || "")}</span>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <button 
               onClick={() => router.push(`/dashboard/jobs/${job.id}/applications`)}
-              className="px-4 py-2 text-primary-600 hover:bg-primary-600/10 rounded-lg transition-all duration-200 font-medium text-sm border border-primary-600/20 hover:border-primary-600/40"
+              className="px-2.5 py-1 text-primary-600 hover:bg-primary-600/10 rounded-lg transition-all duration-200 font-semibold text-xs border border-primary-600/20 hover:border-primary-600/40 whitespace-nowrap"
             >
-              View Applications
+              Applications
             </button>
             <button 
               onClick={() => {
                 const action = getActionButtonText(job.status);
                 onJobAction(job, action);
               }}
-              className={`px-4 py-2 rounded-lg transition-all duration-200 font-medium text-sm ${getActionButtonStyle(job.status)}`}
+              className={`px-2.5 py-1 rounded-lg transition-all duration-200 font-semibold text-xs whitespace-nowrap ${getActionButtonStyle(job.status)}`}
             >
               {getActionButtonText(job.status)}
             </button>

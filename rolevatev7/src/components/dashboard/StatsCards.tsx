@@ -107,17 +107,17 @@ export default function StatsCards() {
 
   if (error) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="col-span-full bg-red-50 border border-red-200 rounded-xl p-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
+        <div className="col-span-full bg-red-50 border border-red-100 rounded-xl p-3 sm:p-4">
           <div className="flex items-center gap-2 text-red-800">
-            <span className="text-sm font-medium">
+            <span className="text-xs sm:text-sm font-medium">
               Error loading dashboard statistics:
             </span>
-            <span className="text-sm">{error}</span>
+            <span className="text-xs sm:text-sm">{error}</span>
           </div>
           <button
             onClick={fetchDashboardStats}
-            className="mt-2 text-sm text-red-600 hover:text-red-800 font-medium"
+            className="mt-2 text-xs sm:text-sm text-red-600 hover:text-red-800 font-medium"
           >
             Retry
           </button>
@@ -127,19 +127,19 @@ export default function StatsCards() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
       {statCards.map((card) => (
         <div
           key={card.title}
-          className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70 hover:shadow-lg transition-shadow duration-200"
+          className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200"
         >
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-3 bg-primary-600/15 rounded-lg">
-              <card.icon className="w-6 h-6 text-primary-600" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="p-1.5 sm:p-2 bg-primary-600/10 rounded-lg">
+              <card.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
             </div>
             {card.change && (
               <div
-                className={`flex items-center text-sm font-medium ${
+                className={`flex items-center text-xs sm:text-sm font-medium ${
                   card.change.trend === "up" ? "text-green-600" : "text-red-600"
                 }`}
               >
@@ -147,9 +147,9 @@ export default function StatsCards() {
               </div>
             )}
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-            <p className="text-sm text-gray-600 font-medium">{card.title}</p>
+          <div className="space-y-0.5">
+            <p className="text-lg sm:text-xl font-bold text-gray-900">{card.value}</p>
+            <p className="text-xs sm:text-sm text-gray-600 font-medium">{card.title}</p>
           </div>
         </div>
       ))}

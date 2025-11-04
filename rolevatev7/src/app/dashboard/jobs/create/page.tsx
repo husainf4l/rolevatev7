@@ -655,7 +655,7 @@ export default function CreateJobPage() {
         {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title}</p>}
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <Label className="text-sm font-medium">Department *</Label>
           <select
@@ -704,7 +704,7 @@ export default function CreateJobPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <Label className="text-sm font-medium">Job Type *</Label>
           <select
@@ -747,7 +747,7 @@ export default function CreateJobPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <Label className="text-sm font-medium">Location *</Label>
           <select
@@ -1049,7 +1049,7 @@ export default function CreateJobPage() {
         {errors.skills && <p className="text-xs text-red-500 mt-1">{errors.skills}</p>}
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div>
           <Label className="text-sm font-medium">Experience (years) *</Label>
           <Input
@@ -1185,7 +1185,7 @@ export default function CreateJobPage() {
     <div className="space-y-6">
       <div className="bg-gray-50 rounded-lg p-6">
         <h3 className="text-lg font-semibold mb-4">{formData.title}</h3>
-        <div className="grid grid-cols-2 gap-4 text-sm mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm mb-4">
           <div>
             <span className="text-gray-600">Department:</span> {formData.department}
           </div>
@@ -1289,7 +1289,7 @@ export default function CreateJobPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <button

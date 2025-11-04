@@ -127,10 +127,10 @@ export default function SavedJobsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="px-2 sm:px-3 py-4">
+          <div className="flex justify-center py-8 sm:py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         </div>
       </div>
@@ -139,66 +139,66 @@ export default function SavedJobsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6">
-            <h3 className="text-lg font-medium text-red-800 mb-2">
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="px-2 sm:px-3 py-4">
+          <div className="bg-red-50 border border-red-200 rounded-sm p-3 sm:p-4">
+            <h3 className="text-sm sm:text-base font-medium text-red-800 mb-1">
               Error Loading Saved Jobs
             </h3>
-            <p className="text-red-700">{error}</p>
+            <p className="text-xs sm:text-sm text-red-700">{error}</p>
           </div>
         </div>
       </div>
     );
   }
   return (
-    <div className="flex-1 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="space-y-6">
+    <div className="flex-1 min-h-screen bg-gray-50 pt-16">
+      <div className="px-2 sm:px-3 space-y-3 sm:space-y-4">
         {/* Header */}
-        <div className="bg-white rounded-sm p-6 border border-gray-200 shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
             Saved Jobs
           </h1>
-          <p className="text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600">
             Keep track of interesting opportunities you want to apply to later
           </p>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-sm p-6 border border-gray-200 shadow-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+          <div className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Saved</p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-xs font-medium text-gray-600">Total Saved</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900">
                   {savedJobsDetails.length}
                 </p>
               </div>
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <BookmarkIcon className="w-6 h-6 text-primary-600" />
+              <div className="p-2 sm:p-2.5 bg-primary-100 rounded-sm">
+                <BookmarkIcon className="w-4 h-4 text-primary-600" />
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-sm p-6 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-xs font-medium text-gray-600">
                   Applied From Saved
                 </p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-lg sm:text-xl font-bold text-gray-900">0</p>
               </div>
-              <div className="p-3 bg-green-100 rounded-lg">
-                <BriefcaseIcon className="w-6 h-6 text-green-600" />
+              <div className="p-2 sm:p-2.5 bg-green-100 rounded-sm">
+                <BriefcaseIcon className="w-4 h-4 text-green-600" />
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-sm p-6 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-xs font-medium text-gray-600">
                   Deadlines Soon
                 </p>
-                <p className="text-2xl font-bold text-gray-900">
+                <p className="text-lg sm:text-xl font-bold text-gray-900">
                   {
                     savedJobsDetails.filter(
                       (job) =>
@@ -207,32 +207,32 @@ export default function SavedJobsPage() {
                   }
                 </p>
               </div>
-              <div className="p-3 bg-red-100 rounded-lg">
-                <ClockIcon className="w-6 h-6 text-red-600" />
+              <div className="p-2 sm:p-2.5 bg-red-100 rounded-sm">
+                <ClockIcon className="w-4 h-4 text-red-600" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-sm p-4 border border-gray-200 shadow-sm">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex flex-col md:flex-row items-stretch md:items-center space-y-2 md:space-y-0 md:space-x-4">
-              <select className="px-3 py-2 border border-gray-300 rounded-sm text-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
+        <div className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-3">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center space-y-1.5 sm:space-y-2 md:space-y-0 md:space-x-2">
+              <select className="px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-sm text-xs sm:text-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                 <option>All Jobs</option>
                 <option>Full-time</option>
                 <option>Part-time</option>
                 <option>Contract</option>
                 <option>Remote</option>
               </select>
-              <select className="px-3 py-2 border border-gray-300 rounded-sm text-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
+              <select className="px-2 sm:px-3 py-1.5 sm:py-2 border border-gray-300 rounded-sm text-xs sm:text-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                 <option>Sort by: Most Recent</option>
                 <option>Sort by: Best Match</option>
                 <option>Sort by: Salary</option>
                 <option>Sort by: Deadline</option>
               </select>
             </div>
-            <div className="text-sm text-gray-500 text-center md:text-right">
+            <div className="text-xs sm:text-sm text-gray-500 text-center md:text-right">
               {savedJobsDetails.length} saved jobs
             </div>
           </div>
@@ -240,83 +240,83 @@ export default function SavedJobsPage() {
 
         {/* Saved Jobs List */}
         {savedJobsDetails.length === 0 ? (
-          <div className="bg-white rounded-sm p-12 text-center border border-gray-200 shadow-sm">
-            <HeartIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="bg-white rounded-sm p-8 sm:p-12 text-center border border-gray-100 shadow-sm">
+            <HeartIcon className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-1">
               No saved jobs yet
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-3">
               Start saving jobs you're interested in to keep track of them here.
             </p>
             <a
               href="/userdashboard/jobs"
-              className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="inline-flex items-center space-x-2 px-3 py-1.5 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs sm:text-sm"
             >
               <span>Browse Jobs</span>
             </a>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-3">
             {savedJobsDetails.map((job) => (
-              <div key={job.id} className="bg-white rounded-sm border border-gray-200 shadow-sm hover:shadow-md transition-shadow p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-xl font-semibold text-gray-900">
+              <div key={job.id} className="bg-white rounded-sm border border-gray-100 shadow-sm hover:shadow-md transition-shadow p-3 sm:p-4">
+                <div className="flex items-start justify-between mb-2.5 sm:mb-3">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-2 mb-1 flex-wrap">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-900 truncate">
                         {job.title}
                       </h3>
                       {job.workType === "REMOTE" && (
-                        <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                        <span className="inline-flex px-1.5 py-0.5 text-xs font-medium rounded-sm bg-blue-100 text-blue-800 flex-shrink-0">
                           Remote
                         </span>
                       )}
                       {job.workType === "HYBRID" && (
-                        <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                        <span className="inline-flex px-1.5 py-0.5 text-xs font-medium rounded-sm bg-purple-100 text-purple-800 flex-shrink-0">
                           Hybrid
                         </span>
                       )}
                       {job.deadline && isDeadlineApproaching(job.deadline) && (
-                        <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-800">
+                        <span className="inline-flex px-1.5 py-0.5 text-xs font-medium rounded-sm bg-red-100 text-red-800 flex-shrink-0">
                           Deadline Soon
                         </span>
                       )}
                     </div>
-                    <p className="text-lg text-primary-600 font-medium mb-2">
+                    <p className="text-xs sm:text-sm text-primary-600 font-medium mb-1.5">
                       {job.company?.name || 'Company Name Not Available'}
                     </p>
-                    <p className="text-gray-600 mb-4 line-clamp-2">
+                    <p className="text-gray-600 mb-2 line-clamp-2 text-xs sm:text-sm">
                       {job.description}
                     </p>
-                    <div className="flex items-center space-x-6 text-sm text-gray-500">
+                    <div className="flex items-center space-x-3 sm:space-x-4 text-xs text-gray-500 flex-wrap">
                       <div className="flex items-center space-x-1">
-                        <MapPinIcon className="w-4 h-4" />
+                        <MapPinIcon className="w-3.5 h-3.5" />
                         <span>{job.location || 'Location Not Specified'}</span>
                       </div>
                       {job.salary && (
                         <div className="flex items-center space-x-1">
-                          <CurrencyDollarIcon className="w-4 h-4" />
+                          <CurrencyDollarIcon className="w-3.5 h-3.5" />
                           <span>{job.salary}</span>
                         </div>
                       )}
                       <div className="flex items-center space-x-1">
-                        <BriefcaseIcon className="w-4 h-4" />
+                        <BriefcaseIcon className="w-3.5 h-3.5" />
                         <span>{formatJobType(job.type)}</span>
                       </div>
                       {job.experience && (
                         <div className="flex items-center space-x-1">
-                          <ClockIcon className="w-4 h-4" />
+                          <ClockIcon className="w-3.5 h-3.5" />
                           <span>{job.experience}</span>
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-start space-x-2">
-                    <button className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
-                      <EyeIcon className="w-5 h-5" />
+                  <div className="flex items-start space-x-1 sm:space-x-2 ml-2 flex-shrink-0">
+                    <button className="p-1.5 sm:p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded-sm transition-colors">
+                      <EyeIcon className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => handleUnsaveJob(job.id)}
-                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-1.5 sm:p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-sm transition-colors"
                       title="Remove from saved jobs"
                     >
                       <TrashIcon className="w-5 h-5" />

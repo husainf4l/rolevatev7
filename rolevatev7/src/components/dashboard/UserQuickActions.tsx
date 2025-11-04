@@ -54,16 +54,6 @@ const quickActions = [
     href: "/userdashboard/saved-jobs",
   },
   {
-    label: "Interview Prep",
-    description: "Practice for interviews",
-    icon: AcademicCapIcon,
-    color: "teal",
-    bgColor: "bg-teal-50",
-    hoverBg: "hover:bg-teal-100",
-    iconColor: "text-teal-600",
-    href: "/userdashboard/interviews",
-  },
-  {
     label: "Job Search",
     description: "Advanced search options",
     icon: MagnifyingGlassIcon,
@@ -71,7 +61,7 @@ const quickActions = [
     bgColor: "bg-indigo-50",
     hoverBg: "hover:bg-indigo-100",
     iconColor: "text-indigo-600",
-    href: "/userdashboard/jobs?search=true",
+    href: "/userdashboard/jobs",
   },
 ];
 
@@ -83,11 +73,11 @@ export default function UserQuickActions() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.3 }}
-      className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow duration-300"
+      className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 hover:shadow-md transition-shadow duration-300"
     >
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
+      <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">Quick Actions</h2>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-3">
         {quickActions.map((action, index) => (
           <motion.button
             key={action.label}
@@ -95,13 +85,13 @@ export default function UserQuickActions() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.05, duration: 0.2 }}
             onClick={() => router.push(action.href)}
-            className={`${action.bgColor} ${action.hoverBg} rounded-lg p-4 text-left transition-all duration-200 border border-transparent hover:border-${action.color}-200 hover:shadow-md group`}
+            className={`${action.bgColor} ${action.hoverBg} rounded-sm p-2.5 sm:p-3 text-left transition-all duration-200 border border-transparent hover:border-${action.color}-200 hover:shadow-md group`}
           >
             <action.icon
-              className={`w-8 h-8 ${action.iconColor} mb-3 group-hover:scale-110 transition-transform duration-200`}
+              className={`w-5 h-5 sm:w-6 sm:h-6 ${action.iconColor} mb-1.5 group-hover:scale-110 transition-transform duration-200`}
             />
-            <h3 className="font-semibold text-gray-900 mb-1">{action.label}</h3>
-            <p className="text-sm text-gray-600">{action.description}</p>
+            <h3 className="font-semibold text-gray-900 mb-0.5 text-xs sm:text-sm">{action.label}</h3>
+            <p className="text-xs text-gray-600">{action.description}</p>
           </motion.button>
         ))}
       </div>

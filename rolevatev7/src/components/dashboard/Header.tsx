@@ -72,6 +72,7 @@ export default function Header({
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { user } = useAuth();
 
@@ -143,21 +144,30 @@ export default function Header({
   // Close menus on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      const target = e.target as Element;
+      
+      // Don't close if clicking on menu buttons or inside menus
+      if (target.closest('[data-menu-button]') || target.closest('[data-menu-dropdown]')) {
+        return;
+      }
+      
+      if (menuRef.current && !menuRef.current.contains(target)) {
         setMenuOpen(false);
       }
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(e.target as Node)
-      ) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(target)) {
+        setMenuOpen(false);
+      }
+      if (notificationRef.current && !notificationRef.current.contains(target)) {
         setNotificationOpen(false);
       }
     }
+    
     if (menuOpen || notificationOpen) {
       document.addEventListener("mousedown", handleClick);
     } else {
       document.removeEventListener("mousedown", handleClick);
     }
+    
     return () => document.removeEventListener("mousedown", handleClick);
   }, [menuOpen, notificationOpen]);
 
@@ -212,6 +222,7 @@ export default function Header({
                 {/* Notifications */}
                 <div className="relative" ref={notificationRef}>
                   <button
+                    data-menu-button
                     onClick={() => setNotificationOpen(!notificationOpen)}
                     className="relative p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
                   >
@@ -224,7 +235,7 @@ export default function Header({
                   </button>
 
                   {notificationOpen && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                    <div data-menu-dropdown className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
                       <div className="px-4 py-2 border-b border-gray-200">
                         <div className="flex items-center justify-between">
                           <h3 className="text-sm font-medium text-gray-900">
@@ -301,8 +312,10 @@ export default function Header({
                 </div>
 
                 {/* Profile Avatar */}
-                <div className="relative" ref={menuRef}>
+                <div className="relative" ref={mobileMenuRef}>
                   <button
+                    type="button"
+                    data-menu-button
                     className="flex items-center p-2 rounded-lg hover:bg-gray-100 transition-colors"
                     onClick={() => setMenuOpen((v) => !v)}
                   >
@@ -331,7 +344,7 @@ export default function Header({
                     </div>
                   </button>
                   {menuOpen && (
-                    <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                    <div data-menu-dropdown className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
                       <Link
                         href="/dashboard/profile"
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
@@ -371,6 +384,7 @@ export default function Header({
               {/* Notifications */}
               <div className="relative" ref={notificationRef}>
                 <button
+                  data-menu-button
                   onClick={() => setNotificationOpen(!notificationOpen)}
                   className="relative p-2 text-gray-400 hover:text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
                 >
@@ -383,7 +397,7 @@ export default function Header({
                 </button>
 
                 {notificationOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                  <div data-menu-dropdown className="absolute right-0 mt-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-200">
                       <div className="flex items-center justify-between">
                         <h3 className="text-sm font-medium text-gray-900">
@@ -460,6 +474,7 @@ export default function Header({
               {/* Profile Avatar + Dropdown */}
               <div className="relative" ref={menuRef}>
                 <button
+                  type="button"
                   className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
                   onClick={() => setMenuOpen((v) => !v)}
                 >
@@ -496,14 +511,14 @@ export default function Header({
                   </div>
                 </button>
                 {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
-                    <a
+                  <div data-menu-dropdown className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                    <Link
                       href="/dashboard/profile"
                       className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
                       onClick={() => setMenuOpen(false)}
                     >
                       Profile
-                    </a>
+                    </Link>
                     <button
                       className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 text-sm"
                       onClick={() => {

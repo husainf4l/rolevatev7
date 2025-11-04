@@ -46,18 +46,18 @@ export default function Calendar() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-            <CalendarDaysIcon className="w-5 h-5 text-primary-600" />
+      <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+            <CalendarDaysIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
             Upcoming Schedule
           </h2>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="p-4 bg-gray-50 rounded-lg animate-pulse">
-              <div className="h-4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div key={i} className="p-2.5 sm:p-3 bg-gray-50 rounded-lg animate-pulse">
+              <div className="h-3 bg-gray-200 rounded mb-1.5"></div>
+              <div className="h-2.5 bg-gray-200 rounded w-1/2"></div>
             </div>
           ))}
         </div>
@@ -66,43 +66,43 @@ export default function Calendar() {
   }
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-          <CalendarDaysIcon className="w-5 h-5 text-primary-600" />
+    <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <CalendarDaysIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
           Upcoming Schedule
         </h2>
-        <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+        <button className="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium">
           View All
         </button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {events.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <CalendarDaysIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p>No upcoming events</p>
-            <p className="text-sm">Your schedule will appear here</p>
+          <div className="text-center py-5 text-gray-500">
+            <CalendarDaysIcon className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+            <p className="text-sm">No upcoming events</p>
+            <p className="text-xs">Your schedule will appear here</p>
           </div>
         ) : (
           events.map((event) => (
             <div
               key={event.id}
-              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200 border border-gray-200/50"
+              className="flex items-center justify-between p-2.5 sm:p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200 border border-gray-100"
             >
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-900 mb-1">
+              <div className="flex-1 min-w-0">
+                <h3 className="font-medium text-sm text-gray-900 truncate">
                   {event.jobTitle}
                 </h3>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <ClockIcon className="w-4 h-4" />
-                  <span>
+                <div className="flex items-center gap-1 text-xs text-gray-600 mt-0.5">
+                  <ClockIcon className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">
                     {event.date} at {event.time}
                   </span>
                 </div>
               </div>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(
+                className={`px-1.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ml-2 ${getTypeColor(
                   event.type
                 )}`}
               >

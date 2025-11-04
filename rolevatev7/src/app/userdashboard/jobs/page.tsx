@@ -17,7 +17,8 @@ export default function UserDashboardJobsPage() {
   // Initialize search term from URL params
   useEffect(() => {
     const searchQuery = searchParams.get('search');
-    if (searchQuery) {
+    // Ignore "true" as a search term (from old quick action links)
+    if (searchQuery && searchQuery !== 'true') {
       setSearchTerm(searchQuery);
     }
   }, [searchParams]);
@@ -123,14 +124,15 @@ export default function UserDashboardJobsPage() {
   };
 
   // Fetch jobs from API
-  const fetchJobs = useCallback(async (page: number = 1, search?: string) => {
+  const fetchJobs = useCallback(async (page: number = 1) => {
     try {
       setLoading(true);
 
+      // Don't pass search to API - filter locally instead
       const response = await jobsService.getPublicJobs(
         page,
         jobsPerPage,
-        search || searchTerm ? { search: search || searchTerm } : undefined
+        undefined // No filters for API
       );
 
       // Check if response has the expected structure
@@ -160,15 +162,29 @@ export default function UserDashboardJobsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchTerm]); // Only depend on searchTerm
+  }, []); // No dependencies needed
 
-  // Initial fetch and search effect
+  // Initial fetch on mount only
   useEffect(() => {
-    fetchJobs(1, searchTerm);
-  }, [searchTerm, fetchJobs]);
+    fetchJobs(1);
+  }, [fetchJobs]);
+
+  // Filter jobs locally based on search term (backend doesn't support search)
+  const filteredJobs = jobs.filter((job) => {
+    if (!searchTerm) return true;
+    
+    const searchLower = searchTerm.toLowerCase();
+    return (
+      job.title.toLowerCase().includes(searchLower) ||
+      job.company.toLowerCase().includes(searchLower) ||
+      job.location.toLowerCase().includes(searchLower) ||
+      job.description?.toLowerCase().includes(searchLower) ||
+      (job as any).experience?.toLowerCase().includes(searchLower)
+    );
+  });
 
   // Sort the jobs
-  const sortedJobs = [...jobs].sort((a, b) => {
+  const sortedJobs = [...filteredJobs].sort((a, b) => {
     switch (sortBy) {
       case "latest":
         return new Date(b.postedAt || 0).getTime() - new Date(a.postedAt || 0).getTime();
@@ -210,28 +226,28 @@ export default function UserDashboardJobsPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 pt-16">
       {/* Header */}
-      <div >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center mb-4">
-            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 tracking-tight">
+      <div className="px-2 sm:px-3">
+        <div className="py-3 sm:py-4">
+          <div className="text-center mb-3 sm:mb-4">
+            <h1 className="font-display text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1 tracking-tight">
               Explore{" "}
               <span className="text-primary-600">
                 Opportunities
               </span>
             </h1>
-            <p className="font-text text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+            <p className="font-text text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto px-2">
               Find your next career opportunity
             </p>
           </div>
 
           {/* Search and Sort Bar */}
-          <div className="max-w-4xl mx-auto mb-2">
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
+          <div className="mb-2 sm:mb-3">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-center">
               <div className="flex-1 relative w-full">
                 <svg
-                  className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5"
+                  className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3.5 h-3.5 sm:w-4 sm:h-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -246,26 +262,26 @@ export default function UserDashboardJobsPage() {
                 <input
                   type="text"
                   placeholder="Job title, company, or skills..."
-                  className="w-full pl-10 sm:pl-12 pr-10 sm:pr-12 py-2 border border-gray-200 rounded-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white placeholder-gray-500 text-sm sm:text-base shadow-sm transition-all duration-200"
+                  className="w-full pl-8 sm:pl-9 pr-8 sm:pr-9 py-2 border border-gray-200 rounded-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white placeholder-gray-500 text-xs sm:text-sm shadow-sm transition-all duration-200"
                   value={searchTerm}
                   onChange={(e) => updateSearchTerm(e.target.value)}
                 />
                 {searchTerm && (
                   <button
                     onClick={clearSearch}
-                    className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute right-2.5 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                     aria-label="Clear search"
                   >
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 )}
               </div>
-              <div className="flex gap-1.5 sm:gap-2 flex-wrap justify-center sm:justify-start">
+              <div className="flex gap-1 sm:gap-1.5 flex-wrap justify-center sm:justify-start">
                 <button
                   onClick={() => setSortBy("latest")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                     sortBy === "latest"
                       ? "bg-primary-600 text-white shadow-sm"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -275,7 +291,7 @@ export default function UserDashboardJobsPage() {
                 </button>
                 <button
                   onClick={() => setSortBy("salary")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                     sortBy === "salary"
                       ? "bg-primary-600 text-white shadow-sm"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -285,7 +301,7 @@ export default function UserDashboardJobsPage() {
                 </button>
                 <button
                   onClick={() => setSortBy("applicants")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                     sortBy === "applicants"
                       ? "bg-primary-600 text-white shadow-sm"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -300,20 +316,20 @@ export default function UserDashboardJobsPage() {
       </div>
 
       {/* Jobs Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
-        <div className="flex justify-between items-center mb-6">
-          <div className="text-lg font-semibold text-gray-900">
+      <div className="px-2 sm:px-3 py-2 pb-8">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <div className="text-xs sm:text-sm font-semibold text-gray-900">
             {sortedJobs.length} {sortedJobs.length === 1 ? "Job" : "Jobs"} Found
           </div>
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          <div className="flex justify-center py-8 sm:py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         ) : (
           <>
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3">
               {sortedJobs.map((job) => (
                 <JobListCard
                   key={job.id}
@@ -326,12 +342,12 @@ export default function UserDashboardJobsPage() {
             </div>
 
             {sortedJobs.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-500">No jobs found matching your criteria.</p>
+              <div className="text-center py-8 sm:py-12">
+                <p className="text-xs sm:text-sm text-gray-500">No jobs found matching your criteria.</p>
                 <Button
                   variant="outline"
                   onClick={clearSearch}
-                  className="mt-4"
+                  className="mt-3 text-xs sm:text-sm px-2.5 sm:px-3 py-1 sm:py-1.5"
                 >
                   Clear Search
                 </Button>
@@ -340,21 +356,23 @@ export default function UserDashboardJobsPage() {
 
             {/* Pagination */}
             {pagination && pagination.totalPages > 1 && (
-              <div className="flex justify-center mt-8 space-x-2">
+              <div className="flex justify-center mt-4 sm:mt-6 space-x-1.5 sm:space-x-2">
                 <Button
                   variant="secondary"
                   disabled={!pagination.hasPrevPage || loading}
                   onClick={() => handlePageChange(pagination.prevPage)}
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5"
                 >
                   Previous
                 </Button>
-                <span className="px-4 py-2">
+                <span className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm">
                   Page {currentPage} of {pagination.totalPages}
                 </span>
                 <Button
                   variant="secondary"
                   disabled={!pagination.hasNextPage || loading}
                   onClick={() => handlePageChange(pagination.nextPage)}
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-1.5"
                 >
                   Next
                 </Button>

@@ -98,19 +98,19 @@ export default function UserDashboardPage() {
   };
 
   return (
-    <div className="flex-1 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="space-y-6">
+    <div className="flex-1 min-h-screen bg-gray-50 pt-16">
+      <div className="px-2 sm:px-3 space-y-3 sm:space-y-4">
         {/* Welcome Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="bg-white rounded-sm p-6 border border-gray-200 shadow-sm"
+          className="bg-white rounded-sm p-3 sm:p-4 border border-gray-100 shadow-sm"
         >
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
             Welcome back, {user?.candidateProfile?.name || user?.name || "Candidate"}! 
           </h1>
-          <p className="text-gray-600">
+          <p className="text-xs sm:text-sm text-gray-600">
             Here's what's happening with your job search today.
           </p>
         </motion.div>
@@ -120,17 +120,17 @@ export default function UserDashboardPage() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="relative rounded-xl p-6 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-white/10"
+          className="relative rounded-sm p-4 sm:p-5 overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-white/10"
         >
           {/* Subtle animated background elements */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-primary-500/20 rounded-full blur-3xl -mr-20 -mt-20 opacity-50"></div>
-          <div className="absolute bottom-0 left-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl -ml-20 -mb-20 opacity-30"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/20 rounded-full blur-3xl -mr-16 -mt-16 opacity-50"></div>
+          <div className="absolute bottom-0 left-0 w-28 h-28 bg-blue-500/10 rounded-full blur-3xl -ml-14 -mb-14 opacity-30"></div>
           
           {/* Content */}
           <div className="relative z-10 text-center">
             {/* Coming Soon Badge */}
-            <div className="inline-flex items-center gap-2 mb-3">
-              <div className="flex items-center gap-1 bg-white/5 border border-white/10 backdrop-blur-xl rounded-full px-3 py-1">
+            <div className="inline-flex items-center gap-2 mb-2 sm:mb-3">
+              <div className="flex items-center gap-1 bg-white/5 border border-white/10 backdrop-blur-xl rounded-full px-2.5 sm:px-3 py-1">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary-500"></span>
@@ -140,12 +140,12 @@ export default function UserDashboardPage() {
             </div>
 
             {/* Main Headline */}
-            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-white mb-2 leading-tight">
+            <h2 className="text-lg sm:text-xl font-semibold tracking-tight text-white mb-1.5 sm:mb-2 leading-tight">
               Create Professional CVs
             </h2>
             
             {/* Subheading */}
-            <p className="text-sm md:text-base text-gray-300 font-light mb-4 leading-relaxed max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm text-gray-300 font-light mb-3 leading-relaxed max-w-lg mx-auto">
               Rolekit brings everything you need to build a standout resume. Crafted by Rolevate.
             </p>
 
@@ -155,10 +155,10 @@ export default function UserDashboardPage() {
                 href="https://rolekits.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 px-6 py-2 bg-white text-slate-900 font-semibold rounded-full hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-white/20 transform hover:scale-105 text-sm"
+                className="group relative inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 bg-white text-slate-900 font-semibold rounded-sm hover:bg-gray-100 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 text-xs sm:text-sm"
               >
                 Learn More
-                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </a>
@@ -170,9 +170,9 @@ export default function UserDashboardPage() {
         <UserStatsCards stats={stats} loading={loading} />
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
           {/* Left Column - 2/3 width */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
             <RecentApplicationsWidget
               applications={applications}
               loading={loading}
@@ -181,7 +181,7 @@ export default function UserDashboardPage() {
           </div>
 
           {/* Right Column - 1/3 width */}
-          <div className="hidden lg:block space-y-6">
+          <div className="hidden lg:block space-y-3 sm:space-y-4">
             <UserProfileCompletionWidget
               sections={profileSections}
               completionPercentage={completionPercentage}

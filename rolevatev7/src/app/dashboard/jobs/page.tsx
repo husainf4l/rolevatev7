@@ -338,14 +338,14 @@ function JobsContent() {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen p-8 pt-24">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-white pt-20">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <Header
             title="Job Management"
             subtitle="Create, manage, and track your job postings"
           />
           <div className="flex items-center justify-center h-64">
-            <div className="bg-white rounded-sm shadow-sm border border-gray-200 p-8">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
               <div className="flex items-center gap-4">
                 <div className="w-8 h-8 border-3 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
                 <div>
@@ -363,14 +363,14 @@ function JobsContent() {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen p-8 pt-24">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-white pt-20">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <Header
             title="Job Management"
             subtitle="Create, manage, and track your job postings"
           />
           <div className="flex items-center justify-center h-64">
-            <div className="bg-white rounded-sm shadow-sm border border-gray-200 p-8 text-center max-w-md">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 text-center max-w-md">
               <div className="w-16 h-16 mx-auto mb-4 bg-rose-50 rounded-full flex items-center justify-center">
                 <svg className="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
@@ -380,7 +380,7 @@ function JobsContent() {
               <p className="text-gray-600 text-sm mb-6">{error}</p>
               <button
                 onClick={() => window.location.reload()}
-                className="px-6 py-3 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow font-semibold"
+                className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow font-semibold"
               >
                 Try Again
               </button>
@@ -392,15 +392,17 @@ function JobsContent() {
   }
 
   return (
-    <div className="min-h-screen p-8 pt-24">
-      <div className="max-w-7xl mx-auto">
-        <Header
-          title="Job Management"
-          subtitle="Create, manage, and track your job postings"
-        />
+    <div className="min-h-screen bg-white">
+      <div className="w-full">
+        <div className="px-2 sm:px-3">
+          <Header
+            title="Job Management"
+            subtitle="Create, manage, and track your job postings"
+          />
+        </div>
 
         {/* Action Bar */}
-        <div className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-2.5 sm:p-3 mb-3 sm:mb-4 mx-2 sm:mx-3">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
             <div className="flex-1 min-w-0">
               <div className="relative">
@@ -415,18 +417,18 @@ function JobsContent() {
                   placeholder="Search by job title, department, or location..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-200 bg-gray-50 focus:bg-white"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-200 bg-white focus:bg-white hover:border-gray-300"
                 />
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 items-start lg:items-center flex-wrap">
               <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Status:</label>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700">Status:</label>
                 <select
                   value={filterStatus}
                   onChange={(e) => handleStatusFilterChange(e.target.value)}
-                  className="px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-sm font-medium"
+                  className="px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-xs sm:text-sm font-medium hover:border-gray-300 transition-colors"
                 >
                   <option value="all">All Status</option>
                   <option value="DRAFT">Draft</option>
@@ -439,11 +441,11 @@ function JobsContent() {
               </div>
 
               <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Type:</label>
+                <label className="text-xs sm:text-sm font-semibold text-gray-700">Type:</label>
                 <select
                   value={filterType}
                   onChange={(e) => handleTypeFilterChange(e.target.value)}
-                  className="px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-sm font-medium"
+                  className="px-3 sm:px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-xs sm:text-sm font-medium hover:border-gray-300 transition-colors"
                 >
                   <option value="all">All Types</option>
                   <option value="FULL_TIME">Full-time</option>
@@ -453,40 +455,43 @@ function JobsContent() {
                 </select>
               </div>
 
-              <div className="flex items-center gap-2 ml-2">
+              <div className="flex items-center gap-2">
                 <button 
                   onClick={refreshJobs}
                   disabled={loading}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-sm hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
+                  className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-xs sm:text-sm font-semibold hover:shadow-sm"
                 >
                   <svg className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                   </svg>
-                  {loading ? 'Refreshing...' : 'Refresh'}
+                  <span className="hidden xs:inline">{loading ? 'Refreshing...' : 'Refresh'}</span>
                 </button>
 
                 <button 
                   onClick={() => router.push('/dashboard/jobs/create')}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow text-sm font-semibold"
+                  className="flex items-center justify-center gap-2 px-3 sm:px-5 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow text-xs sm:text-sm font-semibold"
                 >
-                  <PlusIcon className="w-4 h-4" />
-                  Create Job
+                  <PlusIcon className="w-4 h-4 flex-shrink-0" />
+                  <span className="hidden sm:inline">Create Job</span>
+                  <span className="sm:hidden">New</span>
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-   
+           
 
         {/* Jobs List */}
-        <JobList
-          jobs={jobPosts}
-          filteredJobs={filteredJobs}
-          onJobAction={handleJobAction}
-          onDeleteJob={deleteJob}
-          loading={loading}
-        />
+        <div className="mx-2 sm:mx-3 mb-6">
+          <JobList
+            jobs={jobPosts}
+            filteredJobs={filteredJobs}
+            onJobAction={handleJobAction}
+            onDeleteJob={deleteJob}
+            loading={loading}
+          />
+        </div>
       </div>
     </div>
   );

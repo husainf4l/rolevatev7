@@ -99,18 +99,18 @@ export default function RecentApplications() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200/60">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+      <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
             <DocumentTextIcon className="w-5 h-5 text-primary-600" />
             Recent Applications
           </h2>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="p-4 border border-gray-200 rounded-lg animate-pulse">
-              <div className="h-4 bg-gray-200 rounded mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div key={i} className="p-3 border border-gray-100 rounded-lg animate-pulse">
+              <div className="h-3 bg-gray-200 rounded mb-2"></div>
+              <div className="h-2 bg-gray-200 rounded w-1/2"></div>
             </div>
           ))}
         </div>
@@ -119,89 +119,89 @@ export default function RecentApplications() {
   }
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200/60">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-          <DocumentTextIcon className="w-5 h-5 text-primary-600" />
+    <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <DocumentTextIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
           Recent Applications
         </h2>
-        <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+        <button className="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium">
           View All
         </button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {recentApplications.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <DocumentTextIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p>No applications yet</p>
-            <p className="text-sm">Applications will appear here when candidates apply to your jobs</p>
+          <div className="text-center py-6 text-gray-500">
+            <DocumentTextIcon className="w-10 h-10 mx-auto mb-3 text-gray-300" />
+            <p className="text-sm">No applications yet</p>
+            <p className="text-xs">Applications will appear here when candidates apply</p>
           </div>
         ) : (
           recentApplications.map((application) => (
             <div
               key={application.id}
-              className="p-4 border border-gray-200 rounded-lg hover:border-primary-600/30 hover:shadow-sm transition-all duration-200"
+              className="p-2.5 sm:p-3 border border-gray-100 rounded-lg hover:border-primary-600/30 hover:shadow-sm transition-all duration-200"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <DocumentTextIcon className="w-5 h-5 text-primary-600" />
-                  <div>
-                    <h3 className="font-medium text-gray-900 mb-1">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-2">
+                <div className="flex items-start gap-2 flex-1 min-w-0">
+                  <DocumentTextIcon className="w-4 h-4 text-primary-600 flex-shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-medium text-sm text-gray-900 truncate">
                       {application.candidate.name}
                     </h3>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-xs text-gray-500 truncate">
                       {application.job.title} • {formatAppliedDate(application.appliedAt)}
                     </p>
-                    <p className="text-xs text-gray-400">{application.candidate.email}</p>
+                    <p className="text-xs text-gray-400 truncate">{application.candidate.email}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-0.5 flex-shrink-0 mt-1.5 sm:mt-0">
                   <button 
-                    className="p-2 text-gray-400 hover:text-primary-600 transition-colors duration-200"
+                    className="p-1 text-gray-400 hover:text-primary-600 transition-colors duration-200"
                     title="View Application"
                   >
-                    <EyeIcon className="w-4 h-4" />
+                    <EyeIcon className="w-3.5 h-3.5" />
                   </button>
                   {application.resumeUrl && (
                     <a 
                       href={application.resumeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 text-gray-400 hover:text-primary-600 transition-colors duration-200"
+                      className="p-1 text-gray-400 hover:text-primary-600 transition-colors duration-200"
                       title="Download CV"
                     >
-                      <ArrowDownTrayIcon className="w-4 h-4" />
+                      <ArrowDownTrayIcon className="w-3.5 h-3.5" />
                     </a>
                   )}
                   {application.status !== "OFFERED" && application.status !== "REJECTED" && (
                     <>
                       <button 
-                        className="p-2 text-gray-400 hover:text-green-600 transition-colors duration-200"
+                        className="p-1 text-gray-400 hover:text-green-600 transition-colors duration-200"
                         title="Accept Application"
                         onClick={() => handleStatusUpdate(application.id, "OFFERED")}
                       >
-                        <CheckCircleIcon className="w-4 h-4" />
+                        <CheckCircleIcon className="w-3.5 h-3.5" />
                       </button>
                       <button 
-                        className="p-2 text-gray-400 hover:text-red-600 transition-colors duration-200"
+                        className="p-1 text-gray-400 hover:text-red-600 transition-colors duration-200"
                         title="Reject Application"
                         onClick={() => handleStatusUpdate(application.id, "REJECTED")}
                       >
-                        <XCircleIcon className="w-4 h-4" />
+                        <XCircleIcon className="w-3.5 h-3.5" />
                       </button>
                     </>
                   )}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm">
-                <div className="flex items-center gap-4 text-gray-500">
-                  <span>Score: {application.cvAnalysisScore || 'N/A'}</span>
-                  <span>Expected: {application.expectedSalary}</span>
+              <div className="flex flex-col xs:flex-row xs:items-center xs:justify-between text-xs gap-1.5 xs:gap-0">
+                <div className="flex flex-col xs:flex-row xs:items-center gap-1 xs:gap-3 text-gray-500">
+                  <span className="truncate">Score: {application.cvAnalysisScore || 'N/A'}</span>
+                  <span className="truncate">Expected: {application.expectedSalary}</span>
                 </div>
                 <div
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium self-start xs:self-center ${getStatusColor(
                     application.status
                   )}`}
                 >

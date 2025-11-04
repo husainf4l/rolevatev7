@@ -281,13 +281,13 @@ export default function CompanyProfilePage() {
         title="Company Profile"
         subtitle="Manage your company, users, and subscription."
       />
-      <main className="pt-20 px-4 lg:px-8 max-w-7xl mx-auto">
+      <main className="pt-20 px-2 sm:px-3 w-full">
         {/* Hero Section */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-sm shadow-2xl p-8 mb-6 border border-white/20">
-          <div className="flex flex-col lg:flex-row items-center gap-8">
+        <div className="bg-white rounded-sm shadow-sm p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-100">
+          <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6">
             <div className="flex-shrink-0">
               <div className="relative">
-                <div className="w-24 h-24 bg-primary-600 rounded-sm flex items-center justify-center text-3xl font-bold text-white shadow-lg overflow-hidden">
+                <div className="w-20 h-20 bg-primary-600 rounded-sm flex items-center justify-center text-2xl font-bold text-white shadow-lg overflow-hidden">
                   {companyProfile.logo ? (
                     <img
                       src={
@@ -301,13 +301,13 @@ export default function CompanyProfilePage() {
                       className="w-full h-full object-cover rounded-sm"
                     />
                   ) : (
-                    <span className="text-3xl font-bold text-white">
+                    <span className="text-2xl font-bold text-white">
                       {companyProfile.name?.charAt(0) || "C"}
                     </span>
                   )}
                 </div>
-                <label className="absolute bottom-0 right-0 w-8 h-8 bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-white">
-                  <CameraIcon className="w-4 h-4 text-gray-600" />
+                <label className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors border-2 border-white">
+                  <CameraIcon className="w-3.5 h-3.5 text-gray-600" />
                   <input
                     type="file"
                     accept="image/*"
@@ -319,26 +319,26 @@ export default function CompanyProfilePage() {
               </div>
             </div>
             <div className="flex-1 text-center lg:text-left">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
                 {companyProfile.name || "Company Name"}
               </h1>
-              <p className="text-lg text-gray-600 mb-4">
+              <p className="text-sm sm:text-base text-gray-600 mb-3">
                 {companyProfile.description ||
                   "Company description will appear here"}
               </p>
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                 {companyProfile.industry && (
-                  <span className="px-4 py-2 bg-primary-600/10 text-primary-600 rounded-full text-sm font-semibold border border-primary-600/20">
+                  <span className="px-3 py-1 bg-primary-600/10 text-primary-600 rounded-sm text-xs sm:text-sm font-semibold border border-primary-600/20">
                     {companyProfile.industry}
                   </span>
                 )}
                 {companyProfile.headquarters && (
-                  <span className="px-4 py-2 bg-primary-600/10 text-primary-600 rounded-full text-sm font-semibold border border-primary-600/20">
+                  <span className="px-3 py-1 bg-primary-600/10 text-primary-600 rounded-sm text-xs sm:text-sm font-semibold border border-primary-600/20">
                     {companyProfile.headquarters}
                   </span>
                 )}
                 {companyProfile.employees && (
-                  <span className="px-4 py-2 bg-primary-600/10 text-primary-600 rounded-full text-sm font-semibold border border-primary-600/20">
+                  <span className="px-3 py-1 bg-primary-600/10 text-primary-600 rounded-sm text-xs sm:text-sm font-semibold border border-primary-600/20">
                     {companyProfile.employees} employees
                   </span>
                 )}
@@ -349,16 +349,16 @@ export default function CompanyProfilePage() {
 
         {/* Stats Cards */}
         {companyProfile.stats && companyProfile.stats.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-4 sm:mb-6">
             {companyProfile.stats.map((stat, i) => (
               <div
                 key={i}
-                className="bg-white/80 backdrop-blur-xl rounded-sm p-6 shadow-xl border border-white/20 text-center"
+                className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 text-center"
               >
-                <div className="text-3xl font-bold text-gray-900 mb-2">
+                <div className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
                   {stat.value}
                 </div>
-                <div className="text-sm text-gray-500 font-medium">
+                <div className="text-xs sm:text-sm text-gray-500 font-medium">
                   {stat.label}
                 </div>
               </div>
@@ -367,44 +367,44 @@ export default function CompanyProfilePage() {
         )}
 
         {/* Navigation Tabs */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-sm shadow-xl border border-white/20 mb-6">
-          <div className="flex gap-1 p-2 items-center justify-between">
-            <div className="flex gap-1 flex-1">
+        <div className="bg-white rounded-sm shadow-sm border border-gray-100 mb-4 sm:mb-6">
+          <div className="flex gap-1 p-1.5 sm:p-2 items-center justify-between overflow-x-auto">
+            <div className="flex gap-1 flex-1 min-w-0">
               <button
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-2 rounded-sm font-semibold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap ${
                   tab === "company"
-                    ? "bg-primary-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                    ? "bg-primary-600 text-white shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
                 onClick={() => setTab("company")}
               >
-                Company Details
+                Company
               </button>
               <button
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-2 rounded-sm font-semibold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap ${
                   tab === "users"
-                    ? "bg-primary-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                    ? "bg-primary-600 text-white shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
                 onClick={() => setTab("users")}
               >
-                Team Members
+                Team
               </button>
               <button
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-2 rounded-sm font-semibold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap ${
                   tab === "subscription"
-                    ? "bg-primary-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                    ? "bg-primary-600 text-white shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
                 onClick={() => setTab("subscription")}
               >
-                Subscription
+                Billing
               </button>
               <button
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-2 rounded-sm font-semibold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap ${
                   tab === "security"
-                    ? "bg-primary-600 text-white shadow-lg"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                    ? "bg-primary-600 text-white shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                 }`}
                 onClick={() => setTab("security")}
               >
@@ -412,29 +412,30 @@ export default function CompanyProfilePage() {
               </button>
             </div>
             {tab === "company" && (
-              <div className="flex gap-2 ml-4">
+              <div className="flex gap-1.5 ml-2 flex-shrink-0">
                 {!isEditMode ? (
                   <Button
                     onClick={handleEditMode}
-                    className="bg-primary-600 hover:bg-primary-700 text-white"
+                    className="bg-primary-600 hover:bg-primary-700 text-white text-xs sm:text-sm px-2.5 sm:px-4 py-1.5 sm:py-2 h-auto"
                     size="sm"
                   >
-                    Edit Profile
+                    Edit
                   </Button>
                 ) : (
                   <>
                     <Button
                       onClick={handleSaveProfile}
                       disabled={isSaving}
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      className="bg-green-600 hover:bg-green-700 text-white text-xs sm:text-sm px-2.5 sm:px-4 py-1.5 sm:py-2 h-auto"
                       size="sm"
                     >
-                      {isSaving ? "Saving..." : "Save Changes"}
+                      {isSaving ? "Saving..." : "Save"}
                     </Button>
                     <Button
                       onClick={handleCancelEdit}
                       variant="secondary"
                       size="sm"
+                      className="text-xs sm:text-sm px-2.5 sm:px-4 py-1.5 sm:py-2 h-auto"
                     >
                       Cancel
                     </Button>
@@ -446,18 +447,18 @@ export default function CompanyProfilePage() {
         </div>
 
         {/* Content Area */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-sm shadow-xl p-8 border border-white/20">
+        <div className="bg-white rounded-sm shadow-sm p-4 sm:p-6 border border-gray-100">
           {/* Tab Content */}
           {tab === "company" && (
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* Company Logo Section */}
-              <div className="bg-gray-50 rounded-sm p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
+              <div className="bg-gray-50 rounded-sm p-4 sm:p-5">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
                   Company Logo
                 </h3>
-                <div className="flex items-center gap-6">
-                  <div className="relative">
-                    <div className="w-20 h-20 bg-primary-600 rounded-sm flex items-center justify-center text-2xl font-bold text-white shadow-lg overflow-hidden">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="relative flex-shrink-0">
+                    <div className="w-16 h-16 bg-primary-600 rounded-sm flex items-center justify-center text-xl font-bold text-white shadow-sm overflow-hidden">
                       {companyProfile.logo ? (
                         <img
                           src={
@@ -471,13 +472,13 @@ export default function CompanyProfilePage() {
                           className="w-full h-full object-cover rounded-sm"
                         />
                       ) : (
-                        <span className="text-2xl font-bold text-white">
+                        <span className="text-xl font-bold text-white">
                           {companyProfile.name?.charAt(0) || "C"}
                         </span>
                       )}
                     </div>
-                    <label className="absolute bottom-0 right-0 w-6 h-6 bg-white rounded-full shadow-lg cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200">
-                      <CameraIcon className="w-3 h-3 text-gray-600" />
+                    <label className="absolute bottom-0 right-0 w-5 h-5 bg-white rounded-full shadow cursor-pointer flex items-center justify-center hover:bg-gray-50 transition-colors border border-gray-200">
+                      <CameraIcon className="w-2.5 h-2.5 text-gray-600" />
                       <input
                         type="file"
                         accept="image/*"
@@ -487,17 +488,16 @@ export default function CompanyProfilePage() {
                       />
                     </label>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-sm font-medium text-gray-900 mb-2">
-                      Update Company Logo
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">
+                      Update Logo
                     </h4>
-                    <p className="text-sm text-gray-500 mb-3">
-                      Upload a square image for best results. Recommended size:
-                      200x200px. Max file size: 5MB.
+                    <p className="text-xs text-gray-500 mb-2">
+                      Square image recommended. Max 5MB.
                     </p>
-                    <label className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
-                      <CameraIcon className="w-4 h-4 mr-2" />
-                      Choose File
+                    <label className="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer transition-colors">
+                      <CameraIcon className="w-3 h-3 mr-1.5" />
+                      Choose
                       <input
                         type="file"
                         accept="image/*"
@@ -516,15 +516,15 @@ export default function CompanyProfilePage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 {/* Contact Information */}
-                <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <div className="space-y-4 sm:space-y-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">
                     Contact Information
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Email
                       </label>
                       <input
@@ -532,7 +532,7 @@ export default function CompanyProfilePage() {
                         value={isEditMode && editData ? editData.email || "" : (companyProfile.email || "")}
                         onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, email: e.target.value } : null)}
                         disabled={!isEditMode}
-                        className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium ${
+                        className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium text-xs sm:text-sm ${
                           isEditMode
                             ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                             : "bg-gray-50/50 focus:outline-none"
@@ -541,7 +541,7 @@ export default function CompanyProfilePage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Phone
                       </label>
                       <input
@@ -549,7 +549,7 @@ export default function CompanyProfilePage() {
                         value={isEditMode && editData ? editData.phone || "" : (companyProfile.phone || "")}
                         onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, phone: e.target.value } : null)}
                         disabled={!isEditMode}
-                        className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium ${
+                        className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium text-xs sm:text-sm ${
                           isEditMode
                             ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                             : "bg-gray-50/50 focus:outline-none"
@@ -558,7 +558,7 @@ export default function CompanyProfilePage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Website
                       </label>
                       <input
@@ -566,7 +566,7 @@ export default function CompanyProfilePage() {
                         value={isEditMode && editData ? editData.website || "" : (companyProfile.website || "")}
                         onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, website: e.target.value } : null)}
                         disabled={!isEditMode}
-                        className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium ${
+                        className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium text-xs sm:text-sm ${
                           isEditMode
                             ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                             : "bg-gray-50/50 focus:outline-none"
@@ -578,13 +578,13 @@ export default function CompanyProfilePage() {
                 </div>
 
                 {/* Company Details */}
-                <div className="space-y-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                <div className="space-y-4 sm:space-y-5">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900">
                     Company Details
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Founded
                       </label>
                       <input
@@ -592,7 +592,7 @@ export default function CompanyProfilePage() {
                         value={isEditMode && editData ? editData.founded || "" : (companyProfile.founded || "")}
                         onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, founded: e.target.value } : null)}
                         disabled={!isEditMode}
-                        className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium ${
+                        className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium text-xs sm:text-sm ${
                           isEditMode
                             ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                             : "bg-gray-50/50 focus:outline-none"
@@ -601,7 +601,7 @@ export default function CompanyProfilePage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Mission
                       </label>
                       <textarea
@@ -609,7 +609,7 @@ export default function CompanyProfilePage() {
                         onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, mission: e.target.value } : null)}
                         disabled={!isEditMode}
                         rows={3}
-                        className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium resize-none ${
+                        className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium resize-none text-xs sm:text-sm ${
                           isEditMode
                             ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                             : "bg-gray-50/50 focus:outline-none"
@@ -622,9 +622,9 @@ export default function CompanyProfilePage() {
               </div>
 
               {/* Description and Industry Section */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                     Company Description
                   </label>
                   <textarea
@@ -632,7 +632,7 @@ export default function CompanyProfilePage() {
                     onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, description: e.target.value } : null)}
                     disabled={!isEditMode}
                     rows={4}
-                    className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium resize-none ${
+                    className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium resize-none text-xs sm:text-sm ${
                       isEditMode
                         ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                         : "bg-gray-50/50 focus:outline-none"
@@ -641,7 +641,7 @@ export default function CompanyProfilePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                     Industry
                   </label>
                   <input
@@ -649,7 +649,7 @@ export default function CompanyProfilePage() {
                     value={isEditMode && editData ? editData.industry || "" : (companyProfile.industry || "")}
                     onChange={(e) => isEditMode && setEditData(prev => prev ? { ...prev, industry: e.target.value } : null)}
                     disabled={!isEditMode}
-                    className={`w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 font-medium ${
+                    className={`w-full px-3 py-2 border border-gray-200 rounded-sm text-gray-900 font-medium text-xs sm:text-sm ${
                       isEditMode
                         ? "bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
                         : "bg-gray-50/50 focus:outline-none"
@@ -662,14 +662,14 @@ export default function CompanyProfilePage() {
               {/* Company Values */}
               {companyProfile.values && companyProfile.values.length > 0 && (
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
                     Our Values
                   </h3>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {companyProfile.values.map((value, i) => (
                       <span
                         key={i}
-                        className="px-4 py-2 bg-primary-600/10 text-primary-600 rounded-full text-sm font-semibold border border-primary-600/20"
+                        className="px-3 py-1 bg-primary-600/10 text-primary-600 rounded-sm text-xs sm:text-sm font-semibold border border-primary-600/20"
                       >
                         {value}
                       </span>
@@ -682,17 +682,17 @@ export default function CompanyProfilePage() {
               {companyProfile.benefits &&
                 companyProfile.benefits.length > 0 && (
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
                       Employee Benefits
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                       {companyProfile.benefits.map((benefit, i) => (
                         <div
                           key={i}
-                          className="flex items-center gap-3 p-4 bg-white/60 rounded-xl border border-gray-100"
+                          className="flex items-center gap-2 p-2.5 sm:p-3 bg-white/60 rounded-sm border border-gray-100"
                         >
-                          <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
-                          <span className="text-gray-800 font-medium">
+                          <div className="w-2 h-2 bg-primary-600 rounded-full flex-shrink-0"></div>
+                          <span className="text-gray-800 font-medium text-xs sm:text-sm">
                             {benefit}
                           </span>
                         </div>
@@ -704,71 +704,73 @@ export default function CompanyProfilePage() {
           )}
 
           {tab === "users" && (
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold text-gray-900">
+            <div className="space-y-4 sm:space-y-6">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900">
                   Team Members
                 </h3>
                 <Button
                   variant="default"
-                  size="default"
+                  size="sm"
                   onClick={generateInvitationCode}
                   disabled={generatingInvite}
+                  className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                 >
                   {generatingInvite ? "Generating..." : "Generate Invite Link"}
                 </Button>
               </div>
 
               {invitationCode && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-sm p-6 mb-6">
-                  <h4 className="text-lg font-bold text-green-800 mb-3">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-sm p-3 sm:p-4 mb-4 sm:mb-6">
+                  <h4 className="text-sm sm:text-base font-bold text-green-800 mb-2">
                     Invitation Link Generated!
                   </h4>
-                  <div className="flex items-center gap-3 p-3 bg-white rounded-xl border border-green-200">
-                    <code className="flex-1 text-sm text-gray-700 break-all">
+                  <div className="flex items-center gap-2 p-2 sm:p-2.5 bg-white rounded-sm border border-green-200">
+                    <code className="flex-1 text-xs sm:text-sm text-gray-700 break-all">
                       {window.location.origin}/join?code={invitationCode}
                     </code>
                     <Button
                       variant="secondary"
                       size="sm"
                       onClick={copyInvitationLink}
+                      className="text-xs sm:text-sm px-2 sm:px-3 py-1 flex-shrink-0"
                     >
                       Copy
                     </Button>
                   </div>
-                  <p className="text-sm text-green-700 mt-2">
+                  <p className="text-xs sm:text-sm text-green-700 mt-2">
                     Share this link with new team members to join your company.
                   </p>
                 </div>
               )}
               {companyProfile.users && companyProfile.users.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4">
                   {companyProfile.users.map((user) => (
                     <div
                       key={user.id}
-                      className="bg-white/60 rounded-sm p-6 shadow-lg border border-white/20"
+                      className="bg-white/60 rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100"
                     >
-                      <div className="flex items-center gap-4 mb-4">
+                      <div className="flex items-center gap-3 mb-3">
                         {user.avatar ? (
                           <img
                             src={user.avatar}
                             alt={user.name}
-                            className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                            className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm"
                           />
                         ) : (
-                          <div className="w-16 h-16 rounded-full bg-primary-600 flex items-center justify-center text-white font-bold text-xl border-2 border-white shadow-md">
+                          <div className="w-12 h-12 rounded-full bg-primary-600 flex items-center justify-center text-white font-bold text-lg border border-gray-200 shadow-sm">
                             {user.name.charAt(0)}
                           </div>
                         )}
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-lg">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-gray-900 text-xs sm:text-sm truncate">
                             {user.name}
                           </h4>
-                          <p className="text-sm text-gray-600">{user.email}</p>
+                          <p className="text-xs text-gray-600 truncate">{user.email}</p>
                         </div>
                       </div>
                       <div className="text-center">
-                        <span className="inline-block px-4 py-2 bg-primary-600 text-white rounded-full text-sm font-semibold shadow-md">
+                        <span className="inline-block px-2 sm:px-3 py-1 bg-primary-600 text-white rounded-sm text-xs font-semibold shadow-sm">
                           {user.role}
                         </span>
                       </div>
@@ -776,10 +778,10 @@ export default function CompanyProfilePage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <div className="text-center py-8 sm:py-12">
+                  <div className="w-12 h-12 bg-gray-100 rounded-full mx-auto mb-3 flex items-center justify-center">
                     <svg
-                      className="w-8 h-8 text-gray-400"
+                      className="w-6 h-6 text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -792,8 +794,8 @@ export default function CompanyProfilePage() {
                       />
                     </svg>
                   </div>
-                  <p className="text-gray-500 mb-4">No team members yet</p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-xs sm:text-sm text-gray-500 mb-3">No team members yet</p>
+                  <p className="text-xs text-gray-400">
                     Generate an invitation link to add your first team member
                   </p>
                 </div>
@@ -802,53 +804,53 @@ export default function CompanyProfilePage() {
           )}
 
           {tab === "subscription" && (
-            <div className="space-y-8">
+            <div className="space-y-4 sm:space-y-6">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
                   Current Subscription
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   Manage your subscription plan and features
                 </p>
               </div>
 
-              <div className="max-w-2xl mx-auto">
+              <div className="max-w-2xl mx-auto w-full">
                 {companyProfile.subscription ? (
-                  <div className="bg-primary-600 rounded-sm p-8 text-white text-center shadow-2xl">
-                    <div className="text-3xl font-bold mb-2">
+                  <div className="bg-primary-600 rounded-sm p-4 sm:p-6 text-white text-center shadow-sm">
+                    <div className="text-xl sm:text-2xl font-bold mb-1">
                       {companyProfile.subscription.plan} Plan
                     </div>
-                    <div className="text-lg opacity-90 mb-4">
+                    <div className="text-xs sm:text-sm opacity-90 mb-3">
                       Active until {companyProfile.subscription.renewal}
                     </div>
-                    <div className="inline-block px-4 py-2 bg-white/20 rounded-full text-sm font-semibold">
+                    <div className="inline-block px-2.5 sm:px-3 py-1 bg-white/20 rounded-sm text-xs font-semibold">
                       {companyProfile.subscription.status}
                     </div>
                   </div>
                 ) : (
-                  <div className="bg-gray-100 rounded-sm p-8 text-center">
-                    <p className="text-gray-600">
+                  <div className="bg-gray-100 rounded-sm p-4 sm:p-6 text-center">
+                    <p className="text-xs sm:text-sm text-gray-600">
                       No subscription information available
                     </p>
                   </div>
                 )}
               </div>
 
-              <div className="max-w-2xl mx-auto">
-                <h4 className="text-xl font-bold text-gray-900 mb-4">
+              <div className="max-w-2xl mx-auto w-full">
+                <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-3">
                   Plan Features
                 </h4>
                 {companyProfile.subscription?.features &&
                 companyProfile.subscription.features.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {companyProfile.subscription.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-4 bg-white/60 rounded-xl border border-gray-100"
+                        className="flex items-center gap-2 p-2.5 sm:p-3 bg-white/60 rounded-sm border border-gray-100"
                       >
-                        <div className="w-5 h-5 bg-primary-600 rounded-full flex items-center justify-center">
+                        <div className="w-4 h-4 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
                           <svg
-                            className="w-3 h-3 text-white"
+                            className="w-2.5 h-2.5 text-white"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -859,21 +861,21 @@ export default function CompanyProfilePage() {
                             />
                           </svg>
                         </div>
-                        <span className="text-gray-800 font-medium">
+                        <span className="text-gray-800 font-medium text-xs sm:text-sm">
                           {feature}
                         </span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 text-center">
+                  <p className="text-xs sm:text-sm text-gray-500 text-center">
                     No features listed
                   </p>
                 )}
               </div>
 
               <div className="text-center">
-                <Button variant="default" size="lg">
+                <Button variant="default" size="sm" className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2">
                   Upgrade Plan
                 </Button>
               </div>
@@ -883,24 +885,24 @@ export default function CompanyProfilePage() {
       
 
           {tab === "security" && (
-            <div className="space-y-8">
+            <div className="space-y-4 sm:space-y-6">
               <div className="text-center">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
                   Security Settings
                 </h3>
-                <p className="text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   Update your password and security preferences
                 </p>
               </div>
 
-              <div className="max-w-2xl mx-auto">
-                <div className="bg-white/60 rounded-sm p-8 shadow-lg border border-white/20">
-                  <h4 className="text-xl font-bold text-gray-900 mb-6">
+              <div className="max-w-2xl mx-auto w-full">
+                <div className="bg-white/60 rounded-sm p-4 sm:p-6 shadow-sm border border-gray-100">
+                  <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-4 sm:mb-6">
                     Change Password
                   </h4>
 
                   <form
-                    className="space-y-6"
+                    className="space-y-3 sm:space-y-4"
                     onSubmit={async (e) => {
                       e.preventDefault();
                       if (
@@ -932,7 +934,7 @@ export default function CompanyProfilePage() {
                     }}
                   >
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Current Password
                       </label>
                       <div className="relative">
@@ -945,13 +947,13 @@ export default function CompanyProfilePage() {
                               currentPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-200 rounded-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                           placeholder="Enter your current password"
                           required
                         />
                         <button
                           type="button"
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 flex-shrink-0"
                           onClick={() =>
                             setShowPasswords({
                               ...showPasswords,
@@ -961,7 +963,7 @@ export default function CompanyProfilePage() {
                         >
                           {showPasswords.current ? (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -975,7 +977,7 @@ export default function CompanyProfilePage() {
                             </svg>
                           ) : (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -999,7 +1001,7 @@ export default function CompanyProfilePage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         New Password
                       </label>
                       <div className="relative">
@@ -1012,14 +1014,14 @@ export default function CompanyProfilePage() {
                               newPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-200 rounded-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                           placeholder="Enter new password"
                           minLength={8}
                           required
                         />
                         <button
                           type="button"
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 flex-shrink-0"
                           onClick={() =>
                             setShowPasswords({
                               ...showPasswords,
@@ -1029,7 +1031,7 @@ export default function CompanyProfilePage() {
                         >
                           {showPasswords.new ? (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1043,7 +1045,7 @@ export default function CompanyProfilePage() {
                             </svg>
                           ) : (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1070,7 +1072,7 @@ export default function CompanyProfilePage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1.5">
                         Confirm New Password
                       </label>
                       <div className="relative">
@@ -1083,13 +1085,13 @@ export default function CompanyProfilePage() {
                               confirmPassword: e.target.value,
                             })
                           }
-                          className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent"
+                          className="w-full px-3 py-2 pr-10 border border-gray-200 rounded-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                           placeholder="Confirm new password"
                           required
                         />
                         <button
                           type="button"
-                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 flex-shrink-0"
                           onClick={() =>
                             setShowPasswords({
                               ...showPasswords,
@@ -1099,7 +1101,7 @@ export default function CompanyProfilePage() {
                         >
                           {showPasswords.confirm ? (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1113,7 +1115,7 @@ export default function CompanyProfilePage() {
                             </svg>
                           ) : (
                             <svg
-                              className="w-5 h-5"
+                              className="w-4 h-4"
                               fill="none"
                               stroke="currentColor"
                               viewBox="0 0 24 24"
@@ -1143,20 +1145,20 @@ export default function CompanyProfilePage() {
                         )}
                     </div>
 
-                    <div className="flex gap-4 pt-4">
+                    <div className="flex gap-2 sm:gap-3 pt-3 sm:pt-4">
                       <Button
                         type="submit"
                         variant="default"
-                        size="default"
-                        className="flex-1"
+                        size="sm"
+                        className="flex-1 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                       >
                         Update Password
                       </Button>
                       <Button
                         type="button"
                         variant="secondary"
-                        size="default"
-                        className="flex-1"
+                        size="sm"
+                        className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2"
                         onClick={() => {
                           setPasswordData({
                             currentPassword: "",

@@ -211,22 +211,22 @@ export default function NotificationsPage() {
         subtitle={`${unreadCount} unread notifications`}
       />
 
-      <div className="pt-20 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="pt-20 px-2 sm:px-3">
+        <div className="w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
             {/* Notification List */}
             <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">
+                <div className="p-3 sm:p-4 border-b border-gray-100">
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                       All Notifications
                     </h2>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={handleMarkAllAsRead}
-                        className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium"
+                        className="px-2.5 py-1 text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-sm transition-colors font-medium"
                       >
                         Mark All Read
                       </button>
@@ -234,16 +234,16 @@ export default function NotificationsPage() {
                   </div>
 
                   {/* Filters */}
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-2 sm:gap-3">
                     <div className="md:col-span-5">
                       <div className="relative">
-                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input
                           type="text"
                           placeholder="Search notifications..."
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
-                          className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm"
+                          className="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                         />
                       </div>
                     </div>
@@ -254,7 +254,7 @@ export default function NotificationsPage() {
                         onChange={(e) =>
                           setFilter(e.target.value as "all" | "unread" | "read")
                         }
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                       >
                         <option value="all">All Notifications</option>
                         <option value="unread">Unread</option>
@@ -266,7 +266,7 @@ export default function NotificationsPage() {
                       <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-600 focus:border-transparent text-sm"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-transparent text-xs sm:text-sm"
                       >
                         <option value="all">All Types</option>
                         <option value="application">Applications</option>
@@ -276,7 +276,7 @@ export default function NotificationsPage() {
                     </div>
 
                     <div className="md:col-span-1">
-                      <button className="w-full px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium text-sm">
+                      <button className="w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-sm transition-colors font-medium text-sm">
                         <FunnelIcon className="w-4 h-4 mx-auto" />
                       </button>
                     </div>
@@ -286,15 +286,15 @@ export default function NotificationsPage() {
                 {/* Notification List */}
                 <div className="divide-y divide-gray-100 max-h-[600px] overflow-y-auto">
                   {filteredNotifications.length === 0 ? (
-                    <div className="p-8 text-center">
-                      <BellIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500">No notifications found</p>
+                    <div className="p-6 text-center">
+                      <BellIcon className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+                      <p className="text-sm text-gray-500">No notifications found</p>
                     </div>
                   ) : (
                     filteredNotifications.map((notification) => (
                       <div
                         key={notification.id}
-                        className={`p-4 hover: cursor-pointer transition-all duration-200 ${
+                        className={`p-2.5 sm:p-3 hover: cursor-pointer transition-all duration-200 ${
                           !notification.read ? "bg-blue-50 border-l-4 border-blue-500" : "border-l-4 border-transparent"
                         } ${
                           selectedNotification?.id === notification.id
@@ -308,15 +308,15 @@ export default function NotificationsPage() {
                           }
                         }}
                       >
-                        <div className="flex items-start gap-3">
-                          {getNotificationIcon(
-                            notification.type
-                          )}
+                        <div className="flex items-start gap-2">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-primary-100 text-primary-600">
+                            <BellIcon className="w-4 h-4" />
+                          </div>
 
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between gap-1">
                               <h3
-                                className={`text-sm font-medium ${
+                                className={`text-xs sm:text-sm font-medium truncate ${
                                   !notification.read
                                     ? "text-gray-900"
                                     : "text-gray-700"
@@ -324,16 +324,16 @@ export default function NotificationsPage() {
                               >
                                 {notification.title}
                               </h3>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-500">
+                              <div className="flex items-center gap-1.5 flex-shrink-0">
+                                <span className="text-xs text-gray-500 whitespace-nowrap">
                                   {formatTimestamp(notification.createdAt)}
                                 </span>
                                 {!notification.read && (
-                                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                                  <div className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse"></div>
                                 )}
                               </div>
                             </div>
-                            <p className="text-sm text-gray-600 mt-1">
+                            <p className="text-xs text-gray-600 mt-1 line-clamp-2">
                               {notification.message}
                             </p>
                           </div>
@@ -347,12 +347,12 @@ export default function NotificationsPage() {
 
             {/* Notification Details */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-24">
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 sticky top-24">
                 {selectedNotification ? (
-                  <div className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        Notification Details
+                  <div className="p-3 sm:p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-900">
+                        Details
                       </h3>
                       <button
                         onClick={() =>
@@ -360,21 +360,21 @@ export default function NotificationsPage() {
                         }
                         className="text-gray-400 hover:text-red-600 transition-colors"
                       >
-                        <TrashIcon className="w-5 h-5" />
+                        <TrashIcon className="w-4 h-4" />
                       </button>
                     </div>
 
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        {getNotificationIcon(
-                          selectedNotification.type
-                        )}
-                        <div>
-                          <h4 className="font-medium text-gray-900">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 bg-primary-100 text-primary-600">
+                          <BellIcon className="w-3 h-3" />
+                        </div>
+                        <div className="min-w-0">
+                          <h4 className="font-medium text-sm text-gray-900 truncate">
                             {selectedNotification.title}
                           </h4>
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
                               selectedNotification.read
                                 ? "bg-gray-100 text-gray-800"
                                 : "bg-blue-100 text-blue-800"
@@ -385,20 +385,20 @@ export default function NotificationsPage() {
                         </div>
                       </div>
 
-                      <div className="border-t pt-4">
-                        <h5 className="text-sm font-medium text-gray-900 mb-2">
+                      <div className="border-t border-gray-100 pt-3">
+                        <h5 className="text-xs font-medium text-gray-900 mb-2 uppercase tracking-wide">
                           Message
                         </h5>
-                        <p className="text-sm text-gray-700">
+                        <p className="text-xs text-gray-700 leading-relaxed">
                           {selectedNotification.message}
                         </p>
                       </div>
 
-                      <div className="border-t pt-4">
-                        <h5 className="text-sm font-medium text-gray-900 mb-2">
+                      <div className="border-t border-gray-100 pt-3">
+                        <h5 className="text-xs font-medium text-gray-900 mb-2 uppercase tracking-wide">
                           Details
                         </h5>
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-1.5 text-xs">
                           <div className="flex justify-between">
                             <span className="text-gray-500">Type:</span>
                             <span className="text-gray-900 capitalize">
@@ -426,9 +426,9 @@ export default function NotificationsPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-6 text-center">
-                    <BellIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">
+                  <div className="p-5 text-center">
+                    <BellIcon className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                    <p className="text-xs sm:text-sm text-gray-500">
                       Select a notification to view details
                     </p>
                   </div>
@@ -443,18 +443,18 @@ export default function NotificationsPage() {
       {toast && (
         <div className="fixed bottom-4 right-4 z-50 animate-slide-up">
           <div
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg ${
+            className={`flex items-center gap-2 px-3 py-2 rounded-sm shadow-lg text-sm ${
               toast.type === "success"
                 ? "bg-green-600 text-white"
                 : "bg-red-600 text-white"
             }`}
           >
             {toast.type === "success" ? (
-              <CheckCircleIcon className="w-5 h-5" />
+              <CheckCircleIcon className="w-4 h-4" />
             ) : (
-              <XCircleIcon className="w-5 h-5" />
+              <XCircleIcon className="w-4 h-4" />
             )}
-            <span className="font-medium">{toast.message}</span>
+            <span className="font-medium text-xs">{toast.message}</span>
           </div>
         </div>
       )}

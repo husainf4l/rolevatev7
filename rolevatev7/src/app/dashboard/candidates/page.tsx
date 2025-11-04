@@ -353,8 +353,8 @@ export default function CandidatesPage() {
         subtitle="Manage and track all your job applicants"
       />
 
-      <div className="pt-20 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="pt-20 px-2 sm:px-3">
+        <div className="w-full">
           {/* Loading State */}
           {loading && (
             <div className="flex items-center justify-center h-64">
@@ -392,101 +392,74 @@ export default function CandidatesPage() {
           {!loading && !error && (
             <>
               {/* Stats Overview */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-4 mb-8">
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Total</p>
-                    <UsersIcon className="w-4 h-4 text-slate-400" />
-                  </div>
-                  <p className="text-xl font-bold text-gray-900">{candidates.length}</p>
+              <div className="grid grid-cols-3 gap-3 mb-4 sm:mb-6">
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Total</p>
+                  <p className="text-lg sm:text-xl font-bold text-gray-900">{candidates.length}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Pending</p>
-                    <DocumentTextIcon className="w-4 h-4 text-amber-500" />
-                  </div>
-                  <p className="text-xl font-bold text-amber-700">{statusCounts.pending}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Pending</p>
+                  <p className="text-lg sm:text-xl font-bold text-amber-700">{statusCounts.pending}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Analyzed</p>
-                    <CheckCircleIcon className="w-4 h-4 text-blue-500" />
-                  </div>
-                  <p className="text-xl font-bold text-blue-700">{statusCounts.analyzed}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Analyzed</p>
+                  <p className="text-lg sm:text-xl font-bold text-blue-700">{statusCounts.analyzed}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Reviewed</p>
-                    <ClockIcon className="w-4 h-4 text-sky-500" />
-                  </div>
-                  <p className="text-xl font-bold text-sky-700">{statusCounts.reviewed}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Reviewed</p>
+                  <p className="text-lg sm:text-xl font-bold text-sky-700">{statusCounts.reviewed}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Shortlisted</p>
-                    <ClockIcon className="w-4 h-4 text-violet-500" />
-                  </div>
-                  <p className="text-xl font-bold text-violet-700">{statusCounts.shortlisted}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Shortlisted</p>
+                  <p className="text-lg sm:text-xl font-bold text-violet-700">{statusCounts.shortlisted}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Interviewed</p>
-                    <CheckCircleIcon className="w-4 h-4 text-primary-500" />
-                  </div>
-                  <p className="text-xl font-bold text-primary-700">{statusCounts.interviewed}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Interviewed</p>
+                  <p className="text-lg sm:text-xl font-bold text-primary-700">{statusCounts.interviewed}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Offered</p>
-                    <CheckCircleIcon className="w-4 h-4 text-emerald-500" />
-                  </div>
-                  <p className="text-xl font-bold text-emerald-700">{statusCounts.offered}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Offered</p>
+                  <p className="text-lg sm:text-xl font-bold text-emerald-700">{statusCounts.offered}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Hired</p>
-                    <CheckCircleIcon className="w-4 h-4 text-green-500" />
-                  </div>
-                  <p className="text-xl font-bold text-green-700">{statusCounts.hired}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Hired</p>
+                  <p className="text-lg sm:text-xl font-bold text-green-700">{statusCounts.hired}</p>
                 </div>
 
-                <div className="bg-white rounded-sm p-4 shadow-sm border border-gray-200 hover:shadow transition-shadow">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-xs font-medium text-gray-600">Rejected</p>
-                    <XCircleIcon className="w-4 h-4 text-rose-500" />
-                  </div>
-                  <p className="text-xl font-bold text-rose-700">{statusCounts.rejected}</p>
+                <div className="bg-white rounded-sm p-3 sm:p-4 shadow-sm border border-gray-100 hover:shadow transition-shadow">
+                  <p className="text-xs font-medium text-gray-600 mb-2">Rejected</p>
+                  <p className="text-lg sm:text-xl font-bold text-rose-700">{statusCounts.rejected}</p>
                 </div>
               </div>
 
               {/* Filters & Search */}
-              <div className="bg-white rounded-sm shadow-sm border border-gray-200 p-6 mb-8">
-                <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center">
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 items-start lg:items-center">
                   <div className="flex-1 min-w-0">
                     <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search by name, email, position, or skills..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-200 bg-gray-50 focus:bg-white"
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 transition-all duration-200 bg-gray-50 focus:bg-white text-sm"
                       />
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     <select
                       value={filterStatus}
                       onChange={(e) => setFilterStatus(e.target.value)}
-                      className="px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-sm font-medium"
+                      className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-xs sm:text-sm font-medium"
                     >
                       <option value="all">All Status</option>
                       <option value="PENDING">Pending</option>
@@ -503,7 +476,7 @@ export default function CandidatesPage() {
                     <select
                       value={filterPosition}
                       onChange={(e) => setFilterPosition(e.target.value)}
-                      className="px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-sm font-medium"
+                      className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-xs sm:text-sm font-medium"
                     >
                       <option value="all">All Positions</option>
                       {Array.from(new Set(candidates.map(c => c.position))).map(position => (
@@ -514,7 +487,7 @@ export default function CandidatesPage() {
                     <select
                       value={filterPriority}
                       onChange={(e) => setFilterPriority(e.target.value)}
-                      className="px-4 py-2.5 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-sm font-medium"
+                      className="px-3 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-primary-600 focus:border-primary-600 bg-white text-xs sm:text-sm font-medium"
                     >
                       <option value="all">All Priority</option>
                       <option value="high">High Priority</option>
@@ -523,79 +496,70 @@ export default function CandidatesPage() {
                     </select>
                   </div>
                 </div>
-
-                {/* Bulk Actions Bar */}
-                {selectedCandidates.length > 0 && (
-                  <div className="mt-4 p-4 bg-blue-50 rounded-sm border border-blue-200">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-blue-900">
-                        {selectedCandidates.length} candidate{selectedCandidates.length !== 1 ? "s" : ""} selected
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleBulkStatusUpdate("ANALYZED")}
-                          className="px-4 py-2 text-sm bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
-                        >
-                          Analyze
-                        </button>
-                        <button
-                          onClick={() => handleBulkStatusUpdate("REVIEWED")}
-                          className="px-4 py-2 text-sm bg-sky-600 text-white rounded-sm hover:bg-sky-700 transition-colors font-medium"
-                        >
-                          Review
-                        </button>
-                        <button
-                          onClick={() => handleBulkStatusUpdate("SHORTLISTED")}
-                          className="px-4 py-2 text-sm bg-violet-600 text-white rounded-sm hover:bg-violet-700 transition-colors font-medium"
-                        >
-                          Shortlist
-                        </button>
-                        <button
-                          onClick={() => handleBulkStatusUpdate("OFFERED")}
-                          className="px-4 py-2 text-sm bg-emerald-600 text-white rounded-sm hover:bg-emerald-700 transition-colors font-medium"
-                        >
-                          Offer
-                        </button>
-                        <button
-                          onClick={() => handleBulkStatusUpdate("REJECTED")}
-                          className="px-4 py-2 text-sm bg-rose-600 text-white rounded-sm hover:bg-rose-700 transition-colors font-medium"
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* Candidates Table */}
-              <div className="bg-white rounded-sm shadow-sm border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <h2 className="text-lg font-semibold text-gray-900">
-                        Candidates ({filteredCandidates.length})
-                      </h2>
-                      <div className="flex items-center gap-2">
+              <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden">
+                <div className="px-3 sm:px-4 py-3 border-b border-gray-100">
+                  <div className="flex items-center justify-between gap-3">
+                    <h2 className="text-sm sm:text-base font-semibold text-gray-900">
+                      Candidates ({filteredCandidates.length})
+                    </h2>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5">
                         <input
                           type="checkbox"
                           checked={selectedCandidates.length === filteredCandidates.length && filteredCandidates.length > 0}
                           onChange={handleSelectAll}
                           className="rounded border-gray-300 text-primary-600 focus:ring-primary-600"
                         />
-                        <span className="text-sm text-gray-600">Select All</span>
+                        <span className="text-xs sm:text-sm text-gray-600">Select All</span>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
+                      <div className="w-px h-4 bg-gray-200"></div>
+                      {selectedCandidates.length > 0 && (
+                        <>
+                          <button
+                            onClick={() => handleBulkStatusUpdate("ANALYZED")}
+                            className="px-2.5 py-1 text-xs bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors font-medium"
+                          >
+                            Analyze
+                          </button>
+                          <button
+                            onClick={() => handleBulkStatusUpdate("REVIEWED")}
+                            className="px-2.5 py-1 text-xs bg-sky-600 text-white rounded-sm hover:bg-sky-700 transition-colors font-medium"
+                          >
+                            Review
+                          </button>
+                          <button
+                            onClick={() => handleBulkStatusUpdate("SHORTLISTED")}
+                            className="px-2.5 py-1 text-xs bg-violet-600 text-white rounded-sm hover:bg-violet-700 transition-colors font-medium"
+                          >
+                            Shortlist
+                          </button>
+                          <button
+                            onClick={() => handleBulkStatusUpdate("OFFERED")}
+                            className="px-2.5 py-1 text-xs bg-emerald-600 text-white rounded-sm hover:bg-emerald-700 transition-colors font-medium"
+                          >
+                            Offer
+                          </button>
+                          <button
+                            onClick={() => handleBulkStatusUpdate("REJECTED")}
+                            className="px-2.5 py-1 text-xs bg-rose-600 text-white rounded-sm hover:bg-rose-700 transition-colors font-medium"
+                          >
+                            Reject
+                          </button>
+                          <div className="w-px h-4 bg-gray-200"></div>
+                        </>
+                      )}
                       <button 
                         onClick={handleExport}
-                        className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
+                        className="px-2.5 py-1 text-xs text-gray-600 hover:text-gray-900 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
                       >
                         Export
                       </button>
                       <button 
                         onClick={handlePrint}
-                        className="px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
+                        className="px-2.5 py-1 text-xs text-gray-600 hover:text-gray-900 border border-gray-300 rounded-sm hover:bg-gray-50 transition-colors"
                       >
                         Print
                       </button>
@@ -605,9 +569,9 @@ export default function CandidatesPage() {
 
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-gray-50 border-b border-gray-100">
                       <tr>
-                        <th className="w-12 px-6 py-3 text-left">
+                        <th className="w-10 px-3 py-2 text-left">
                           <input
                             type="checkbox"
                             checked={selectedCandidates.length === filteredCandidates.length && filteredCandidates.length > 0}
@@ -615,33 +579,33 @@ export default function CandidatesPage() {
                             className="rounded border-gray-300 text-primary-600 focus:ring-primary-600"
                           />
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Candidate
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Position
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Status
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           CV Score
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Applied
                         </th>
-                        <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th className="px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-white divide-y divide-gray-100">
                       {filteredCandidates.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-6 py-12 text-center">
-                            <UsersIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                            <p className="text-gray-600 mb-2">No candidates found</p>
-                            <p className="text-sm text-gray-400">
+                          <td colSpan={7} className="px-3 py-8 text-center">
+                            <UsersIcon className="w-10 h-10 text-gray-400 mx-auto mb-3" />
+                            <p className="text-sm text-gray-600 mb-1">No candidates found</p>
+                            <p className="text-xs text-gray-400">
                               {searchTerm ? "Try adjusting your search terms" : "Start receiving applications to see candidates here"}
                             </p>
                           </td>
@@ -649,7 +613,7 @@ export default function CandidatesPage() {
                       ) : (
                         filteredCandidates.map((candidate) => (
                           <tr key={candidate.id} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-3 py-2 whitespace-nowrap">
                               <input
                                 type="checkbox"
                                 checked={selectedCandidates.includes(candidate.id)}
@@ -658,33 +622,33 @@ export default function CandidatesPage() {
                               />
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                            <td className="px-3 py-2 whitespace-nowrap">
+                              <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
                                   {candidate.name.split(" ").map((n) => n[0]).join("").substring(0, 2).toUpperCase()}
                                 </div>
-                                <div>
-                                  <div className="text-sm font-medium text-gray-900">{candidate.name}</div>
-                                  <div className="text-sm text-gray-500">{candidate.email}</div>
+                                <div className="min-w-0">
+                                  <div className="text-xs font-medium text-gray-900 truncate">{candidate.name}</div>
+                                  <div className="text-xs text-gray-500 truncate">{candidate.email}</div>
                                 </div>
                               </div>
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{candidate.position}</div>
+                            <td className="px-3 py-2 whitespace-nowrap">
+                              <div className="text-xs text-gray-900">{candidate.position}</div>
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(candidate.status)}`}>
+                            <td className="px-3 py-2 whitespace-nowrap">
+                              <span className={`px-1.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(candidate.status)}`}>
                                 {getStatusLabel(candidate.status)}
                               </span>
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap text-center">
-                              <div className="flex items-center justify-center gap-2">
-                                <span className="text-sm font-semibold text-gray-900">{candidate.cvRating || 0}%</span>
+                            <td className="px-3 py-2 whitespace-nowrap text-center">
+                              <div className="flex items-center justify-center gap-1.5">
+                                <span className="text-xs font-semibold text-gray-900">{candidate.cvRating || 0}%</span>
                                 {candidate.cvRating > 0 && (
-                                <div className="w-12 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="w-10 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                                   <div
                                     className={`h-full ${
                                       candidate.cvRating >= 80 ? "bg-emerald-500" :
@@ -697,22 +661,22 @@ export default function CandidatesPage() {
                               </div>
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap text-center">
-                              <div className="text-sm text-gray-500">{candidate.appliedDate}</div>
+                            <td className="px-3 py-2 whitespace-nowrap text-center">
+                              <div className="text-xs text-gray-500">{candidate.appliedDate}</div>
                             </td>
 
-                            <td className="px-6 py-4 whitespace-nowrap text-center">
-                              <div className="flex items-center justify-center gap-2">
+                            <td className="px-3 py-2 whitespace-nowrap text-center">
+                              <div className="flex items-center justify-center gap-1">
                                 <Link
                                   href={`/dashboard/candidates/${candidate.id}`}
-                                  className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                                  className="text-primary-600 hover:text-primary-700 font-medium text-xs"
                                 >
                                   View
                                 </Link>
                                 {candidate.status === "PENDING" && (
                                   <button
                                     onClick={() => handleSingleStatusUpdate(candidate.id, "ANALYZED")}
-                                    className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                                    className="text-blue-600 hover:text-blue-700 font-medium text-xs"
                                   >
                                     Analyze
                                   </button>
@@ -720,14 +684,14 @@ export default function CandidatesPage() {
                                 {(candidate.status === "ANALYZED" || candidate.status === "REVIEWED") && (
                                   <button
                                     onClick={() => handleSingleStatusUpdate(candidate.id, "SHORTLISTED")}
-                                    className="text-emerald-600 hover:text-emerald-700 font-medium text-sm"
+                                    className="text-emerald-600 hover:text-emerald-700 font-medium text-xs"
                                   >
                                     Shortlist
                                   </button>
                                 )}
                                 <button
                                   onClick={() => handleSingleStatusUpdate(candidate.id, "REJECTED")}
-                                  className="text-rose-600 hover:text-rose-700 font-medium text-sm"
+                                  className="text-rose-600 hover:text-rose-700 font-medium text-xs"
                                 >
                                   Reject
                                 </button>

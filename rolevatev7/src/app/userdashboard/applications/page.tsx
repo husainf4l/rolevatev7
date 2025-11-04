@@ -152,10 +152,10 @@ export default function ApplicationsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="px-2 sm:px-3 py-4">
+          <div className="flex justify-center py-8 sm:py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
           </div>
         </div>
       </div>
@@ -164,16 +164,16 @@ export default function ApplicationsPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="bg-red-50 border border-red-200 rounded-sm p-4">
-            <div className="text-red-600 font-medium mb-2">
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <div className="px-2 sm:px-3 py-4">
+          <div className="bg-red-50 border border-red-200 rounded-sm p-3 sm:p-4">
+            <div className="text-red-600 font-medium mb-1 text-xs sm:text-sm">
               Error loading applications
             </div>
-            <div className="text-red-500 text-sm">{error}</div>
+            <div className="text-red-500 text-xs">{error}</div>
             <button
               onClick={() => window.location.reload()}
-              className="mt-3 px-4 py-2 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors text-sm"
+              className="mt-2 px-3 py-1.5 bg-red-600 text-white rounded-sm hover:bg-red-700 transition-colors text-xs sm:text-sm"
             >
               Try Again
             </button>
@@ -183,18 +183,18 @@ export default function ApplicationsPage() {
     );
   }
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 pt-16">
       {/* Header */}
-      <div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="text-center mb-4">
-            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 tracking-tight">
+      <div className="px-2 sm:px-3">
+        <div className="py-3 sm:py-4">
+          <div className="text-center mb-3 sm:mb-4">
+            <h1 className="font-display text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-1 tracking-tight">
               My{" "}
               <span className="text-primary-600">
                 Applications
               </span>
             </h1>
-            <p className="font-text text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+            <p className="font-text text-xs sm:text-sm text-gray-600 max-w-2xl mx-auto px-2">
               Track and manage all your job applications
             </p>
           </div>
@@ -202,14 +202,14 @@ export default function ApplicationsPage() {
       </div>
 
       {/* Applications Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
+      <div className="px-2 sm:px-3 py-2 pb-8">
 
         {/* Filters */}
-        <div className="max-w-4xl mx-auto mb-6">
-          <div className="flex gap-1.5 sm:gap-2 flex-wrap justify-center">
+        <div className="mb-3 sm:mb-4">
+          <div className="flex gap-1 sm:gap-1.5 flex-wrap justify-center">
             <button
               onClick={() => setFilterStatus("All Status")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "All Status"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -219,7 +219,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("submitted")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "submitted"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -229,7 +229,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("interview")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "interview"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -239,7 +239,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("offered")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "offered"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -249,7 +249,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("accepted")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "accepted"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -259,7 +259,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("rejected")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "rejected"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -269,7 +269,7 @@ export default function ApplicationsPage() {
             </button>
             <button
               onClick={() => setFilterStatus("withdrawn")}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-sm transition-all duration-200 ${
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-medium rounded-sm transition-all duration-200 ${
                 filterStatus === "withdrawn"
                   ? "bg-primary-600 text-white shadow-sm"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -281,18 +281,18 @@ export default function ApplicationsPage() {
         </div>
 
         {/* Applications List */}
-        <div className="max-w-5xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <div className="text-lg font-semibold text-gray-900">
+        <div>
+          <div className="flex justify-between items-center mb-3 sm:mb-4">
+            <div className="text-xs sm:text-sm font-semibold text-gray-900">
               {filteredApplications.length} {filteredApplications.length === 1 ? "Application" : "Applications"} Found
             </div>
           </div>
         {filteredApplications.length === 0 ? (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <div className="text-center py-8 sm:py-12">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-1">
               No applications found
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-3">
               {filterStatus === "All Status"
                 ? "You haven't applied to any jobs yet. Start exploring opportunities!"
                 : `No applications with status: ${filterStatus}`}
@@ -300,41 +300,41 @@ export default function ApplicationsPage() {
             {filterStatus !== "All Status" ? (
               <button
                 onClick={() => setFilterStatus("All Status")}
-                className="px-4 py-2 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-colors"
+                className="px-3 py-1.5 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-colors text-xs sm:text-sm"
               >
                 Clear Filter
               </button>
             ) : (
               <button
                 onClick={() => router.push("/userdashboard/jobs")}
-                className="px-4 py-2 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-colors"
+                className="px-3 py-1.5 bg-primary-600 text-white rounded-sm hover:bg-primary-700 transition-colors text-xs sm:text-sm"
               >
                 Explore Jobs
               </button>
             )}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-3">
             {filteredApplications.map((application) => (
               <div
                 key={application.id}
-                className="group relative overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/10 bg-white border border-gray-200 hover:border-primary-300 rounded-sm p-5 sm:p-6"
+                className="group relative overflow-hidden transition-all duration-300 hover:shadow-md hover:shadow-primary-500/10 bg-white border border-gray-100 hover:border-primary-300 rounded-sm p-3 sm:p-4"
               >
                 {/* Mobile Layout */}
                 <div className="block sm:hidden">
                   {/* Top row - Job title and company */}
-                  <div className="mb-3">
-                    <h3 className="font-semibold text-gray-900 leading-tight text-base group-hover:text-primary-600 transition-colors mb-1">
+                  <div className="mb-2.5">
+                    <h3 className="font-semibold text-gray-900 leading-tight text-xs sm:text-sm group-hover:text-primary-600 transition-colors mb-1">
                       {application.jobTitle}
                     </h3>
-                    <p className="text-xs font-medium text-gray-700 mb-2">{application.company}</p>
-                    <div className="flex items-center gap-1 text-xs text-gray-600 mb-2">
-                      <CalendarIcon className="w-3.5 h-3.5" />
+                    <p className="text-xs font-medium text-gray-700 mb-1.5">{application.company}</p>
+                    <div className="flex items-center gap-1 text-xs text-gray-600 mb-1.5">
+                      <CalendarIcon className="w-3 h-3" />
                       <span>Applied {new Date(application.appliedDate).toLocaleDateString()}</span>
                     </div>
                     {application.cvAnalysisScore > 0 && (
-                      <div className="inline-flex items-center gap-1.5 bg-primary-50 px-2.5 py-1 rounded border border-primary-200">
-                        <ChartBarIcon className="w-3.5 h-3.5 text-primary-600" />
+                      <div className="inline-flex items-center gap-1 bg-primary-50 px-2 py-0.5 rounded border border-primary-200">
+                        <ChartBarIcon className="w-3 h-3 text-primary-600" />
                         <span className="text-xs font-semibold text-primary-700">
                           {application.cvAnalysisScore}% Match
                         </span>
@@ -343,10 +343,10 @@ export default function ApplicationsPage() {
                   </div>
 
                   {/* Bottom row - Status, Details button */}
-                  <div className="flex items-center justify-end pt-3 border-t border-gray-100">
-                    <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-end pt-2 border-t border-gray-100">
+                    <div className="flex items-center gap-1.5">
                       <span
-                        className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded-sm border ${getStatusColor(
+                        className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-xs font-medium rounded-sm border ${getStatusColor(
                           application.status
                         )}`}
                       >
@@ -356,7 +356,7 @@ export default function ApplicationsPage() {
                       </span>
                       <Button
                         onClick={() => handleShowDetails(application.jobId)}
-                        className="bg-primary-600 hover:bg-primary-700 text-white font-medium px-3 py-1.5 text-xs shadow-sm"
+                        className="bg-primary-600 hover:bg-primary-700 text-white font-medium px-2 py-1 text-xs shadow-sm"
                       >
                         Details
                       </Button>
@@ -365,25 +365,25 @@ export default function ApplicationsPage() {
                 </div>
 
                 {/* Desktop Layout */}
-                <div className="hidden sm:flex sm:items-center sm:justify-between gap-4">
+                <div className="hidden sm:flex sm:items-center sm:justify-between gap-3">
                   {/* Left side - Application info */}
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900 leading-tight text-base group-hover:text-primary-600 transition-colors mb-1">
+                    <h3 className="font-semibold text-gray-900 leading-tight text-sm group-hover:text-primary-600 transition-colors mb-1">
                       {application.jobTitle}
                     </h3>
-                    <div className="flex flex-wrap items-center gap-3">
-                      <div className="flex items-center gap-1.5 text-sm font-medium text-gray-700">
-                        <BuildingOfficeIcon className="w-4 h-4 text-gray-400" />
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                      <div className="flex items-center gap-1 text-xs sm:text-sm font-medium text-gray-700">
+                        <BuildingOfficeIcon className="w-3.5 h-3.5 text-gray-400" />
                         <span>{application.company}</span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-sm text-gray-600">
-                        <CalendarIcon className="w-4 h-4" />
+                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
+                        <CalendarIcon className="w-3.5 h-3.5" />
                         <span>Applied {new Date(application.appliedDate).toLocaleDateString()}</span>
                       </div>
                       {application.cvAnalysisScore > 0 && (
-                        <div className="flex items-center gap-1.5 bg-primary-50 px-3 py-1.5 rounded border border-primary-200">
-                          <ChartBarIcon className="w-4 h-4 text-primary-600" />
-                          <span className="text-sm font-semibold text-primary-700">
+                        <div className="flex items-center gap-1 bg-primary-50 px-2 sm:px-2.5 py-1 rounded border border-primary-200">
+                          <ChartBarIcon className="w-3.5 h-3.5 text-primary-600" />
+                          <span className="text-xs sm:text-sm font-semibold text-primary-700">
                             {application.cvAnalysisScore}% Match
                           </span>
                         </div>
@@ -392,9 +392,9 @@ export default function ApplicationsPage() {
                   </div>
 
                   {/* Right side - Status and Details button */}
-                  <div className="flex items-center gap-3 flex-shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-sm border ${getStatusColor(
+                      className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 text-xs font-medium rounded-sm border ${getStatusColor(
                         application.status
                       )}`}
                     >
@@ -404,7 +404,7 @@ export default function ApplicationsPage() {
                     </span>
                     <Button
                       onClick={() => handleShowDetails(application.jobId)}
-                      className="bg-primary-600 hover:bg-primary-700 text-white font-medium px-4 py-2 text-sm"
+                      className="bg-primary-600 hover:bg-primary-700 text-white font-medium px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm"
                     >
                       Details
                     </Button>

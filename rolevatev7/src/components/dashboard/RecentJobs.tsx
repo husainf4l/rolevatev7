@@ -145,32 +145,29 @@ export default function RecentJobs() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-            <BriefcaseIcon className="w-5 h-5 text-primary-600" />
+      <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+            <BriefcaseIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
             Your Job Postings
           </h2>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="p-6 bg-white rounded-lg shadow-none border border-gray-300">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <Skeleton className="w-12 h-12 rounded-full" />
+            <div key={i} className="p-2.5 sm:p-3 bg-white rounded-lg shadow-none border border-gray-100">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  <Skeleton className="w-8 h-8 rounded-full" />
                   <div>
-                    <Skeleton className="w-48 h-5 mb-2" />
-                    <Skeleton className="w-32 h-4" />
+                    <Skeleton className="w-40 h-4 mb-1" />
+                    <Skeleton className="w-24 h-3" />
                   </div>
                 </div>
-                <Skeleton className="w-20 h-6 rounded-full" />
+                <Skeleton className="w-16 h-5 rounded-full" />
               </div>
-              <div className="space-y-3 mb-4">
-                <Skeleton className="w-full h-12" />
-              </div>
-              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                <Skeleton className="w-32 h-4" />
-                <Skeleton className="w-24 h-8" />
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <Skeleton className="w-24 h-3" />
+                <Skeleton className="w-20 h-6" />
               </div>
             </div>
           ))}
@@ -181,21 +178,21 @@ export default function RecentJobs() {
 
   if (error) {
     return (
-      <div className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-            <BriefcaseIcon className="w-5 h-5 text-primary-600" />
+      <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+            <BriefcaseIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
             Your Job Postings
           </h2>
         </div>
-        <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+        <div className="bg-red-50 border border-red-100 rounded-lg p-3">
           <div className="flex items-center gap-2 text-red-800">
-            <span className="text-sm font-medium">Error loading job postings:</span>
-            <span className="text-sm">{error}</span>
+            <span className="text-xs sm:text-sm font-medium">Error loading job postings:</span>
+            <span className="text-xs sm:text-sm">{error}</span>
           </div>
           <button 
             onClick={fetchRecentJobs}
-            className="mt-2 text-sm text-red-600 hover:text-red-800 font-medium"
+            className="mt-2 text-xs text-red-600 hover:text-red-800 font-medium"
           >
             Retry
           </button>
@@ -205,23 +202,23 @@ export default function RecentJobs() {
   }
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-md border border-gray-300/70">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-          <BriefcaseIcon className="w-5 h-5 text-primary-600" />
+    <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
+          <BriefcaseIcon className="w-4 h-4 sm:w-5 sm:h-5 text-primary-600" />
           Your Job Postings
         </h2>
-        <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
+        <button className="text-xs sm:text-sm text-primary-600 hover:text-primary-700 font-medium">
           View All
         </button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-2">
         {recentJobs.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <BriefcaseIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p>No job postings yet</p>
-            <p className="text-sm">
+          <div className="text-center py-5 text-gray-500">
+            <BriefcaseIcon className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+            <p className="text-sm">No job postings yet</p>
+            <p className="text-xs">
               Create your first job posting to get started
             </p>
           </div>
@@ -229,27 +226,27 @@ export default function RecentJobs() {
           recentJobs.map((job) => (
             <div
               key={job.id}
-              className="p-4 border border-gray-300 rounded-lg hover:border-primary-600/50 hover:shadow-sm transition-all duration-200"
+              className="p-2.5 sm:p-3 border border-gray-100 rounded-lg hover:border-primary-600/50 hover:shadow-sm transition-all duration-200"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-1">
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-sm text-gray-900 truncate">
                     {job.title}
                   </h3>
-                  <p className="text-gray-600 font-medium">
+                  <p className="text-xs text-gray-600 truncate">
                     {job.department || "General"}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 flex-shrink-0 ml-2">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(
+                    className={`px-1.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${getTypeColor(
                       job.type
                     )}`}
                   >
                     {getTypeDisplayText(job.type)}
                   </span>
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                    className={`px-1.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap ${getStatusColor(
                       job.status
                     )}`}
                   >
@@ -258,31 +255,45 @@ export default function RecentJobs() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <MapPinIcon className="w-4 h-4" />
-                    <span>{job.location}</span>
+              <div className="flex flex-col xs:flex-row xs:items-center xs:gap-3 text-xs text-gray-600 mb-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-0.5">
+                    <MapPinIcon className="w-3 h-3" />
+                    <span className="truncate">{job.location}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <CurrencyDollarIcon className="w-4 h-4" />
-                    <span>{job.salary || "Not specified"}</span>
-                  </div>
+                  {job.salary && (
+                    <div className="flex items-center gap-0.5">
+                      <CurrencyDollarIcon className="w-3 h-3" />
+                      <span className="truncate">{job.salary}</span>
+                    </div>
+                  )}
                 </div>
-                <span>{formatPostedDate(job.createdAt)}</span>
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-500">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <UsersIcon className="w-4 h-4" />
-                    <span>{job.applicants} applicants</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <EyeIcon className="w-4 h-4" />
-                    <span>{job.views} views</span>
-                  </div>
+              <div className="flex flex-col xs:flex-row xs:items-center xs:gap-3 text-xs text-gray-600 mb-2">
+                <div className="flex items-center gap-2">
+                  {job.applicants && (
+                    <div className="flex items-center gap-1">
+                      <UsersIcon className="w-3 h-3" />
+                      <span>{job.applicants} applicants</span>
+                    </div>
+                  )}
+                  {job.views && (
+                    <div className="flex items-center gap-1">
+                      <EyeIcon className="w-3 h-3" />
+                      <span>{job.views} views</span>
+                    </div>
+                  )}
                 </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                <span className="text-xs text-gray-500">
+                  {job.createdAt && formatPostedDate(job.createdAt)}
+                </span>
+                <button className="text-xs px-2.5 py-1.5 text-primary-600 hover:bg-primary-50 rounded-md font-medium transition-colors">
+                  Edit
+                </button>
               </div>
             </div>
           ))
