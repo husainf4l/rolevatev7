@@ -649,6 +649,7 @@ export class ApplicationService {
         userId: user?.id,
         userType: user?.userType,
         companyId: user?.companyId,
+        isSystemKey: user?.isSystemKey,
       });
 
       const queryBuilder = this.applicationRepository.createQueryBuilder('application')
@@ -658,8 +659,12 @@ export class ApplicationService {
         .leftJoinAndSelect('candidate.candidateProfile', 'candidateProfile')
         .leftJoinAndSelect('application.applicationNotes', 'applicationNotes');
 
+      // System API keys (including admin agent) get full access - no filtering
+      if (user?.isSystemKey || user?.userType === 'SYSTEM') {
+        this.logger.debug('System/Admin Agent API key detected - granting full access to all applications');
+      }
       // If user is a BUSINESS user, filter by their company
-      if (user && user.userType === UserType.BUSINESS) {
+      else if (user && user.userType === UserType.BUSINESS) {
         if (user.companyId) {
           const companyId = user.companyId;
           this.logger.debug(`Filtering applications by companyId: ${companyId}`);
@@ -670,9 +675,8 @@ export class ApplicationService {
           queryBuilder.andWhere('1 = 0');
         }
       }
-
       // If user is a CANDIDATE user, filter by their candidate ID
-      if (user && user.userType === UserType.CANDIDATE) {
+      else if (user && user.userType === UserType.CANDIDATE) {
         const candidateId = user.userId;
         this.logger.debug(`Filtering applications by candidateId: ${candidateId}`);
         queryBuilder.andWhere('application.candidateId = :candidateId', { candidateId });

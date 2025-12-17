@@ -1,0 +1,12 @@
+mutation UploadFileTest {
+  uploadFileToS3(
+    base64File: "SGVsbG8gV29ybGQhIFRoaXMgaXMgYSB0ZXN0IGZpbGUu"
+    filename: "test.txt"
+    mimetype: "text/plain"
+    folder: "test"
+  ) {
+    url
+    key
+    bucket
+  }
+}

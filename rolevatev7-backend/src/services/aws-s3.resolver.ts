@@ -29,12 +29,35 @@ export class AwsS3Resolver {
     @Args('folder', { nullable: true, description: 'Optional S3 folder path' }) folder?: string,
   ): Promise<S3UploadResponse> {
     try {
+      console.log('📤 Upload request received:', {
+        filename,
+        mimetype: _mimetype,
+        folder,
+        base64Length: base64File?.length || 0
+      });
+
+      // Validate inputs
+      if (!base64File) {
+        throw new Error('base64File is required');
+      }
+      if (!filename) {
+        throw new Error('filename is required');
+      }
+
       // Decode base64 to buffer
+      console.log('🔄 Decoding base64 string...');
       const buffer = Buffer.from(base64File, 'base64');
+      console.log('✅ Decoded buffer size:', buffer.length, 'bytes');
       
+      if (buffer.length === 0) {
+        throw new Error('Decoded file is empty - invalid base64 or empty file');
+      }
+
       // Upload to S3
       const url = await this.awsS3Service.uploadFile(buffer, filename, folder);
       const key = this.awsS3Service.extractKeyFromUrl(url);
+
+      console.log('✅ Upload successful:', { url, key });
 
       return {
         url,
@@ -43,6 +66,12 @@ export class AwsS3Resolver {
       };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorStack = error instanceof Error ? error.stack : undefined;
+      console.error('❌ Upload failed:', {
+        message: errorMessage,
+        stack: errorStack,
+        filename
+      });
       throw new Error(`File upload failed: ${errorMessage}`);
     }
   }

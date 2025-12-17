@@ -79,6 +79,14 @@ export class AwsS3Service {
 
   async uploadFile(file: Buffer, fileName: string, folder: string = 'files'): Promise<string> {
     try {
+      // Validate inputs
+      if (!file || file.length === 0) {
+        throw new Error('File buffer is empty or invalid');
+      }
+      if (!fileName) {
+        throw new Error('Filename is required');
+      }
+
       // Sanitize filename to remove spaces and special characters
       const sanitizedFileName = this.sanitizeFilename(fileName);
       const key = `${folder}/${uuidv4()}-${sanitizedFileName}`;
@@ -87,7 +95,13 @@ export class AwsS3Service {
       const fileExtension = sanitizedFileName.split('.').pop()?.toLowerCase() || '';
       const contentType = this.getContentType(fileExtension);
 
-      console.log('☁️ Uploading file to S3:', key);
+      console.log('☁️ Uploading file to S3:', {
+        key,
+        size: file.length,
+        contentType,
+        bucket: this.getBucketName(),
+        region: process.env.AWS_REGION
+      });
 
       const command = new PutObjectCommand({
         Bucket: this.getBucketName(),
@@ -100,7 +114,8 @@ export class AwsS3Service {
         },
       });
 
-      await this.getS3Client().send(command);
+      const result = await this.getS3Client().send(command);
+      console.log('S3 Upload Response:', result);
 
       // Return the S3 URL
       const s3Url = `https://${this.getBucketName()}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
@@ -108,8 +123,14 @@ export class AwsS3Service {
 
       return s3Url;
     } catch (error) {
-      console.error('❌ Failed to upload file to S3:', error);
-      throw new InternalServerErrorException('Failed to upload file to S3');
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error('❌ Failed to upload file to S3:', {
+        error: errorMessage,
+        stack: error instanceof Error ? error.stack : undefined,
+        fileName,
+        fileSize: file?.length || 0
+      });
+      throw new InternalServerErrorException(`Failed to upload file to S3: ${errorMessage}`);
     }
   }
 

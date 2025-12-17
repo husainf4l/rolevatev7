@@ -20,6 +20,7 @@ import { WhatsAppModule } from './whatsapp/whatsapp.module';
 import { ServicesModule } from './services/services.module';
 import { LiveKitModule } from './livekit/livekit.module';
 import { DatabaseBackupModule } from './database-backup/database-backup.module';
+import { HealthModule } from './health/health.module';
 import { AuditService } from './audit.service';
 import { CommonModule } from './common/common.module';
 import { RATE_LIMIT } from './common/constants/config.constants';
@@ -71,6 +72,7 @@ import { CacheService } from './cache/cache.service';
       autoSchemaFile: true,
       path: '/api/graphql',
       introspection: process.env.NODE_ENV !== 'production',
+      playground: false, // Disable the old playground
       plugins: process.env.NODE_ENV !== 'production' 
         ? [ApolloServerPluginLandingPageLocalDefault()]
         : [],
@@ -93,14 +95,13 @@ import { CacheService } from './cache/cache.service';
           res: reply,
         };
       },
-      csrfPrevention: {
-        requestHeaders: ['x-apollo-operation-name', 'apollo-require-preflight'],
-      },
+      csrfPrevention: false, // Disable to avoid conflicts with landing page plugin
     }),
     UserModule,
     AuthModule,
     ServicesModule,
     DatabaseBackupModule, // Must come after AuthModule and ServicesModule
+    HealthModule,
     JobModule,
     NotificationModule,
     CompanyModule,

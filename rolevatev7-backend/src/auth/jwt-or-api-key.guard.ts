@@ -47,6 +47,21 @@ export class JwtOrApiKeyGuard implements CanActivate {
         return true;
       }
 
+      // Check if it's the admin agent API key (same privileges as system key)
+      const adminAgentApiKey = this.configService.get<string>('ADMIN_AGENT_API_KEY');
+      if (adminAgentApiKey && apiKey === adminAgentApiKey) {
+        console.log('✅ Admin Agent API key validated - granting full access');
+        // Admin Agent API key - create an admin system user context
+        request.user = {
+          userId: 'admin-agent',
+          userType: 'SYSTEM',
+          isSystemKey: true,
+          isAdminAgent: true,
+          sub: 'admin-agent',
+        };
+        return true;
+      }
+
       // Regular API key - validate and get the associated user
       const isValidApiKey = await this.apiKeyService.validateApiKey(apiKey);
       if (isValidApiKey) {

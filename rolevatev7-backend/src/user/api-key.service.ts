@@ -72,6 +72,13 @@ export class ApiKeyService {
       return true;
     }
 
+    // Check if it's the admin agent API key from environment
+    const adminAgentApiKey = this.configService.get<string>('ADMIN_AGENT_API_KEY');
+    if (adminAgentApiKey && key === adminAgentApiKey) {
+      console.log('✅ Admin Agent API key validated from environment variable');
+      return true;
+    }
+
     // Otherwise check database for user-generated API keys
     const apiKey = await this.apiKeyRepository.findOne({ where: { key, isActive: true } });
     if (!apiKey) return false;
