@@ -16,4 +16,7 @@ export default new DataSource({
   entities: ['src/**/*.entity{.ts,.js}'],
   migrations: ['src/migrations/*{.ts,.js}'],
   synchronize: false, // Must be false for migrations
+  ssl: {
+    rejectUnauthorized: false, // For cloud databases like Neon
+  },
 });

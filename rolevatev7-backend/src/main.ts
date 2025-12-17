@@ -78,12 +78,12 @@ async function bootstrap() {
   // CORS Configuration - Secure setup with environment-based origins
   const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(o => o.trim()) || ['http://localhost:3000'];
   
-  logger.log(`✅ CORS allowed origins: ${allowedOrigins.join(', ')}`);
+  logger.log(`✅ CORS allowed origins: ${process.env.CORS_OPEN === 'true' ? 'ALL (Open)' : allowedOrigins.join(', ')}`);
   
   // For development, optionally allow all origins (NOT for production!)
-  const corsOriginFn = process.env.NODE_ENV === 'development' 
-    ? true // Allow all origins in development
-    : allowedOrigins; // Restrict in production
+  const corsOriginFn = process.env.CORS_OPEN === 'true'
+    ? true // Allow all origins when CORS_OPEN=true
+    : allowedOrigins; // Restrict to allowed origins
   
   app.enableCors({
     origin: corsOriginFn,

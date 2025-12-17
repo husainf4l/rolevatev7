@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
 import { UserModule } from './user/user.module';
@@ -59,6 +60,9 @@ import { CacheService } from './cache/cache.service';
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
         synchronize: false, // Disabled for production - use migrations instead
         migrationsRun: false, // Disabled - run migrations manually via CLI
+        ssl: {
+          rejectUnauthorized: false, // For cloud databases like Neon
+        },
       }),
       inject: [ConfigService],
     }),
@@ -66,8 +70,10 @@ import { CacheService } from './cache/cache.service';
       driver: ApolloDriver,
       autoSchemaFile: true,
       path: '/api/graphql',
-      playground: process.env.NODE_ENV !== 'production',
       introspection: process.env.NODE_ENV !== 'production',
+      plugins: process.env.NODE_ENV !== 'production' 
+        ? [ApolloServerPluginLandingPageLocalDefault()]
+        : [],
       context: (args: any) => {
         // Fastify provides the request directly as the first argument
         // Not as an object with {req, reply}

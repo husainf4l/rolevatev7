@@ -23,6 +23,7 @@
     "migration:generate": "npm run typeorm -- -d src/data-source.ts migration:generate",
     "migration:create": "npm run typeorm -- migration:create",
     "migration:run": "npm run typeorm -- -d src/data-source.ts migration:run",
+    "migration:run:prod": "node migration-runner.js",
     "migration:revert": "npm run typeorm -- -d src/data-source.ts migration:revert",
     "migration:show": "npm run typeorm -- -d src/data-source.ts migration:show"
   },
@@ -34,13 +35,13 @@
     "@aws-sdk/client-ses": "^3.910.0",
     "@aws-sdk/s3-request-presigner": "^3.910.0",
     "@fastify/helmet": "^13.0.2",
-    "@nestjs/apollo": "^13.0.1",
+    "@nestjs/apollo": "^13.2.3",
     "@nestjs/bullmq": "^11.0.4",
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.1.6",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.1.6",
-    "@nestjs/graphql": "^13.0.1",
+    "@nestjs/graphql": "^13.2.3",
     "@nestjs/jwt": "^11.0.1",
     "@nestjs/platform-express": "^11.1.6",
     "@nestjs/platform-fastify": "^11.1.6",
@@ -49,7 +50,6 @@
     "@nestjs/throttler": "^6.4.0",
     "@nestjs/typeorm": "^11.0.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "^6.17.1",
     "@types/express": "^5.0.3",
     "@types/pdfkit": "^0.17.3",
     "axios": "^1.13.1",
@@ -105,5 +105,10 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "@apollo/server-plugin-landing-page-graphql-playground": {
+      "@apollo/server": "$@apollo/server"
+    }
   }
 }
