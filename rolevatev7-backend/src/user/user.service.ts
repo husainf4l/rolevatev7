@@ -20,7 +20,7 @@ export class UserService {
     private auditService: AuditService,
     private configService: ConfigService,
   ) {
-    this.bcryptRounds = this.configService.get<number>('BCRYPT_ROUNDS', 12);
+    this.bcryptRounds = parseInt(this.configService.get<string>('BCRYPT_ROUNDS', '12'), 10);
   }
 
   async create(userType: UserType, email?: string, password?: string, name?: string, phone?: string): Promise<User> {
