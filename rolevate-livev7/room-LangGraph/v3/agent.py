@@ -18,21 +18,12 @@ from graph import create_workflow  # <-- our compiled LangGraph app
 from utils.session_utils import create_initial_session_state
 from session_manager import session_manager
 from recording_manager import RecordingManager
-from gpu_config import setup_gpu_config, print_gpu_status
 
 load_dotenv(".env")
 
 # Set LiveKit memory warning threshold to 2GB to avoid warnings for normal AI workloads
 os.environ.setdefault("LIVEKIT_MEMORY_WARN_MB", "2048")
 os.environ.setdefault("LIVEKIT_MEMORY_LIMIT_MB", "0")
-
-# Initialize GPU configuration for optimal performance
-gpu_available = setup_gpu_config()
-if gpu_available:
-    print_gpu_status()
-    # Cleanup memory after initialization
-    from gpu_config import cleanup_memory
-    cleanup_memory()
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)

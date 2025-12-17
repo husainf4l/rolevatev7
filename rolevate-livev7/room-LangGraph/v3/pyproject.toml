@@ -32,10 +32,6 @@ dependencies = [
     "boto3>=1.34.0",
     "botocore>=1.34.0",
     
-    # ML/Audio Processing Dependencies
-    "torch>=2.0.0",
-    "torchaudio>=2.0.0",
-    
     # Utilities
     "pypdf>=6.0.0",
     "python-dotenv>=1.1.1",
