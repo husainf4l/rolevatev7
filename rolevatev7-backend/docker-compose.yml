@@ -85,6 +85,14 @@ services:
       LIVEKIT_URL: ${LIVEKIT_URL}
       LIVEKIT_API_KEY: ${LIVEKIT_API_KEY}
       LIVEKIT_API_SECRET: ${LIVEKIT_API_SECRET}
+      # AI Services
+      CV_ANALYSIS_API_URL: ${CV_ANALYSIS_API_URL}
+      FASTABI_URL: ${FASTABI_URL}
+      FASTAPI_URL: ${FASTAPI_URL}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      # API Keys
+      SYSTEM_API_KEY: ${SYSTEM_API_KEY}
+      ADMIN_AGENT_API_KEY: ${ADMIN_AGENT_API_KEY}
       # Other Services
       GRAPHQL_API_URL: ${GRAPHQL_API_URL}
       PORT: ${PORT:-4005}
@@ -102,6 +110,26 @@ services:
     volumes:
       # Mount logs directory for persistent logs
       - ./logs:/app/logs
+
+  # FastAPI CV Analysis Service (Python)
+  cv-analysis:
+    image: your-cv-analysis-image:latest  # Replace with your CV analysis service image
+    container_name: rolevate-cv-analysis
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GRAPHQL_API_URL: ${GRAPHQL_API_URL}
+      SYSTEM_API_KEY: ${SYSTEM_API_KEY}
+    networks:
+      - rolevate-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 networks:
   rolevate-network:

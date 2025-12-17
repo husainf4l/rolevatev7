@@ -121,7 +121,7 @@ function RoomContent() {
 
         if (data?.createInterviewRoom?.token) {
           const token = data.createInterviewRoom.token;
-          const serverUrl = 'wss://rolevate-pf7kl7to.livekit.cloud';
+          const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL || 'wss://rolvate-fi6h6rke.livekit.cloud';
           
           setRoomToken(token);
           setWSURL(serverUrl);

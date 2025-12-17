@@ -1,0 +1,17 @@
+name: rolevate-interview-agent
+version: 1.0.0
+description: AI Interview Agent with LangGraph and Arabic/English support
+dockerfile: Dockerfile
+
+# Environment variables are loaded from .env file during deployment
+# DO NOT commit actual secrets to version control
+# Use: lk agent create --secrets-file .env .
+env: {}
+
+resources:
+  memory: 2Gi
+  cpu: 2000m
+
+autoscaling:
+  min_replicas: 1
+  max_replicas: 10
